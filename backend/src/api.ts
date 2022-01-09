@@ -1,6 +1,8 @@
 import cors from "cors";
 import express from "express";
-import * as morgan from "morgan";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 
 // App
 export const app = express();
@@ -8,7 +10,10 @@ export const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(morgan.default("tiny"));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("tiny"));
+app.use(cookieParser());
+app.use(fileUpload());
 
 // Test api route
 app.get("/", (_, res) => res.status(200).send("Hello mom"));
