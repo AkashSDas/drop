@@ -16,4 +16,4 @@ app.use(cookieParser());
 app.use(fileUpload());
 
 // Test api route
-app.get("/", (_, res) => res.status(200).send("Hello mom"));
+// app.get("/api/test", (_, res) => res.status(200).send("Hello mom"));
