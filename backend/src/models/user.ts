@@ -184,4 +184,12 @@ const getVerifyToken: GetVerifyToken = function (this: IUser, expiresIn) {
 };
 userSchema.methods.getVerifyToken = getVerifyToken;
 
+// Duplicate the ID field.
+userSchema.virtual("id").get(function (this: IUser) {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+userSchema.set("toJSON", { virtuals: true });
+
 export const User = model<IUser, IUserModel>("User", userSchema);
