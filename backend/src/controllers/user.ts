@@ -11,5 +11,22 @@ export const signup: AsnycMiddleware = async (req, res, next) => {
 
   const user = await User.create({ username, email, password });
   user.password = undefined; // no sending user password to client
-  return loginUser(user, res);
+  return loginUser(user, res, "Account created successfully");
+};
+
+export const login: AsnycMiddleware = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return next(new BaseApiError(400, "Some or all fields are missing"));
+  }
+
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) return next(new BaseApiError(400, "User doesn't exists"));
+
+  if (!(await user.isAuthenticated(password))) {
+    return next(new BaseApiError(400, "Wrong password"));
+  }
+
+  user.password = undefined; // no sending user password to client
+  return loginUser(user, res, "Successfully logged in");
 };
