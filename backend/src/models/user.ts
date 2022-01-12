@@ -17,8 +17,8 @@ import crypto from "crypto";
 export interface IUserDocument extends Document {
   username: string;
   email: string;
-  dateOfBirth: Date;
-  gender: "male" | "female" | "prefer not to answer";
+  // dateOfBirth: Date;
+  // gender: "male" | "female" | "prefer not to answer";
   password: string; // password digest
   // rememberToken: string // Don't want this field in user doc
 
@@ -72,33 +72,33 @@ const userSchema = new Schema<IUser, IUserModel>(
       unique: true,
       validate: [validator.isEmail, "Invalid email address"],
     },
-    dateOfBirth: {
-      type: SchemaTypes.Date,
-      required: [true, "Date of birth is required"],
-      validate: [
-        {
-          validator: (v: Date) => v && validator.isDate(v.toString()),
-          msg: "Invalid date format",
-        },
-        {
-          validator: (v: Date) => {
-            // User should not be of born in the future and user's age should not be more than 130years
-            return (
-              v &&
-              v.getTime() > Date.now() * 130 * 365 * 24 * 60 * 60 * 1000 && // 130 yrs back from now
-              v.getTime() < Date.now() * 1 * 24 * 60 * 60 * 1000 // current time
-            );
-          },
-          msg: "Invalid date range",
-        },
-      ],
-    },
-    gender: {
-      type: SchemaTypes.String,
-      enum: ["male", "female", "prefer not to answer"],
-      default: "prefer not to answer",
-      required: [true, "Gender is required info"],
-    },
+    // dateOfBirth: {
+    //   type: SchemaTypes.Date,
+    //   required: [true, "Date of birth is required"],
+    //   validate: [
+    //     {
+    //       validator: (v: Date) => v && validator.isDate(v.toString()),
+    //       msg: "Invalid date format",
+    //     },
+    //     {
+    //       validator: (v: Date) => {
+    //         // User should not be of born in the future and user's age should not be more than 130years
+    //         return (
+    //           v &&
+    //           v.getTime() > Date.now() * 130 * 365 * 24 * 60 * 60 * 1000 && // 130 yrs back from now
+    //           v.getTime() < Date.now() * 1 * 24 * 60 * 60 * 1000 // current time
+    //         );
+    //       },
+    //       msg: "Invalid date range",
+    //     },
+    //   ],
+    // },
+    // gender: {
+    //   type: SchemaTypes.String,
+    //   enum: ["male", "female", "prefer not to answer"],
+    //   default: "prefer not to answer",
+    //   required: [true, "Gender is required info"],
+    // },
     password: { type: SchemaTypes.String, required: true, select: false },
     verifyToken: { type: SchemaTypes.String, select: false },
     verifyExpiry: { type: SchemaTypes.Date, select: false },
