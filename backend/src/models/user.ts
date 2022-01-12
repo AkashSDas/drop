@@ -45,7 +45,7 @@ type GetJwtToken = () => string;
 type GetVerifyToken = (expiresIn: Date) => string;
 
 // Doc (instance) related methods
-interface IUser extends IUserDocument {
+export interface IUser extends IUserDocument {
   isAuthenticated: IsAuthenticated;
   getJwtToken: GetJwtToken;
   getVerifyToken: GetVerifyToken;
