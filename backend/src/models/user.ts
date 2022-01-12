@@ -25,11 +25,11 @@ export interface IUserDocument extends Document {
   // Below 2 fields will be used to verify user's for
   // reseting user's password OR signing up a user
   // Another way can be creating separate fields for the above tasks
-  verifyToken: string | null; // Not token in true sense, but it's a random string of fixed length
-  verifyExpiry: Date | null; // After this time the above token should expire
+  verifyToken?: string; // Not token in true sense, but it's a random string of fixed length
+  verifyExpiry?: Date; // After this time the above token should expire
 
   // Cloudinary saved image
-  profilePic: {
+  profilePic?: {
     id: string;
     URL: string;
   };
@@ -107,8 +107,6 @@ const userSchema = new Schema<IUser, IUserModel>(
         id: { type: SchemaTypes.String, required: true },
         URL: { type: SchemaTypes.String, required: true },
       },
-      required: [true, "User profile pic is required"],
-      default: { id: "default", URL: process.env.DEFAULT_PROFILE_PIC_URL },
     },
     role: {
       type: SchemaTypes.String,
