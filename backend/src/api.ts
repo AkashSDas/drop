@@ -3,9 +3,8 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
-
-import { router as userRouter } from "./routes/user";
 import { responseMsg } from "./utils/response";
+import { router as userRouter } from "./routes/user";
 
 // App
 export const app = express();
@@ -21,10 +20,12 @@ app.use(fileUpload());
 // Test api route
 // app.get("/api/test", (_, res) => res.status(200).send("Hello mom"));
 
-app.all("*", (req, res) =>
+// Routes
+app.use("/api/user", userRouter);
+app.all("*", (req, res) => {
   responseMsg(res, {
     statusCode: 404,
     isError: true,
     msg: `Cannot find ${req.originalUrl} on this server!`,
-  })
-);
+  });
+});
