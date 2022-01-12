@@ -20,6 +20,6 @@ export type IdMiddleware = (
 ) => Promise<void>;
 
 /**
- * Base controller type
+ * Base async controller type
  */
-export type Controller = (req: Request, res: Response) => Promise<void>;
+export type AsyncController = (req: Request, res: Response) => Promise<void>;
