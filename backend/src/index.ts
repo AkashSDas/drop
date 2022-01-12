@@ -2,6 +2,9 @@
 import { config } from "dotenv";
 config();
 
+import { connectMongoDB } from "./config/db";
+connectMongoDB();
+
 import { app } from "./api";
 
 // Start the server
