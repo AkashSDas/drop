@@ -10,5 +10,6 @@ export const signup: AsnycMiddleware = async (req, res, next) => {
   }
 
   const user = await User.create({ username, email, password });
+  user.password = undefined; // no sending user password to client
   return loginUser(user, res);
 };
