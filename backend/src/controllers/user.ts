@@ -269,3 +269,14 @@ export const getAllUsers: AsyncMiddleware = async (req, res) => {
     data: { users },
   });
 };
+
+// Without pagination
+export const getAllMembers: AsyncMiddleware = async (req, res) => {
+  const users = await User.find({ role: "member" });
+  responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "All users",
+    data: { users },
+  });
+};
