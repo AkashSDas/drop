@@ -27,6 +27,7 @@ export interface IUserDocument extends Document {
 
   emailVerifyToken?: string;
   emailVerifyExpiry?: Date;
+  active: boolean; // User account is active or not
 
   // Cloudinary saved image
   profilePic?: {
@@ -106,6 +107,12 @@ const userSchema = new Schema<IUser, IUserModel>(
     passwordResetExpiry: { type: SchemaTypes.Date, select: false },
     emailVerifyToken: { type: SchemaTypes.String, select: false },
     emailVerifyExpiry: { type: SchemaTypes.Date, select: false },
+    active: {
+      type: SchemaTypes.Boolean,
+      default: false,
+      required: [true, "Account active status is required"],
+      select: false,
+    },
     profilePic: {
       type: {
         id: { type: SchemaTypes.String, required: true },
