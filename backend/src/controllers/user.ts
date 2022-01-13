@@ -54,7 +54,7 @@ export const resetPassword: AsyncMiddleware = async (req, res, next) => {
 
   // Expires in 5mins
   const passwordResetToken = user.getPasswordResetToken(
-    new Date(Date.now() * 5 * 60 * 1000)
+    new Date(Date.now() + 5 * 60 * 1000)
   );
 
   // Saving the passwordResetToken and passwordResetExpiry fields set by
