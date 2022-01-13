@@ -195,3 +195,18 @@ export const getUserInfo = (
     data: { user: req.user },
   });
 };
+
+export const changePassword: AsyncMiddleware = async (req, res, next) => {
+  if (!req.user) {
+    return next(new BaseApiError(401, "You are not logged in"));
+  }
+
+  const userId = req.user.id;
+  const user = await User.findById(userId).select("+password");
+  const correctPwd = await user.isAuthenticated(req.body.oldPassword);
+  if (!correctPwd) return next(new BaseApiError(401, "Incorrect password"));
+  user.password = req.body.newPassword;
+  await user.save();
+  user.password = undefined;
+  return loginUser(user, res, "Password updated successfully");
+};
