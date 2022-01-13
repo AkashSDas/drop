@@ -4,6 +4,7 @@ import { BaseApiError } from "../utils/error";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 import { loginUser } from "../utils/user";
+import crypto from "crypto";
 
 export const signup: AsyncMiddleware = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -85,4 +86,36 @@ export const resetPassword: AsyncMiddleware = async (req, res, next) => {
     await user.save({ validateModifiedOnly: true });
     return next(new BaseApiError(500, (err as Error).message));
   }
+};
+
+export const confirmResetPassword: AsyncMiddleware = async (req, res, next) => {
+  const token = req.params.token;
+
+  // Encrypt the token got from URL
+  const encryptToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  // If the token is correct then this `encryptToken` (hashed, since the token sent to
+  // the user was hashed and saved to that user's doc) should be there in this
+  // user's doc (only in one user's doc since this encrypted token will be unique) in
+  // the db. So getting the user based on this encryptToken and also
+  // the token expiry should be in future (otherwise the token has already expired)
+  //
+  // TODO: Typing here didn't worked i.e. passwordResetToken is of type any and same
+  // is with the other ones.
+  const user = await User.findOne({
+    passwordResetToken: encryptToken,
+    passwordResetExpiry: { $gt: new Date(Date.now()) },
+  });
+
+  if (!user) return next(new BaseApiError(400, "Token is invalid or expired"));
+
+  user.password = req.body.password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpiry = undefined;
+
+  // Here no validateModifiedOnly needs to be given since we're update few fields
+  // and user has already registered meaning all necessary feilds are filled
+  await user.save();
+
+  return loginUser(user, res, "Successfully changed your password");
 };
