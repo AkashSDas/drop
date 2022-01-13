@@ -344,3 +344,19 @@ export const leaderChangeUserInfo: AsyncMiddleware = async (req, res, next) => {
     data: { user: updatedUser },
   });
 };
+
+export const deleteUser: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return next(new BaseApiError(401, "User does not exists"));
+
+  // Delete user profile pic
+  const imgId = user.profilePic?.id;
+  if (imgId) await cloudinary.v2.uploader.destroy(imgId);
+
+  await user.remove();
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Deleted user",
+  });
+};

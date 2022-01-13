@@ -4,6 +4,7 @@ import {
   changeUserInfo,
   confirmResetPassword,
   confirmVerifyEmail,
+  deleteUser,
   getAllMembers,
   getAllUsers,
   getUser,
@@ -91,5 +92,14 @@ router.put(
   checkRole("leader"),
   errorHandler,
   runAsync(leaderChangeUserInfo),
+  errorHandler
+);
+router.delete(
+  "/leader/user/:id",
+  runAsync(isLoggedIn),
+  errorHandler,
+  checkRole("leader"),
+  errorHandler,
+  runAsync(deleteUser),
   errorHandler
 );
