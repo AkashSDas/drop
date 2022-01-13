@@ -159,3 +159,21 @@ export const verifyEmail: AsyncMiddleware = async (req, res, next) => {
     return next(new BaseApiError(500, (err as Error).message));
   }
 };
+
+export const confirmVerifyEmail: AsyncMiddleware = async (req, res, next) => {
+  const token = req.params.token;
+  const encryptToken = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await User.findOne({
+    emailVerifyToken: encryptToken,
+    emailVerifyExpiry: { $gt: new Date(Date.now()) },
+  });
+
+  if (!user) return next(new BaseApiError(400, "Token is invalid or expired"));
+
+  user.active = true;
+  user.emailVerifyToken = undefined;
+  user.emailVerifyExpiry = undefined;
+  await user.save();
+
+  return loginUser(user, res, "Account is verified");
+};

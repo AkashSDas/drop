@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   confirmResetPassword,
+  confirmVerifyEmail,
   login,
   logout,
   resetPassword,
@@ -22,3 +23,8 @@ router.post(
   errorHandler
 );
 router.post("/verify-email", runAsync(verifyEmail), errorHandler);
+router.get(
+  "/confirm-verify-email/:token",
+  runAsync(confirmVerifyEmail),
+  errorHandler
+);
