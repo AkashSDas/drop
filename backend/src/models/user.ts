@@ -22,11 +22,11 @@ export interface IUserDocument extends Document {
   password: string; // password digest
   // rememberToken: string // Don't want this field in user doc
 
-  // Below 2 fields will be used to verify user's for
-  // reseting user's password OR signing up a user
-  // Another way can be creating separate fields for the above tasks
-  verifyToken?: string; // Not token in true sense, but it's a random string of fixed length
-  verifyExpiry?: Date; // After this time the above token should expire
+  passwordResetToken?: string;
+  passwordResetExpiry?: Date;
+
+  emailVerifyToken?: string;
+  emailVerifyExpiry?: Date;
 
   // Cloudinary saved image
   profilePic?: {
@@ -42,13 +42,15 @@ export interface IUserDocument extends Document {
 
 type IsAuthenticated = (givenPassword: string) => Promise<boolean>;
 type GetJwtToken = () => string;
-type GetVerifyToken = (expiresIn: Date) => string;
+type GetPasswordResetToken = (expiresIn: Date) => string;
+type GetEmailVerifyToken = (expiresIn: Date) => string;
 
 // Doc (instance) related methods
 export interface IUser extends IUserDocument {
   isAuthenticated: IsAuthenticated;
   getJwtToken: GetJwtToken;
-  getVerifyToken: GetVerifyToken;
+  getPasswordResetToken: GetPasswordResetToken;
+  getEmailVerifyToken: GetEmailVerifyToken;
 }
 
 // Model (static) related methods
@@ -100,8 +102,10 @@ const userSchema = new Schema<IUser, IUserModel>(
     //   required: [true, "Gender is required info"],
     // },
     password: { type: SchemaTypes.String, required: true, select: false },
-    verifyToken: { type: SchemaTypes.String, select: false },
-    verifyExpiry: { type: SchemaTypes.Date, select: false },
+    passwordResetToken: { type: SchemaTypes.String, select: false },
+    passwordResetExpiry: { type: SchemaTypes.Date, select: false },
+    emailVerifyToken: { type: SchemaTypes.String, select: false },
+    emailVerifyExpiry: { type: SchemaTypes.Date, select: false },
     profilePic: {
       type: {
         id: { type: SchemaTypes.String, required: true },
@@ -162,27 +166,47 @@ const getJwtToken: GetJwtToken = function (this: IUser) {
 };
 userSchema.methods.getJwtToken = getJwtToken;
 
-/**
- * Generate verify token
- *
- * This will be used for
- * - Verify user during signup
- * - Forgot password
- */
-const getVerifyToken: GetVerifyToken = function (this: IUser, expiresIn) {
+const getPasswordResetToken: GetPasswordResetToken = function (
+  this: IUser,
+  expiresIn
+) {
   // Generate long and random string, this will be sent to user
   // and user is excepted to sent back this token to the backend which then will be
   // hashed and then compared with this.verifyToken
   const token = crypto.randomBytes(20).toString("hex");
 
   // Getting a hash
-  this.verifyToken = crypto.createHash("sha256").update(token).digest("hex");
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
 
-  this.verifyExpiry = expiresIn;
+  this.passwordResetExpiry = expiresIn;
 
   return token;
 };
-userSchema.methods.getVerifyToken = getVerifyToken;
+userSchema.methods.getPasswordResetToken = getPasswordResetToken;
+
+const getEmailVerifyToken: GetEmailVerifyToken = function (
+  this: IUser,
+  expiresIn
+) {
+  // Generate long and random string, this will be sent to user
+  // and user is excepted to sent back this token to the backend which then will be
+  // hashed and then compared with this.verifyToken
+  const token = crypto.randomBytes(20).toString("hex");
+
+  // Getting a hash
+  this.emailVerifyToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  this.emailVerifyExpiry = expiresIn;
+
+  return token;
+};
+userSchema.methods.getEmailVerifyToken = getEmailVerifyToken;
 
 // Duplicate the ID field.
 userSchema.virtual("id").get(function (this: IUser) {
