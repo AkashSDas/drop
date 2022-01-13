@@ -1,7 +1,7 @@
-import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user";
+import { BaseApiError } from "../utils/error";
 
 export const isLoggedIn: AsyncMiddleware = async (req, res, next) => {
   const token =
@@ -10,24 +10,16 @@ export const isLoggedIn: AsyncMiddleware = async (req, res, next) => {
     req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    return responseMsg(res, {
-      statusCode: 401,
-      isError: true,
-      msg: "You are not logged in",
-    });
+    return next(new BaseApiError(401, "You are not logged in"));
   }
 
-  let decoded: string | jwt.JwtPayload;
+  let decoded: jwt.JwtPayload;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
+    decoded = jwt.verify(token, process.env.JWT_SECRET) as jwt.JwtPayload;
   } catch (err) {
-    return responseMsg(res, {
-      statusCode: 500,
-      isError: true,
-      msg: (err as Error).message,
-    });
+    return next(new BaseApiError(500, (err as Error).message));
   }
 
-  req.user = await User.findById(decoded);
+  req.user = await User.findById(decoded.id);
   next();
 };
