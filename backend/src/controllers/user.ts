@@ -2,10 +2,10 @@ import { User } from "../models/user";
 import { sendEmail } from "../utils/email";
 import { BaseApiError } from "../utils/error";
 import { responseMsg } from "../utils/response";
-import { AsnycMiddleware } from "../utils/types";
+import { AsyncMiddleware } from "../utils/types";
 import { loginUser } from "../utils/user";
 
-export const signup: AsnycMiddleware = async (req, res, next) => {
+export const signup: AsyncMiddleware = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!email || !username || !password) {
     return next(new BaseApiError(400, "Some or all fields are missing"));
@@ -16,7 +16,7 @@ export const signup: AsnycMiddleware = async (req, res, next) => {
   return loginUser(user, res, "Account created successfully");
 };
 
-export const login: AsnycMiddleware = async (req, res, next) => {
+export const login: AsyncMiddleware = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new BaseApiError(400, "Some or all fields are missing"));
@@ -33,7 +33,7 @@ export const login: AsnycMiddleware = async (req, res, next) => {
   return loginUser(user, res, "Successfully logged in");
 };
 
-export const logout: AsnycMiddleware = async (req, res) => {
+export const logout: AsyncMiddleware = async (req, res) => {
   // removing token from cookie (although its not used for auth)
   // since token is used for auth, its work in frontend to rm auth
   // token from frontend
@@ -45,7 +45,7 @@ export const logout: AsnycMiddleware = async (req, res) => {
   });
 };
 
-export const resetPassword: AsnycMiddleware = async (req, res, next) => {
+export const resetPassword: AsyncMiddleware = async (req, res, next) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });

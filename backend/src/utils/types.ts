@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
-export type AsnycMiddleware = (
+export type AsyncMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => Promise<void>;
 
-export type AsnycIdMiddleware = (
+export type AsyncIdMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
