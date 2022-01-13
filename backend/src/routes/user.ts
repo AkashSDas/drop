@@ -16,7 +16,7 @@ router.post("/login", runAsync(login), errorHandler);
 router.get("/logout", logout);
 router.post("/reset-password", runAsync(resetPassword), errorHandler);
 router.post(
-  "/confirmreset-password/:token",
+  "/confirm-reset-password/:token",
   runAsync(confirmResetPassword),
   errorHandler
 );
