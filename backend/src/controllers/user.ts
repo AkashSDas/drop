@@ -64,7 +64,7 @@ export const resetPassword: AsyncMiddleware = async (req, res, next) => {
   // URL sent to user for resetting password
   const confirmPasswordResetURL = `${req.protocol}://${req.get(
     "host"
-  )}/confirm-reset-password/${passwordResetToken}`;
+  )}/api/user/confirm-reset-password/${passwordResetToken}`;
 
   const msg = `Copy paste this link in your URL and hit enter\n\n${confirmPasswordResetURL}`;
 
