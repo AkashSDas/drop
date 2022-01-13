@@ -114,6 +114,7 @@ const userSchema = new Schema<IUser, IUserModel>(
       select: false,
     },
     profilePic: {
+      _id: false,
       type: {
         id: { type: SchemaTypes.String, required: true },
         URL: { type: SchemaTypes.String, required: true },
