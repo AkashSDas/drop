@@ -2,12 +2,14 @@ import { Router } from "express";
 import {
   confirmResetPassword,
   confirmVerifyEmail,
+  getUserInfo,
   login,
   logout,
   resetPassword,
   signup,
   verifyEmail,
 } from "../controllers/user";
+import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
 
@@ -28,3 +30,4 @@ router.get(
   runAsync(confirmVerifyEmail),
   errorHandler
 );
+router.get("/profile", runAsync(isLoggedIn), errorHandler, getUserInfo);

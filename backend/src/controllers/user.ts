@@ -5,6 +5,7 @@ import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 import { loginUser } from "../utils/user";
 import crypto from "crypto";
+import { NextFunction, Request, Response } from "express";
 
 export const signup: AsyncMiddleware = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -176,4 +177,21 @@ export const confirmVerifyEmail: AsyncMiddleware = async (req, res, next) => {
   await user.save();
 
   return loginUser(user, res, "Account is verified");
+};
+
+export const getUserInfo = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user) {
+    return next(new BaseApiError(401, "You are not logged in"));
+  }
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "User info",
+    data: { user: req.user },
+  });
 };
