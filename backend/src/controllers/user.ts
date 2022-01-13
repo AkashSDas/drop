@@ -258,3 +258,14 @@ export const changeUserInfo: AsyncMiddleware = async (req, res, next) => {
     data: { user },
   });
 };
+
+// Without pagination
+export const getAllUsers: AsyncMiddleware = async (req, res) => {
+  const users = await User.find();
+  responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "All users",
+    data: { users },
+  });
+};

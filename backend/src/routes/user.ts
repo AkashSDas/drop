@@ -4,6 +4,7 @@ import {
   changeUserInfo,
   confirmResetPassword,
   confirmVerifyEmail,
+  getAllUsers,
   getUserInfo,
   login,
   logout,
@@ -11,7 +12,7 @@ import {
   signup,
   verifyEmail,
 } from "../controllers/user";
-import { isLoggedIn } from "../middlewares/user";
+import { checkRole, isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
 
@@ -52,4 +53,11 @@ router.post(
   errorHandler,
   changeUserInfo,
   errorHandler
+);
+router.get(
+  "/leader",
+  runAsync(isLoggedIn),
+  errorHandler,
+  checkRole("leader"),
+  getAllUsers
 );
