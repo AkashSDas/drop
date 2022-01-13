@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 app.use(cookieParser());
-app.use(fileUpload());
+app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
 // Test api route
 // app.get("/api/test", (_, res) => res.status(200).send("Hello mom"));
