@@ -119,3 +119,43 @@ export const confirmResetPassword: AsyncMiddleware = async (req, res, next) => {
 
   return loginUser(user, res, "Successfully changed your password");
 };
+
+export const verifyEmail: AsyncMiddleware = async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return next(new BaseApiError(400, "User doesn't exists"));
+
+  // Expires in 5mins
+  const emailverifyToken = user.getEmailVerifyToken(
+    new Date(Date.now() + 5 * 60 * 1000)
+  );
+
+  await user.save({ validateModifiedOnly: true });
+
+  // URL sent to user for verifying user's email
+  const confirmEmailURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/user/confirm-email/${emailverifyToken}`;
+
+  const msg = `Copy paste this link in your URL and hit enter\n\n${confirmEmailURL}`;
+
+  try {
+    await sendEmail({
+      toEmail: user.email,
+      subject: "Verify your account",
+      text: msg,
+    });
+
+    return responseMsg(res, {
+      statusCode: 200,
+      isError: false,
+      msg: "Email is sent to your registered email address. Verify it to sign up",
+    });
+  } catch (err) {
+    user.emailVerifyToken = undefined;
+    user.emailVerifyExpiry = undefined;
+    await user.save({ validateModifiedOnly: true });
+    return next(new BaseApiError(500, (err as Error).message));
+  }
+};

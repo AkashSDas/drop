@@ -5,6 +5,7 @@ import {
   logout,
   resetPassword,
   signup,
+  verifyEmail,
 } from "../controllers/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -20,3 +21,4 @@ router.post(
   runAsync(confirmResetPassword),
   errorHandler
 );
+router.post("/verify-email", runAsync(verifyEmail), errorHandler);
