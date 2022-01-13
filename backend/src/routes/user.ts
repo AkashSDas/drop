@@ -8,6 +8,7 @@ import {
   getAllUsers,
   getUser,
   getUserInfo,
+  leaderChangeUserInfo,
   login,
   logout,
   resetPassword,
@@ -81,5 +82,14 @@ router.get(
   checkRole("leader"),
   errorHandler,
   runAsync(getUser),
+  errorHandler
+);
+router.put(
+  "/leader/user/:id",
+  runAsync(isLoggedIn),
+  errorHandler,
+  checkRole("leader"),
+  errorHandler,
+  runAsync(leaderChangeUserInfo),
   errorHandler
 );

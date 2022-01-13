@@ -294,3 +294,53 @@ export const getUser: AsyncMiddleware = async (req, res, next) => {
     data: { user },
   });
 };
+
+export const leaderChangeUserInfo: AsyncMiddleware = async (req, res, next) => {
+  if (!req.user) {
+    return next(new BaseApiError(401, "You are not logged in"));
+  }
+
+  // newData will have fields that user is allowed to updated
+  const newData: { [key: string]: any } = {
+    username: req.body.username,
+    email: req.body.email,
+    role: req.body.role, // check if the role is one from the opts available
+  };
+
+  // User whose data we're updating
+  const userId = req.params.id;
+  const user = await User.findById(userId);
+  if (!user) return next(new BaseApiError(401, "User does not exists"));
+
+  if (req.files?.profilePic) {
+    // Check if user has profile pic or not
+    if (user.profilePic) {
+      // Delete img
+      await cloudinary.v2.uploader.destroy(user.profilePic.id);
+    }
+
+    // Upload img
+    const file = (req.files.profilePic as fileUpload.UploadedFile).tempFilePath;
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "drop/profilePics",
+      crop: "scale",
+      width: 150,
+    });
+    newData.profilePic = {
+      id: result.public_id,
+      URL: result.secure_url,
+    };
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(user.id, newData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Successfully updated the user",
+    data: { user: updatedUser },
+  });
+};
