@@ -55,9 +55,10 @@ router.post(
   errorHandler
 );
 router.get(
-  "/leader",
+  "/leader/users",
   runAsync(isLoggedIn),
   errorHandler,
   checkRole("leader"),
+  errorHandler,
   getAllUsers
 );
