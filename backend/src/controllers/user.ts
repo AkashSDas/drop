@@ -6,6 +6,8 @@ import { AsyncMiddleware } from "../utils/types";
 import { loginUser } from "../utils/user";
 import crypto from "crypto";
 import { NextFunction, Request, Response } from "express";
+import cloudinary from "cloudinary";
+import fileUpload from "express-fileupload";
 
 export const signup: AsyncMiddleware = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -209,4 +211,50 @@ export const changePassword: AsyncMiddleware = async (req, res, next) => {
   await user.save();
   user.password = undefined;
   return loginUser(user, res, "Password updated successfully");
+};
+
+// Client has to sent all the fields (the ones which they are updating and
+// the others which they are not updating but are in user model)
+export const changeUserInfo: AsyncMiddleware = async (req, res, next) => {
+  if (!req.user) {
+    return next(new BaseApiError(401, "You are not logged in"));
+  }
+
+  // newData will have fields that user is allowed to updated
+  const newData: { [key: string]: any } = {
+    username: req.body.username,
+    email: req.body.email,
+  };
+
+  if (req.files?.profilePic) {
+    // Check if user has profile pic or not
+    if (req.user.profilePic) {
+      // Delete img
+      await cloudinary.v2.uploader.destroy(req.user.profilePic.id);
+    }
+
+    // Upload img
+    const file = (req.files.profilePic as fileUpload.UploadedFile).tempFilePath;
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "drop/profilePics",
+      crop: "scale",
+      width: 150,
+    });
+    newData.profilePic = {
+      id: result.public_id,
+      URL: result.secure_url,
+    };
+  }
+
+  const user = await User.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Successfully updated the user",
+    data: { user },
+  });
 };

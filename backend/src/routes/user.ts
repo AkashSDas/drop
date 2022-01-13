@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   changePassword,
+  changeUserInfo,
   confirmResetPassword,
   confirmVerifyEmail,
   getUserInfo,
@@ -43,5 +44,12 @@ router.post(
   runAsync(isLoggedIn),
   errorHandler,
   changePassword,
+  errorHandler
+);
+router.post(
+  "/change-info",
+  runAsync(isLoggedIn),
+  errorHandler,
+  changeUserInfo,
   errorHandler
 );
