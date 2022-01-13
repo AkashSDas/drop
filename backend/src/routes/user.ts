@@ -6,6 +6,7 @@ import {
   confirmVerifyEmail,
   getAllMembers,
   getAllUsers,
+  getUser,
   getUserInfo,
   login,
   logout,
@@ -61,7 +62,8 @@ router.get(
   errorHandler,
   checkRole("leader"),
   errorHandler,
-  getAllUsers
+  runAsync(getAllUsers),
+  errorHandler
 );
 router.get(
   "/elder/users",
@@ -69,5 +71,15 @@ router.get(
   errorHandler,
   checkRole("elder"),
   errorHandler,
-  getAllMembers
+  runAsync(getAllMembers),
+  errorHandler
+);
+router.get(
+  "/leader/user/:id",
+  runAsync(isLoggedIn),
+  errorHandler,
+  checkRole("leader"),
+  errorHandler,
+  runAsync(getUser),
+  errorHandler
 );

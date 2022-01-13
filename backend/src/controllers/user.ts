@@ -280,3 +280,17 @@ export const getAllMembers: AsyncMiddleware = async (req, res) => {
     data: { users },
   });
 };
+
+export const getUser: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(new BaseApiError(400, "User does not exists"));
+  }
+
+  responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "User info",
+    data: { user },
+  });
+};
