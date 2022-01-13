@@ -30,4 +30,10 @@ router.get(
   runAsync(confirmVerifyEmail),
   errorHandler
 );
-router.get("/profile", runAsync(isLoggedIn), errorHandler, getUserInfo);
+router.get(
+  "/profile",
+  runAsync(isLoggedIn),
+  errorHandler,
+  getUserInfo,
+  errorHandler
+);
