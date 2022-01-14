@@ -10,6 +10,9 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
   const drop = await Drop.findById(req.params.dropId);
   if (!drop) return next(new BaseApiError(400, "Drop doesn't exists"));
 
+  const emoji = reactionsData.filter((r) => r.name === req.body.reaction)[0]
+    .emoji;
+
   // Check if reaction (for this drop and req.user) exists or not
   const exists = await Reaction.findOne({ drop: drop._id, user: req.user._id });
   if (exists) {
@@ -20,7 +23,12 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
       statusCode: 200,
       isError: false,
       msg: "Reaction updated",
-      data: { ...exists, emoji: reactionsData[exists.reaction] },
+      data: {
+        reaction: {
+          ...exists.toJSON(),
+          emoji: emoji,
+        },
+      },
     });
   }
 
@@ -34,6 +42,11 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
     statusCode: 200,
     isError: false,
     msg: "Reaction created",
-    data: { ...reaction, emoji: reactionsData[exists.reaction] },
+    data: {
+      reaction: {
+        ...reaction.toJSON(),
+        emoji: emoji,
+      },
+    },
   });
 };
