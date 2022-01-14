@@ -9,6 +9,7 @@ import { router as dropRouter } from "./routes/drop";
 import { router as reDropRouter } from "./routes/redrop";
 import { router as commentRouter } from "./routes/comment";
 import { router as relationshipRouter } from "./routes/relationship";
+import { router as reactionRouter } from "./routes/reaction";
 
 // App
 export const app = express();
@@ -30,6 +31,7 @@ app.use("/api/drop", dropRouter);
 app.use("/api/redrop", reDropRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/relationship", relationshipRouter);
+app.use("/api/reaction", reactionRouter);
 app.all("*", (req, res) => {
   responseMsg(res, {
     statusCode: 404,
