@@ -1,5 +1,6 @@
 import { Document, model, Model, Schema, SchemaTypes, Types } from "mongoose";
 import MongoPaging from "mongo-cursor-pagination";
+import { ReDrop } from "./redrop";
 
 export interface IDropDocument extends Document {
   user: Types.ObjectId;
@@ -57,6 +58,19 @@ dropSchema.pre("remove", async function (this: IDrop, next) {
   throw Error(
     "It's already above 10mins since the drop was created, it can't be deleted now"
   );
+});
+
+// Remove all re-drops
+dropSchema.post("remove", async function (this: IDrop, next) {
+  try {
+    await ReDrop.deleteMany({ drop: this._id });
+  } catch (err) {
+    // Sending here error make sense only for dev purpose and not production,
+    // since re-drop delete is of no use to the drop's user who is deleting this
+    // drop
+    console.log(err);
+  }
+  next();
 });
 
 // Duplicate the ID field.
