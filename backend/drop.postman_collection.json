@@ -1,0 +1,963 @@
+{
+	"info": {
+		"_postman_id": "40b1bb4a-b395-45db-847f-56626d80affb",
+		"name": "drop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"James Bond\",\r\n    \"email\": \"tom@gmail.com\",\r\n    \"password\": \"testing\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/signup",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"kane@gmail.com\",\r\n    \"password\": \"testing\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/login",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/logout",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tom@gmail.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/reset-password",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"new password\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/confirm-reset-password/11c893334df670ef60edf512ff9ea23af3a263d7",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"confirm-reset-password",
+								"11c893334df670ef60edf512ff9ea23af3a263d7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tom@gmail.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/verify-email",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm verify email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_domain}}/confirm-verify-email/ece242f67a9513db7ff3693a91177d78f0ee36e9",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"confirm-verify-email",
+								"ece242f67a9513db7ff3693a91177d78f0ee36e9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjA4MDc4NCwiZXhwIjoxNjQyMzM5OTg0fQ.iQIuYEG-uiDQ1VeH3ajz0ieLR3FA0esHG5NMJq8YN3c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/profile",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjA4MDc4NCwiZXhwIjoxNjQyMzM5OTg0fQ.iQIuYEG-uiDQ1VeH3ajz0ieLR3FA0esHG5NMJq8YN3c",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"testing\",\r\n    \"newPassword\": \"testing\"\r\n}"
+						},
+						"url": {
+							"raw": "{{user_domain}}/change-password",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change user info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjA4MDc4NCwiZXhwIjoxNjQyMzM5OTg0fQ.iQIuYEG-uiDQ1VeH3ajz0ieLR3FA0esHG5NMJq8YN3c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "Kane",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "kane@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "profilePic",
+									"type": "file",
+									"src": "/C:/Users/G.p.khandelwal/Downloads/olena-sergienko-ElfJDs4LAQk-unsplash.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{user_domain}}/change-info",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"change-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users for users with leader role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjEwMTIyMCwiZXhwIjoxNjQyMzYwNDIwfQ.yZ37m_iQSZ08oNMavLhizb71Biyrz7LsNUT-vYkHp7I",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/leader/users",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"leader",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all members for users with elder role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjYjRhMGFmYjhmZmZjMjJmNmFhMyIsImlhdCI6MTY0MjA5OTc3NiwiZXhwIjoxNjQyMzU4OTc2fQ.yHVdvJYD9TCzwQc7tNJJYBKX2tNmq6BhlTnlWqAwXfg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/elder/users",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"elder",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single user for users with leader role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjEwMDQ1OCwiZXhwIjoxNjQyMzU5NjU4fQ.v6QMREGIbCKShO1LElJBNJ_zMO8KFwZbTGZZi1A-l3k",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/leader/user/61decee33efbc12e5dec84da",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"leader",
+								"user",
+								"61decee33efbc12e5dec84da"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change user info for users with leader role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjEwMTIyMCwiZXhwIjoxNjQyMzYwNDIwfQ.yZ37m_iQSZ08oNMavLhizb71Biyrz7LsNUT-vYkHp7I",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "shawn",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "shawn@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "profilePic",
+									"type": "file",
+									"src": "/C:/Users/G.p.khandelwal/Downloads/olena-sergienko-ElfJDs4LAQk-unsplash.jpg"
+								},
+								{
+									"key": "role",
+									"value": "co-leader",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{user_domain}}/leader/user/61decdb77eec2263911b1ebd",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"leader",
+								"user",
+								"61decdb77eec2263911b1ebd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user for users with leader role",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjEwMTIyMCwiZXhwIjoxNjQyMzYwNDIwfQ.yZ37m_iQSZ08oNMavLhizb71Biyrz7LsNUT-vYkHp7I",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_domain}}/leader/user/61decdb77eec2263911b1ebd",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"leader",
+								"user",
+								"61decdb77eec2263911b1ebd"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "drop",
+			"item": [
+				{
+					"name": "create drop",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Beautiful day 🌅\"\r\n}"
+						},
+						"url": {
+							"raw": "{{drop_domain}}",
+							"host": [
+								"{{drop_domain}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update drop",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Beautiful night 🌛\"\r\n}"
+						},
+						"url": {
+							"raw": "{{drop_domain}}/61e12866dacffafcab3976a6",
+							"host": [
+								"{{drop_domain}}"
+							],
+							"path": [
+								"61e12866dacffafcab3976a6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete drop",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{drop_domain}}/61e12c021ffe7b3feb0cbd0f",
+							"host": [
+								"{{drop_domain}}"
+							],
+							"path": [
+								"61e12c021ffe7b3feb0cbd0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all drops - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{drop_domain}}?limit=1&next=W3siJGRhdGUiOiIyMDIyLTAxLTE0VDA3OjM4OjUzLjAxNloifSx7IiRvaWQiOiI2MWUxMjg2NmRhY2ZmYWZjYWIzOTc2YTYifV0",
+							"host": [
+								"{{drop_domain}}"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "next",
+									"value": "W3siJGRhdGUiOiIyMDIyLTAxLTE0VDA3OjM4OjUzLjAxNloifSx7IiRvaWQiOiI2MWUxMjg2NmRhY2ZmYWZjYWIzOTc2YTYifV0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user's all drops - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{drop_domain}}/user/61decee33efbc12e5dec84da",
+							"host": [
+								"{{drop_domain}}"
+							],
+							"path": [
+								"user",
+								"61decee33efbc12e5dec84da"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "redrop",
+			"item": [
+				{
+					"name": "create redrop",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{redrop_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{redrop_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete redrop",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{redrop_domain}}/61e172affde7b3f7e3e80cfb",
+							"host": [
+								"{{redrop_domain}}"
+							],
+							"path": [
+								"61e172affde7b3f7e3e80cfb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user's all redrops - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{redrop_domain}}/user/61decee33efbc12e5dec84da",
+							"host": [
+								"{{redrop_domain}}"
+							],
+							"path": [
+								"user",
+								"61decee33efbc12e5dec84da"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comment",
+			"item": [
+				{
+					"name": "create comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjYjRhMGFmYjhmZmZjMjJmNmFhMyIsImlhdCI6MTY0MjE2NjY0NiwiZXhwIjoxNjQyNDI1ODQ2fQ.bwyRlx-zvVkCWZnNxhKSAiGBldoHmto6q0T3o319aAs",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"This is an amazing drop 🚀\"\r\n}"
+						},
+						"url": {
+							"raw": "{{comment_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{comment_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update comment content",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE2NjU5NiwiZXhwIjoxNjQyNDI1Nzk2fQ.K7_Y6SarSyKDU1xSjTb7UrLhSMySu2RAOaiydAKF7PE",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Wow 😲\"\r\n}"
+						},
+						"url": {
+							"raw": "{{comment_domain}}/61e1797fe802234452088495/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{comment_domain}}"
+							],
+							"path": [
+								"61e1797fe802234452088495",
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE2NjU5NiwiZXhwIjoxNjQyNDI1Nzk2fQ.K7_Y6SarSyKDU1xSjTb7UrLhSMySu2RAOaiydAKF7PE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{comment_domain}}/61e1797fe802234452088495",
+							"host": [
+								"{{comment_domain}}"
+							],
+							"path": [
+								"61e1797fe802234452088495"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all comment on drop - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{comment_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{comment_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "relationship",
+			"item": [
+				{
+					"name": "follow user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjYjRhMGFmYjhmZmZjMjJmNmFhMyIsImlhdCI6MTY0MjE3MTIyNiwiZXhwIjoxNjQyNDMwNDI2fQ.UkUfPVe3ZHVWTbA-Lz3yQNTJn9WkmcoRLKk__w_b9Io",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{relationship_domain}}/user/61decee33efbc12e5dec84da",
+							"host": [
+								"{{relationship_domain}}"
+							],
+							"path": [
+								"user",
+								"61decee33efbc12e5dec84da"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unfollow user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE2ODk2NywiZXhwIjoxNjQyNDI4MTY3fQ.2pGIygi6TqOvlKVNXeCWwtJ9bJ25SEEbjMatBVAVmXU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{relationship_domain}}/61e1833454dfecdaf2da1c1e",
+							"host": [
+								"{{relationship_domain}}"
+							],
+							"path": [
+								"61e1833454dfecdaf2da1c1e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user followers - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{relationship_domain}}/user/61decb4a0afb8fffc22f6aa3/followers",
+							"host": [
+								"{{relationship_domain}}"
+							],
+							"path": [
+								"user",
+								"61decb4a0afb8fffc22f6aa3",
+								"followers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user followed - paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{relationship_domain}}/user/61decb4a0afb8fffc22f6aa3/followed",
+							"host": [
+								"{{relationship_domain}}"
+							],
+							"path": [
+								"user",
+								"61decb4a0afb8fffc22f6aa3",
+								"followed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reaction",
+			"item": [
+				{
+					"name": "create reaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reaction\": \"amazing\"\r\n}"
+						},
+						"url": {
+							"raw": "{{reaction_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{reaction_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create reaction Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{reaction_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{reaction_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drop reactions count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reaction_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"host": [
+								"{{reaction_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user reacted on drop or not",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{reaction_domain}}/drop/61e12479b2fe18b1f78e77c6/reacted",
+							"host": [
+								"{{reaction_domain}}"
+							],
+							"path": [
+								"drop",
+								"61e12479b2fe18b1f78e77c6",
+								"reacted"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_domain}}/test",
+					"host": [
+						"{{base_domain}}"
+					],
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
