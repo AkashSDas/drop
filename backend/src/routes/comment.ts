@@ -7,7 +7,7 @@ import { errorHandler } from "../utils/error";
 export const router = Router();
 
 router
-  .route("/:dropId")
+  .route("/drop/:dropId")
   .post(
     runAsync(isLoggedIn),
     errorHandler,
