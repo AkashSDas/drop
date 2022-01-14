@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createReaction } from "../controllers/reaction";
+import { setReaction } from "../controllers/reaction";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -11,6 +11,6 @@ router
   .post(
     runAsync(isLoggedIn),
     errorHandler,
-    runAsync(createReaction),
+    runAsync(setReaction),
     errorHandler
   );
