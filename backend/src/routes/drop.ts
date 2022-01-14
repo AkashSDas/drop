@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createDrop, updateDropContent } from "../controllers/drop";
+import { createDrop, deleteDrop, updateDropContent } from "../controllers/drop";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -20,5 +20,11 @@ router
     runAsync(isLoggedIn),
     errorHandler,
     runAsync(updateDropContent),
+    errorHandler
+  )
+  .delete(
+    runAsync(isLoggedIn),
+    errorHandler,
+    runAsync(deleteDrop),
     errorHandler
   );
