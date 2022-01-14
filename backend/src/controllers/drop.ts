@@ -1,5 +1,6 @@
 import { Drop } from "../models/drop";
 import { BaseApiError } from "../utils/error";
+import { addIdField } from "../utils/mongo_cursor_pagination";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
@@ -79,13 +80,7 @@ export const getDrops: AsyncMiddleware = async (req, res, next) => {
     next: nextId,
   });
 
-  // Doing this, just to get id field for a drop doc
-  // using mongo-cursor-pagination is not giving virtuals, so that's why going
-  // with this way
-  let drops = [];
-  for (let i = 0; i < data.results.length; i++) {
-    drops.push({ ...data.results[i], id: data.results[i]._id });
-  }
+  const drops = addIdField(data.results);
 
   return responseMsg(res, {
     statusCode: 200,
