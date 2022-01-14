@@ -5,7 +5,7 @@ import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
 export const createComment: AsyncMiddleware = async (req, res, next) => {
-  if (!req.body.comment) {
+  if (!req.body.content) {
     return next(new BaseApiError(400, "Comment is required"));
   }
   if (!req.user) return next(new BaseApiError(401, "You're not logged in"));
