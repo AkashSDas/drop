@@ -31,6 +31,7 @@ export const errorHandler = (
     });
   }
 
+  console.log(err);
   const statusCode = (err as any)?.statusCode || 500;
   const msg = (err as any)?.msg || "Something went wrong, Please try again";
   return responseMsg(res, { statusCode, msg, isError: true });
