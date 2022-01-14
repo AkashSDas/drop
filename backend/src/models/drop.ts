@@ -30,7 +30,7 @@ const dropSchema = new Schema<IDrop, IDropModel>(
 );
 
 // User can modify content only before 10mins and not after that
-dropSchema.pre("updateOne", async function (this: IDrop, next) {
+dropSchema.pre("save", async function (this: IDrop, next) {
   const updateAllowedTill = new Date(
     new Date(this.createdAt).getTime() + 10 * 60 * 1000
   );
