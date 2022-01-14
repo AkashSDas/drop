@@ -122,7 +122,10 @@ const userSchema = new Schema<IUser, IUserModel>(
     },
     role: {
       type: SchemaTypes.String,
-      enum: ["member", "elder", "co-leader", "leader"],
+      enum: {
+        values: ["member", "elder", "co-leader", "leader"],
+        message: "{VALUE} role is not available",
+      },
       default: "member",
       required: [true, "User role is required"],
     },
