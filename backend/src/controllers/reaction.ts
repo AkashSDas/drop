@@ -90,3 +90,26 @@ export const deleteReaction: AsyncMiddleware = async (req, res, next) => {
     },
   });
 };
+
+export const getDropReactionCounts: AsyncMiddleware = async (
+  req,
+  res,
+  next
+) => {
+  const drop = await Drop.findById(req.params.dropId);
+  if (!drop) return next(new BaseApiError(400, "Drop doesn't exists"));
+
+  let data = {};
+  for (let i = 0; i < reactionsData.length; i++) {
+    const r = reactionsData[i];
+    const count = await Reaction.count({ drop: drop._id, reaction: r.name });
+    data[r.name] = { name: r.name, emoji: r.emoji, count };
+  }
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Drop reaction counts",
+    data,
+  });
+};
