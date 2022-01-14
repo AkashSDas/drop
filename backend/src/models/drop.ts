@@ -45,7 +45,7 @@ dropSchema.pre("save", async function (this: IDrop, next) {
 });
 
 // User cannot delete drop after 10mins of its creation
-dropSchema.pre("deleteOne", async function (this: IDrop, next) {
+dropSchema.pre("remove", async function (this: IDrop, next) {
   const updateAllowedTill = new Date(
     new Date(this.createdAt).getTime() + 10 * 60 * 1000
   );
