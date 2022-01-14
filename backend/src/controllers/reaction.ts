@@ -16,6 +16,11 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
   // Check if reaction (for this drop and req.user) exists or not
   const exists = await Reaction.findOne({ drop: drop._id, user: req.user._id });
   if (exists) {
+    // Check is this req.user is reaction user
+    if (exists.user._id.toString() !== req.user._id.toString()) {
+      return next(new BaseApiError(400, "You are not allowed to do that"));
+    }
+
     // Update reaction
     exists.reaction = req.body.reaction;
     await exists.save();
