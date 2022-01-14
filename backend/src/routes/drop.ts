@@ -3,6 +3,7 @@ import {
   createDrop,
   deleteDrop,
   getDrops,
+  getUserDrops,
   updateDropContent,
 } from "../controllers/drop";
 import { isLoggedIn } from "../middlewares/user";
@@ -30,3 +31,5 @@ router
     runAsync(deleteDrop),
     errorHandler
   );
+
+router.route("/user/:userId").get(runAsync(getUserDrops), errorHandler);
