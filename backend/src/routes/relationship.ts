@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createRelationship,
   deleteRelationship,
+  getUserAllFollowed,
   getUserAllFollowers,
 } from "../controllers/relationship";
 import { isLoggedIn } from "../middlewares/user";
@@ -31,3 +32,7 @@ router
 router
   .route("/user/:userId/followers")
   .get(runAsync(getUserAllFollowers), errorHandler);
+
+router
+  .route("/user/:userId/followed")
+  .get(runAsync(getUserAllFollowed), errorHandler);

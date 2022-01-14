@@ -80,3 +80,32 @@ export const getUserAllFollowers: AsyncMiddleware = async (req, res, next) => {
     },
   });
 };
+
+export const getUserAllFollowed: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+  if (!user) return next(new BaseApiError(400, "User does not exists"));
+
+  const nextId = req.query.next;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+  const data = await (Relationship as any).paginateRelationship({
+    limit,
+    query: { follower: user._id },
+    paginatedField: "updatedAt",
+    next: nextId,
+  });
+
+  const followed = addIdField(data.results);
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `${data.results.length} followed retrieved`,
+    data: {
+      followed,
+      previous: data.previous,
+      hasPrevious: data.hasPrevious,
+      next: data.next,
+      hasNext: data.hasNext,
+    },
+  });
+};
