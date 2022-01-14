@@ -33,3 +33,20 @@ export const createRelationship: AsyncMiddleware = async (req, res, next) => {
     data: { relationship },
   });
 };
+
+// req.user is the follower
+export const deleteRelationship: AsyncMiddleware = async (req, res, next) => {
+  if (!req.user) return next(new BaseApiError(401, "You're not logged in"));
+  const relationship = await Relationship.findById(req.params.relationshipId);
+  if (!relationship) {
+    return next(new BaseApiError(400, "Relationship doesn't exists"));
+  }
+  await relationship.remove();
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Unfollowed",
+    data: { relationship },
+  });
+};
