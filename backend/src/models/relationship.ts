@@ -40,7 +40,7 @@ relationshipSchema.plugin(MongoPaging.mongoosePlugin, {
   name: "paginateRelationship",
 });
 
-export const ReDrop = model<IRelationship, IRelationshipModel>(
+export const Relationship = model<IRelationship, IRelationshipModel>(
   "Relationship",
   relationshipSchema
 );
