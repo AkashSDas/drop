@@ -1,6 +1,7 @@
 import { Drop } from "../models/drop";
 import { Reaction } from "../models/reaction";
 import { BaseApiError } from "../utils/error";
+import { reactionsData } from "../utils/reactions";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
@@ -19,7 +20,7 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
       statusCode: 200,
       isError: false,
       msg: "Reaction updated",
-      data: { exists },
+      data: { exists, reactionEmojis: reactionsData },
     });
   }
 
@@ -33,6 +34,6 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
     statusCode: 200,
     isError: false,
     msg: "Reaction created",
-    data: { reaction },
+    data: { reaction, reactionEmojis: reactionsData },
   });
 };
