@@ -1,6 +1,8 @@
 import { Drop } from "../models/drop";
 import { ReDrop } from "../models/redrop";
+import { User } from "../models/user";
 import { BaseApiError } from "../utils/error";
+import { addIdField } from "../utils/mongo_cursor_pagination";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
@@ -32,5 +34,35 @@ export const deleteReDrop: AsyncMiddleware = async (req, res, next) => {
     isError: false,
     msg: "Redrop deleted",
     data: { redrop },
+  });
+};
+
+export const getUserReDrops: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+  if (!user) return next(new BaseApiError(400, "User does not exists"));
+
+  const nextId = req.query.next;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+  const data = await (ReDrop as any).paginateReDrop({
+    limit,
+    query: { user: user._id },
+    paginatedField: "updatedAt",
+    next: nextId,
+  });
+
+  const redrops = addIdField(data.results);
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `${data.results.length} redrops retrieved`,
+    data: {
+      redrops,
+      previous: data.previous,
+      hasPrevious: data.hasPrevious,
+      next: data.next,
+      hasNext: data.hasNext,
+    },
   });
 };
