@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { responseMsg } from "./utils/response";
 import { router as userRouter } from "./routes/user";
+import { router as dropRouter } from "./routes/drop";
 
 // App
 export const app = express();
@@ -22,6 +23,7 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
 // Routes
 app.use("/api/user", userRouter);
+app.use("/api/drop", dropRouter);
 app.all("*", (req, res) => {
   responseMsg(res, {
     statusCode: 404,
