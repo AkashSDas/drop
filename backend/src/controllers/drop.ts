@@ -67,3 +67,36 @@ export const deleteDrop: AsyncMiddleware = async (req, res, next) => {
     data: { drop },
   });
 };
+
+// Get drops, paginated
+export const getDrops: AsyncMiddleware = async (req, res, next) => {
+  const nextId = req.query.next;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+  const data = await (Drop as any).paginateDrop({
+    limit,
+    paginatedField: "updatedAt",
+    next: nextId,
+  });
+
+  // Doing this, just to get id field for a drop doc
+  // using mongo-cursor-pagination is not giving virtuals, so that's why going
+  // with this way
+  let drops = [];
+  for (let i = 0; i < data.results.length; i++) {
+    drops.push({ ...data.results[i], id: data.results[i]._id });
+  }
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `${data.results.length} drops retrieved`,
+    data: {
+      drops,
+      previous: data.previous,
+      hasPrevious: data.hasPrevious,
+      next: data.next,
+      hasNext: data.hasNext,
+    },
+  });
+};

@@ -1,18 +1,20 @@
 import { Router } from "express";
-import { createDrop, deleteDrop, updateDropContent } from "../controllers/drop";
+import {
+  createDrop,
+  deleteDrop,
+  getDrops,
+  updateDropContent,
+} from "../controllers/drop";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
 
 export const router = Router();
 
-router.post(
-  "/",
-  runAsync(isLoggedIn),
-  errorHandler,
-  runAsync(createDrop),
-  errorHandler
-);
+router
+  .route("/")
+  .post(runAsync(isLoggedIn), errorHandler, runAsync(createDrop), errorHandler)
+  .get(runAsync(getDrops), errorHandler);
 
 router
   .route("/:dropId")
