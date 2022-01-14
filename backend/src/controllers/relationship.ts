@@ -1,6 +1,7 @@
 import { Relationship } from "../models/relationship";
 import { User } from "../models/user";
 import { BaseApiError } from "../utils/error";
+import { addIdField } from "../utils/mongo_cursor_pagination";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
@@ -48,5 +49,34 @@ export const deleteRelationship: AsyncMiddleware = async (req, res, next) => {
     isError: false,
     msg: "Unfollowed",
     data: { relationship },
+  });
+};
+
+export const getUserAllFollowers: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+  if (!user) return next(new BaseApiError(400, "User does not exists"));
+
+  const nextId = req.query.next;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+  const data = await (Relationship as any).paginateRelationship({
+    limit,
+    query: { followed: user._id },
+    paginatedField: "updatedAt",
+    next: nextId,
+  });
+
+  const followers = addIdField(data.results);
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `${data.results.length} followers retrieved`,
+    data: {
+      followers,
+      previous: data.previous,
+      hasPrevious: data.hasPrevious,
+      next: data.next,
+      hasNext: data.hasNext,
+    },
   });
 };
