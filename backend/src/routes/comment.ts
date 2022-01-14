@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createComment, updateCommentContent } from "../controllers/comment";
+import {
+  createComment,
+  deleteComment,
+  updateCommentContent,
+} from "../controllers/comment";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -21,5 +25,14 @@ router
     runAsync(isLoggedIn),
     errorHandler,
     runAsync(updateCommentContent),
+    errorHandler
+  );
+
+router
+  .route("/:commentId")
+  .delete(
+    runAsync(isLoggedIn),
+    errorHandler,
+    runAsync(deleteComment),
     errorHandler
   );

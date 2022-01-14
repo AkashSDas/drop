@@ -57,3 +57,19 @@ export const updateCommentContent: AsyncMiddleware = async (req, res, next) => {
     data: { comment },
   });
 };
+
+export const deleteComment: AsyncMiddleware = async (req, res, next) => {
+  if (!req.user) return next(new BaseApiError(401, "You're not logged in"));
+  const comment = await Comment.findById(req.params.commentId);
+  if (!comment) return next(new BaseApiError(400, "Comment does not exists"));
+  if (req.user._id.toString() === comment.user.toString()) {
+    return next(new BaseApiError(401, "You are not authorized to do that"));
+  }
+  await comment.remove();
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Comment deleted",
+    data: { comment },
+  });
+};
