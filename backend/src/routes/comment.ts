@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createComment,
   deleteComment,
+  getDropComments,
   updateCommentContent,
 } from "../controllers/comment";
 import { isLoggedIn } from "../middlewares/user";
@@ -12,6 +13,7 @@ export const router = Router();
 
 router
   .route("/drop/:dropId")
+  .get(runAsync(getDropComments), errorHandler)
   .post(
     runAsync(isLoggedIn),
     errorHandler,

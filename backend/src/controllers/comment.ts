@@ -1,6 +1,7 @@
 import { Comment } from "../models/comment";
 import { Drop } from "../models/drop";
 import { BaseApiError } from "../utils/error";
+import { addIdField } from "../utils/mongo_cursor_pagination";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
@@ -71,5 +72,35 @@ export const deleteComment: AsyncMiddleware = async (req, res, next) => {
     isError: false,
     msg: "Comment deleted",
     data: { comment },
+  });
+};
+
+export const getDropComments: AsyncMiddleware = async (req, res, next) => {
+  const nextId = req.query.next;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+  const drop = await Drop.findById(req.params.dropId).select("+_id");
+  if (!drop) return next(new BaseApiError(400, "Drop doesn't exists"));
+
+  const data = await (Comment as any).paginateComment({
+    limit,
+    query: { drop: drop._id },
+    paginatedField: "updatedAt",
+    next: nextId,
+  });
+
+  const comments = addIdField(data.results);
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `${data.results.length} comments retrieved`,
+    data: {
+      comments,
+      previous: data.previous,
+      hasPrevious: data.hasPrevious,
+      next: data.next,
+      hasNext: data.hasNext,
+    },
   });
 };
