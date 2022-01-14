@@ -10,6 +10,11 @@ export const createRelationship: AsyncMiddleware = async (req, res, next) => {
   const followed = await User.findById(req.params.followedId);
   if (!followed) return next(new BaseApiError(400, "Followed doesn't exists"));
 
+  // User cannot follow themselves
+  if (req.user._id.toString() === followed._id.toString()) {
+    return next(new BaseApiError(400, "You cannot follow yourself"));
+  }
+
   // Check if req.user already follows the followed
   const exists = await Relationship.findOne({
     follower: req.user._id,
