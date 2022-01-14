@@ -7,6 +7,7 @@ import { responseMsg } from "./utils/response";
 import { router as userRouter } from "./routes/user";
 import { router as dropRouter } from "./routes/drop";
 import { router as reDropRouter } from "./routes/redrop";
+import { router as commentRouter } from "./routes/comment";
 
 // App
 export const app = express();
@@ -26,6 +27,7 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use("/api/user", userRouter);
 app.use("/api/drop", dropRouter);
 app.use("/api/redrop", reDropRouter);
+app.use("/api/comment", commentRouter);
 app.all("*", (req, res) => {
   responseMsg(res, {
     statusCode: 404,
