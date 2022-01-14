@@ -20,7 +20,7 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
       statusCode: 200,
       isError: false,
       msg: "Reaction updated",
-      data: { exists, reactionEmojis: reactionsData },
+      data: { ...exists, emoji: reactionsData[exists.reaction] },
     });
   }
 
@@ -34,6 +34,6 @@ export const setReaction: AsyncMiddleware = async (req, res, next) => {
     statusCode: 200,
     isError: false,
     msg: "Reaction created",
-    data: { reaction, reactionEmojis: reactionsData },
+    data: { ...reaction, emoji: reactionsData[exists.reaction] },
   });
 };
