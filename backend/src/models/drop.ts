@@ -44,6 +44,21 @@ dropSchema.pre("save", async function (this: IDrop, next) {
   );
 });
 
+// User cannot delete drop after 10mins of its creation
+dropSchema.pre("deleteOne", async function (this: IDrop, next) {
+  const updateAllowedTill = new Date(
+    new Date(this.createdAt).getTime() + 10 * 60 * 1000
+  );
+
+  if (updateAllowedTill.getTime() > Date.now()) {
+    return next();
+  }
+
+  throw Error(
+    "It's already above 10mins since the drop was created, it can't be deleted now"
+  );
+});
+
 // Duplicate the ID field.
 dropSchema.virtual("id").get(function (this: IDrop) {
   return this._id.toHexString();
