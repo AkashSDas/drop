@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createReDrop } from "../controllers/redrop";
+import { createReDrop, deleteReDrop } from "../controllers/redrop";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -12,5 +12,14 @@ router
     runAsync(isLoggedIn),
     errorHandler,
     runAsync(createReDrop),
+    errorHandler
+  );
+
+router
+  .route("/:redropId")
+  .get(
+    runAsync(isLoggedIn),
+    errorHandler,
+    runAsync(deleteReDrop),
     errorHandler
   );
