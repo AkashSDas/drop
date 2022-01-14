@@ -8,7 +8,7 @@ export const router = Router();
 
 router
   .route("/:dropId")
-  .post(
+  .get(
     runAsync(isLoggedIn),
     errorHandler,
     runAsync(createReDrop),
