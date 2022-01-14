@@ -14,10 +14,11 @@ router.post(
   errorHandler
 );
 
-router.put(
-  "/:dropId",
-  runAsync(isLoggedIn),
-  errorHandler,
-  runAsync(updateDropContent),
-  errorHandler
-);
+router
+  .route("/:dropId")
+  .put(
+    runAsync(isLoggedIn),
+    errorHandler,
+    runAsync(updateDropContent),
+    errorHandler
+  );
