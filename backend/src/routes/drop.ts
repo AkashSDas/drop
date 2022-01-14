@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createDrop } from "../controllers/drop";
+import { createDrop, updateDropContent } from "../controllers/drop";
 import { isLoggedIn } from "../middlewares/user";
 import { runAsync } from "../utils/async";
 import { errorHandler } from "../utils/error";
@@ -11,5 +11,13 @@ router.post(
   runAsync(isLoggedIn),
   errorHandler,
   runAsync(createDrop),
+  errorHandler
+);
+
+router.put(
+  "/:dropId",
+  runAsync(isLoggedIn),
+  errorHandler,
+  runAsync(updateDropContent),
   errorHandler
 );
