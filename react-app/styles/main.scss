@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "./scss/base/global";
+@import "./scss/base/typography";
