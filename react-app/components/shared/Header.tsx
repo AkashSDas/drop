@@ -31,23 +31,26 @@ const Header = () => {
       </div>
 
       {displaySearchOverlay ? (
-        <div className="ml-[280px] fixed top-0 left-0 w-full h-full">
-          <div className="bg-card top-0 left-0 h-[112px] px-16 flex items-center space-x-8">
-            <input
-              type="text"
-              name="search"
-              placeholder="Hello World!"
-              className="border-none w-[60%] outline-none bg-card placeholder:text-text2 text-text1"
-            />
-            <div
-              onClick={() => setDisplaySearchOverlay(false)}
-              className="h-[44px] w-[44px] flex justify-center items-center bg-primary rounded-full cursor-pointer"
-            >
-              <CloseSquare />
+        <>
+          <div className="bg-primary opacity-90 fixed top-0 left-0 w-full h-full"></div>
+          <div className="ml-[280px] fixed top-0 left-0 w-full h-full">
+            <div className="bg-card top-0 left-0 h-[112px] px-16 flex items-center space-x-8">
+              <input
+                type="text"
+                name="search"
+                placeholder="Hello World!"
+                className="border-none w-[60%] outline-none bg-card placeholder:text-text2 text-text1"
+              />
+              <div
+                onClick={() => setDisplaySearchOverlay(false)}
+                className="h-[44px] w-[44px] flex justify-center items-center bg-primary rounded-full cursor-pointer"
+              >
+                <CloseSquare />
+              </div>
             </div>
+            <SuggestionList suggestions={[]} />
           </div>
-          <SuggestionList suggestions={[]} />
-        </div>
+        </>
       ) : null}
     </div>
   );
