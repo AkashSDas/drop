@@ -6,6 +6,7 @@ import loginHandler from "../../lib/api/login";
 import toast from "react-hot-toast";
 import { UserContext } from "../../lib/context/user/context";
 import { SET_USER } from "../../lib/context/user/action";
+import { saveUserToLocalStorage } from "../../lib/auth";
 
 const LoginForm = () => {
   const { login, dispatch } = useContext(LoginContext);
@@ -20,20 +21,17 @@ const LoginForm = () => {
       if (data.isError) toast.error(data.msg);
       else {
         const user = data.data.user;
-        dispatchUser({
-          type: SET_USER,
-          playload: {
-            token: data.data.token,
-            user: {
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              active: user.active,
-              profilePicURL: user.profilePicURL,
-              role: user.role,
-            },
-          },
-        });
+        const token = data.data.token;
+        const userData = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          active: user.active,
+          profilePicURL: user.profilePicURL,
+          role: user.role,
+        };
+        saveUserToLocalStorage({ token, user: userData });
+        dispatchUser({ type: SET_USER, playload: { token, user: userData } });
         toast.success(data.msg);
       }
     }
