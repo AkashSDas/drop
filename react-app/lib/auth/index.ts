@@ -5,3 +5,7 @@ export const saveUserToLocalStorage = (data) => {
 export const getUserFromLocalStorage = () => {
   if (window !== undefined) return JSON.parse(localStorage.getItem("user"));
 };
+
+export const removeUserFromLocalStorage = () => {
+  if (window !== undefined) return localStorage.removeItem("user");
+};
