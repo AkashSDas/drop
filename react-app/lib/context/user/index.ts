@@ -1,6 +1,3 @@
-import { createContext, Dispatch } from "react";
-import { UserAction } from "./action.types";
-
 export interface IUserState {
   id: string;
   username: string;
@@ -21,10 +18,3 @@ export const userInitialState = {
   active: null,
   role: null,
 };
-
-interface IUserContext {
-  user: IUserState;
-  dispatch: Dispatch<UserAction>;
-}
-
-export const UserContext = createContext<IUserContext>(null);

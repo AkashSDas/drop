@@ -2,7 +2,8 @@ import { useReducer } from "react";
 import { IconlyProvider } from "react-iconly";
 import Header from "../components/shared/Header";
 import Sidebar from "../components/shared/Sidebar";
-import { UserContext, userInitialState } from "../lib/context/user";
+import { userInitialState } from "../lib/context/user";
+import { UserContext } from "../lib/context/user/context";
 import userReducer from "../lib/context/user/reducer";
 import "../styles/main.scss";
 
