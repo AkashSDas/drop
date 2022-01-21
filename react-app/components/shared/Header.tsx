@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CloseSquare, Search } from "react-iconly";
+import { UserContext } from "../../lib/context/user/context";
 import SuggestionList from "../suggestion/SuggestionList";
 import PrimaryButton from "./PrimaryButton";
 import TextButton from "./TextButton";
@@ -8,6 +9,9 @@ import TextButton from "./TextButton";
 const Header = () => {
   const router = useRouter();
   const [displaySearchOverlay, setDisplaySearchOverlay] = useState(false);
+  const { user } = useContext(UserContext);
+  const coverImgURL =
+    "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80";
 
   return (
     <div className="px-16 h-[112px] ml-[280px] border-b-[1px] border-solid border-[#32333B] flex justify-between items-center">
@@ -25,10 +29,21 @@ const Header = () => {
         />
       </div>
 
-      <div className="flex space-x-4">
-        <TextButton text="Login" onClick={() => router.push("/login")} />
-        <PrimaryButton text="Signup" onClick={() => {}} />
-      </div>
+      {user.token ? (
+        <div className="flex space-x-4">
+          <TextButton text="Logout" onClick={() => {}} />
+          <img
+            className="h-[50px] w-[50px] rounded-full object-cover"
+            src={user.user.profilePicURL?.URL ?? coverImgURL}
+            alt={user.user.username}
+          />
+        </div>
+      ) : (
+        <div className="flex space-x-4">
+          <TextButton text="Login" onClick={() => router.push("/login")} />
+          <PrimaryButton text="Signup" onClick={() => {}} />
+        </div>
+      )}
 
       {displaySearchOverlay ? (
         <>
