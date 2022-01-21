@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { CloseSquare, Search } from "react-iconly";
+import logout from "../../lib/api/logout";
 import { removeUserFromLocalStorage } from "../../lib/auth";
 import { userInitialState } from "../../lib/context/user";
 import { SET_USER } from "../../lib/context/user/action";
@@ -37,10 +38,19 @@ const Header = () => {
         <div className="flex space-x-4">
           <TextButton
             text="Logout"
-            onClick={() => {
-              removeUserFromLocalStorage();
-              dispatch({ type: SET_USER, playload: userInitialState });
-              toast("Logged out", { icon: "😢" });
+            onClick={async () => {
+              const response = await logout();
+              if (response.error) {
+                toast.error("Something went wrong, Please try again");
+              } else {
+                if (response.result.data.isError) {
+                  toast.error(response.result.data.msg);
+                } else {
+                  removeUserFromLocalStorage();
+                  dispatch({ type: SET_USER, playload: userInitialState });
+                  toast("Logged out", { icon: "😢" });
+                }
+              }
             }}
           />
           <img
