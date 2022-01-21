@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useReducer } from "react";
 import SignupForm from "../components/signup/SignupForm";
 import { signupInitialState } from "../lib/context/signup";
@@ -12,6 +13,11 @@ const SignupPage = () => {
       <main className="space-y-8">
         <h3>🤝 Signup</h3>
         <SignupForm />
+        <div className="space-x-4 text-secondary cursor-pointer">
+          <Link href="/login">
+            <span>Already have an account?</span>
+          </Link>
+        </div>
       </main>
     </SignupContext.Provider>
   );
