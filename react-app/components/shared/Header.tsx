@@ -52,7 +52,7 @@ const Header = () => {
       ) : (
         <div className="flex space-x-4">
           <TextButton text="Login" onClick={() => router.push("/login")} />
-          <PrimaryButton text="Signup" onClick={() => {}} />
+          <PrimaryButton text="Signup" onClick={() => router.push("/signup")} />
         </div>
       )}
 
