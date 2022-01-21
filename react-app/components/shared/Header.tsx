@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CloseSquare, Search } from "react-iconly";
+import SuggestionList from "../suggestion/SuggestionList";
 import PrimaryButton from "./PrimaryButton";
 import TextButton from "./TextButton";
 
@@ -43,6 +44,7 @@ const Header = () => {
               <CloseSquare />
             </div>
           </div>
+          <SuggestionList suggestions={[]} />
         </div>
       ) : null}
     </div>
