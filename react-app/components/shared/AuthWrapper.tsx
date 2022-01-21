@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { getUserFromLocalStorage } from "../../lib/auth";
-import { SET_USER } from "../../lib/context/user/action";
-import { UserContext } from "../../lib/context/user/context";
+import { SET_USER } from "@context/user/action";
+import { UserContext } from "@context/user/context";
 
 const AuthWrapper = ({ children }: { children: JSX.Element }) => {
   const { dispatch } = useContext(UserContext);

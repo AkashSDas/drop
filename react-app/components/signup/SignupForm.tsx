@@ -2,9 +2,9 @@ import { Form, Formik } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { SignupContext } from "../../lib/context/signup/context";
-import { SET_LOADING } from "../../lib/context/signup/action";
-import signupHandler from "../../lib/api/signup";
+import { SignupContext } from "@context/signup/context";
+import { SET_LOADING } from "@context/signup/action";
+import signupHandler from "@api/signup";
 
 const SignupForm = () => {
   const { signup, dispatch } = useContext(SignupContext);

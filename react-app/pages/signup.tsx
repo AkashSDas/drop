@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useReducer } from "react";
-import SignupForm from "../components/signup/SignupForm";
-import { signupInitialState } from "../lib/context/signup";
-import { SignupContext } from "../lib/context/signup/context";
-import signupReducer from "../lib/context/signup/reducer";
+import SignupForm from "@components/signup/SignupForm";
+import { signupInitialState } from "@context/signup";
+import { SignupContext } from "@context/signup/context";
+import signupReducer from "@context/signup/reducer";
 
 const SignupPage = () => {
   const [signup, dispatch] = useReducer(signupReducer, signupInitialState);

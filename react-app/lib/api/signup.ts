@@ -1,6 +1,6 @@
 import { axiosBaseInstance } from ".";
 import { runAsync } from "..";
-import { ISignupFormData } from "../context/signup";
+import { ISignupFormData } from "@context/signup";
 
 const signup = async (data: ISignupFormData) => {
   const api = axiosBaseInstance();

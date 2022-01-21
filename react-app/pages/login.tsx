@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useReducer } from "react";
-import LoginForm from "../components/login/LoginForm";
-import { loginInitialState } from "../lib/context/login";
-import { LoginContext } from "../lib/context/login/context";
-import loginReducer from "../lib/context/login/reducer";
+import LoginForm from "@components/login/LoginForm";
+import { loginInitialState } from "@context/login";
+import { LoginContext } from "@context/login/context";
+import loginReducer from "@context/login/reducer";
 
 const LoginPage = () => {
   const [login, dispatch] = useReducer(loginReducer, loginInitialState);

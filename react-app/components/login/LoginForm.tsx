@@ -1,11 +1,11 @@
 import { Form, Formik } from "formik";
 import { useContext } from "react";
-import { SET_LOADING } from "../../lib/context/login/action";
-import { LoginContext } from "../../lib/context/login/context";
-import loginHandler from "../../lib/api/login";
+import { SET_LOADING } from "@context/login/action";
+import { LoginContext } from "@context/login/context";
+import loginHandler from "@api/login";
 import toast from "react-hot-toast";
-import { UserContext } from "../../lib/context/user/context";
-import { SET_USER } from "../../lib/context/user/action";
+import { UserContext } from "@context/user/context";
+import { SET_USER } from "@context/user/action";
 import { saveUserToLocalStorage } from "../../lib/auth";
 import { useRouter } from "next/router";
 
