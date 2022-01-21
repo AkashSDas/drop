@@ -1,10 +1,10 @@
 import { createContext, Dispatch } from "react";
-import { IUserState } from ".";
-import { UserAction } from "./action";
+import { ILoginState } from ".";
+import { LoginAction } from "./action";
 
-interface IUserContext {
-  user: IUserState;
-  dispatch: Dispatch<UserAction>;
+interface ILoginContext {
+  user: ILoginState;
+  dispatch: Dispatch<LoginAction>;
 }
 
-export const UserContext = createContext<IUserContext>(null);
+export const LoginContext = createContext<LoginAction>(null);
