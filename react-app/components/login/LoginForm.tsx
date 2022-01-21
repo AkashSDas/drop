@@ -7,10 +7,12 @@ import toast from "react-hot-toast";
 import { UserContext } from "../../lib/context/user/context";
 import { SET_USER } from "../../lib/context/user/action";
 import { saveUserToLocalStorage } from "../../lib/auth";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
   const { login, dispatch } = useContext(LoginContext);
   const { dispatch: dispatchUser } = useContext(UserContext);
+  const router = useRouter();
 
   const handleSubmit = async (values) => {
     dispatch({ type: SET_LOADING, playload: true });
@@ -33,6 +35,7 @@ const LoginForm = () => {
         saveUserToLocalStorage({ token, user: userData });
         dispatchUser({ type: SET_USER, playload: { token, user: userData } });
         toast.success(data.msg);
+        router.push("/");
       }
     }
 
