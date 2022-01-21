@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { CloseSquare, Search } from "react-iconly";
+import { removeUserFromLocalStorage } from "../../lib/auth";
+import { userInitialState } from "../../lib/context/user";
+import { SET_USER } from "../../lib/context/user/action";
 import { UserContext } from "../../lib/context/user/context";
 import SuggestionList from "../suggestion/SuggestionList";
 import PrimaryButton from "./PrimaryButton";
@@ -9,7 +13,7 @@ import TextButton from "./TextButton";
 const Header = () => {
   const router = useRouter();
   const [displaySearchOverlay, setDisplaySearchOverlay] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, dispatch } = useContext(UserContext);
   const coverImgURL =
     "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80";
 
@@ -31,7 +35,14 @@ const Header = () => {
 
       {user.token ? (
         <div className="flex space-x-4">
-          <TextButton text="Logout" onClick={() => {}} />
+          <TextButton
+            text="Logout"
+            onClick={() => {
+              removeUserFromLocalStorage();
+              dispatch({ type: SET_USER, playload: userInitialState });
+              toast("Logged out", { icon: "😢" });
+            }}
+          />
           <img
             className="h-[50px] w-[50px] rounded-full object-cover"
             src={user.user.profilePicURL?.URL ?? coverImgURL}
