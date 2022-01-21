@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { Toaster } from "react-hot-toast";
 import { IconlyProvider } from "react-iconly";
 import Header from "../components/shared/Header";
 import Sidebar from "../components/shared/Sidebar";
@@ -16,6 +17,7 @@ const MyApp = ({ Component, pageProps }) => {
         <Header />
         <Sidebar />
         <Component {...pageProps} />
+        <Toaster />
       </IconlyProvider>
     </UserContext.Provider>
   );
