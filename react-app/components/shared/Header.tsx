@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { CloseSquare, Search } from "react-iconly";
 import SuggestionList from "../suggestion/SuggestionList";
@@ -5,6 +6,7 @@ import PrimaryButton from "./PrimaryButton";
 import TextButton from "./TextButton";
 
 const Header = () => {
+  const router = useRouter();
   const [displaySearchOverlay, setDisplaySearchOverlay] = useState(false);
 
   return (
@@ -24,7 +26,7 @@ const Header = () => {
       </div>
 
       <div className="flex space-x-4">
-        <TextButton text="Login" onClick={() => {}} />
+        <TextButton text="Login" onClick={() => router.push("/login")} />
         <PrimaryButton text="Signup" onClick={() => {}} />
       </div>
 
