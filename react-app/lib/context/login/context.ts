@@ -7,4 +7,4 @@ interface ILoginContext {
   dispatch: Dispatch<LoginAction>;
 }
 
-export const LoginContext = createContext<LoginAction>(null);
+export const LoginContext = createContext<ILoginContext>(null);
