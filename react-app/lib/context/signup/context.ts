@@ -3,7 +3,7 @@ import { ISignupState } from ".";
 import { SignupAction } from "./action";
 
 interface ISignupContext {
-  user: ISignupState;
+  signup: ISignupState;
   dispatch: Dispatch<SignupAction>;
 }
 
