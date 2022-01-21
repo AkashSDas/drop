@@ -3,7 +3,7 @@ import { ILoginState } from ".";
 import { LoginAction } from "./action";
 
 interface ILoginContext {
-  user: ILoginState;
+  login: ILoginState;
   dispatch: Dispatch<LoginAction>;
 }
 
