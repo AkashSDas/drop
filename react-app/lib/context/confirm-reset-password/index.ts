@@ -1,5 +1,5 @@
 export interface IConfirmResetPasswordFormData {
-  email: string;
+  url: string;
 }
 
 export interface IConfirmResetPasswordState {
