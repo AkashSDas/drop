@@ -19,7 +19,7 @@ const ForgotPasswordForm = () => {
       if (data.isError) toast.error(data.msg);
       else {
         toast.success(data.msg);
-        router.push("/confirm-reset-password");
+        router.push("/confirm-password-reset");
       }
     }
 
