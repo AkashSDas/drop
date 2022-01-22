@@ -1,5 +1,6 @@
 export interface IConfirmResetPasswordFormData {
   url: string;
+  password: string; // new password
 }
 
 export interface IConfirmResetPasswordState {
