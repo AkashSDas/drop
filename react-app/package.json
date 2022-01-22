@@ -1,5 +1,5 @@
 {
-  "name": "context-api-and-use-reducer",
+  "name": "using-context-api-and-use-reducer",
   "private": true,
   "scripts": {
     "dev": "next dev",
