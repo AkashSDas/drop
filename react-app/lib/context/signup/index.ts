@@ -6,16 +6,8 @@ export interface ISignupFormData {
 
 export interface ISignupState {
   loading: boolean;
-  error: any;
-  data: ISignupFormData;
 }
 
 export const signupInitialState = {
   loading: null,
-  error: null,
-  data: {
-    username: null,
-    email: null,
-    password: null,
-  },
 };
