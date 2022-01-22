@@ -7,5 +7,5 @@ interface IConfirmResetPasswordContext {
   dispatch: Dispatch<ConfirmResetPasswordAction>;
 }
 
-export const ForgotPasswordContext =
+export const ConfirmResetPasswordContext =
   createContext<IConfirmResetPasswordContext>(null);
