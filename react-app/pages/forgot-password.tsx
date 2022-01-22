@@ -13,7 +13,7 @@ const ForgotPasswordPage = () => {
   return (
     <ForgotPasswordContext.Provider value={{ forgotPassword, dispatch }}>
       <main className="space-y-8">
-        <h3>🤝 Login</h3>
+        <h3>🤝 Reset Password</h3>
         <ForgotPasswordForm />
       </main>
     </ForgotPasswordContext.Provider>
