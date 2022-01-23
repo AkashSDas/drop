@@ -1,3 +1,13 @@
 .input {
-  @apply outline-none border-none bg-card rounded-lg flex space-x-4 px-6 py-[18px] placeholder:text-text2 text-text1 placeholder:opacity-30;
+  @apply outline-none border-none bg-card rounded-lg flex space-x-4 px-6 py-[18px] 
+  placeholder:text-text2 text-text1 placeholder:opacity-60;
+}
+
+.icon-input {
+  @apply w-full bg-card rounded-lg flex space-x-4 px-6 py-[18px];
+
+  input {
+    @apply w-full outline-none border-none bg-card  placeholder:text-text2 
+    text-text1 placeholder:opacity-60;
+  }
 }
