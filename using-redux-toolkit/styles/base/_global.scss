@@ -1,0 +1,22 @@
+body {
+  @apply bg-primary text-text2 font-muli font-normal;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: #252733;
+  border-radius: 20px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: #3a8cff;
+  border-radius: 20px;
+}
+
+main {
+  margin-left: 280px;
+  padding: 32px 64px;
+}
