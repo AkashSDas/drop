@@ -59,10 +59,10 @@ const LoginPage = () => {
 
       <div className="space-x-4 text-secondary">
         <Link href="/signup">
-          <span>Don't have an account?</span>
+          <span className="cursor-pointer">Don't have an account?</span>
         </Link>
         <Link href="/forgot-password">
-          <span>Forgot Password?</span>
+          <span className="cursor-pointer">Forgot Password?</span>
         </Link>
       </div>
     </main>

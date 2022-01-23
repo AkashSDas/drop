@@ -69,7 +69,7 @@ const SignupPage = () => {
 
       <div className="space-x-4 text-secondary">
         <Link href="/login">
-          <span>Already have an account?</span>
+          <span className="cursor-pointer">Already have an account?</span>
         </Link>
       </div>
     </main>
