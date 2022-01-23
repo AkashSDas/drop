@@ -1,11 +1,15 @@
 import styles from "@style/shared/Header.module.scss";
-import { useAppSelector } from "hooks/store";
+import { useAppDispatch, useAppSelector } from "hooks/store";
+import { useRouter } from "next/router";
+import { logoutUser } from "store/logout/slice";
 import PrimaryButton from "./PrimaryButton";
 import SearchInput from "./SearchInput";
 import TextButton from "./TextButton";
 
 const Header = () => {
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   return (
     <header className={styles.header}>
@@ -13,7 +17,13 @@ const Header = () => {
         <SearchInput />
         {user.token ? (
           <div className="space-x-8">
-            <TextButton text="Logout" onClick={() => {}} />
+            <TextButton
+              text="Logout"
+              onClick={async () => {
+                const isLoggedOut = await dispatch(logoutUser());
+                if (isLoggedOut) router.push("/");
+              }}
+            />
           </div>
         ) : (
           <div className="space-x-8">
