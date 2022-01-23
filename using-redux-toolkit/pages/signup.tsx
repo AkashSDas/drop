@@ -1,6 +1,7 @@
 import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "hooks/store";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Lock, Message, User } from "react-iconly";
 import { signupUser } from "store/signup/slice";
@@ -65,6 +66,12 @@ const SignupPage = () => {
           </Form>
         )}
       </Formik>
+
+      <div className="space-x-4 text-secondary">
+        <Link href="/login">
+          <span>Already have an account?</span>
+        </Link>
+      </div>
     </main>
   );
 };
