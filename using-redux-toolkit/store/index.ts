@@ -3,6 +3,7 @@ import loginReducer from "./login/slice";
 import userReducer from "./user/slice";
 import signupReducer from "./signup/slice";
 import forgotPasswordReducer from "./forgot-password/slice";
+import confirmPasswordResetReducer from "./confirm-password-reset/slice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     user: userReducer,
     signup: signupReducer,
     forgotPassword: forgotPasswordReducer,
+    confirmPasswordReset: confirmPasswordResetReducer,
   },
 });
 
