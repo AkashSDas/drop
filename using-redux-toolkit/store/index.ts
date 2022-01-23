@@ -1,7 +1,10 @@
 import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import loginReducer from "./login/slice";
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    login: loginReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
