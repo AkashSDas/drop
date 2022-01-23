@@ -32,13 +32,14 @@ export const loginUser = createAsyncThunk(
     dispatch(setLoading(true));
     const response = await login(data);
     dispatch(setLoading(false));
-    if (response.error) toast.error("Something went wrong, Please try again");
-    else {
+    if (response.error) {
+      toast.error(response.error.response.data.msg);
+    } else {
       if (response.result.isError) {
-        toast.error(response.result.isError);
+        toast.error(response.result.data.msg);
       } else {
         // Login user in the app & save info in local storage
-        toast.success(response.result.isError);
+        toast.success(response.result.data.msg);
       }
     }
   }
