@@ -1,4 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import login, { ILoginData } from "lib/service/login";
+import toast from "react-hot-toast";
+import { AppDispatch } from "store";
 
 interface LoginState {
   loading: boolean;
@@ -18,4 +21,25 @@ export const loginSlice = createSlice({
   },
 });
 
+export const { setLoading } = loginSlice.actions;
 export default loginSlice.reducer;
+
+// Thunks
+
+export const loginUser = createAsyncThunk(
+  "login/user",
+  async (data: ILoginData, { dispatch }) => {
+    dispatch(setLoading(true));
+    const response = await login(data);
+    dispatch(setLoading(false));
+    if (response.error) toast.error("Something went wrong, Please try again");
+    else {
+      if (response.result.isError) {
+        toast.error(response.result.isError);
+      } else {
+        // Login user in the app & save info in local storage
+        toast.success(response.result.isError);
+      }
+    }
+  }
+);
