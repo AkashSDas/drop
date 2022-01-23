@@ -13,7 +13,7 @@ export interface UserState {
   };
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   token: null,
   info: {
     id: null,
