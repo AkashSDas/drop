@@ -20,7 +20,7 @@ const Header = () => {
             <TextButton
               text="Logout"
               onClick={async () => {
-                const isLoggedOut = await dispatch(logoutUser());
+                const isLoggedOut = (await dispatch(logoutUser())).payload;
                 if (isLoggedOut) router.push("/");
               }}
             />
