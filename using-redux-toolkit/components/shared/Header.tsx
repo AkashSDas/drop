@@ -27,8 +27,11 @@ const Header = () => {
           </div>
         ) : (
           <div className="space-x-8">
-            <TextButton text="Login" onClick={() => {}} />
-            <PrimaryButton text="Signup" onClick={() => {}} />
+            <TextButton text="Login" onClick={() => router.push("/login")} />
+            <PrimaryButton
+              text="Signup"
+              onClick={() => router.push("/signup")}
+            />
           </div>
         )}
       </div>
