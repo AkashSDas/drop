@@ -55,7 +55,9 @@ export const loginUser = createAsyncThunk(
         };
         saveUserToLocalStorage(user);
         dispatch(setUser(user));
+        return true;
       }
     }
+    return false;
   }
 );
