@@ -2,12 +2,14 @@ import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import loginReducer from "./login/slice";
 import userReducer from "./user/slice";
 import signupReducer from "./signup/slice";
+import forgotPasswordReducer from "./forgot-password/slice";
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
     user: userReducer,
     signup: signupReducer,
+    forgotPassword: forgotPasswordReducer,
   },
 });
 
