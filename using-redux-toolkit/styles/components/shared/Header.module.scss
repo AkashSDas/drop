@@ -1,0 +1,4 @@
+.header {
+  @apply px-8 h-[var(--header-height)] ml-[var(--sidebar-width)] 
+  border-b-[1px] border-solid border-border flex justify-between items-center;
+}
