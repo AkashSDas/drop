@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk(
         toast.error(response.result.data.msg);
       } else {
         toast.success(response.result.data.msg);
-        const data = response.result.data.data.user;
+        const data = response.result.data.data;
         const user: UserState = {
           token: data.token,
           info: {
