@@ -17,8 +17,9 @@ body {
 }
 
 main {
-  margin-left: 280px;
-  padding: 32px 64px;
+  margin-left: var(--sidebar-width);
+  padding: 32px;
+  @apply space-x-8;
 }
 
 :root {
