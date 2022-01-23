@@ -13,7 +13,18 @@ export interface UserState {
   };
 }
 
-const initialState: UserState = null;
+const initialState: UserState = {
+  token: null,
+  info: {
+    id: null,
+    email: null,
+    username: null,
+    profilePic: { id: null, URL: null },
+    role: null,
+    createdAt: null,
+    updatedAt: null,
+  },
+};
 
 export const userSlice = createSlice({
   name: "user",
