@@ -14,6 +14,7 @@ module.exports = {
       success: "#80B97C",
       error: "#E15555",
       card: "#252733",
+      border: "#32333B",
     },
     fontFamily: {
       gilroy: [
