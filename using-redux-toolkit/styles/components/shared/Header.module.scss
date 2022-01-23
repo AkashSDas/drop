@@ -1,4 +1,8 @@
 .header {
-  @apply px-8 h-[var(--header-height)] ml-[var(--sidebar-width)] 
-  border-b-[1px] border-solid border-border flex justify-between items-center;
+  @apply h-[var(--header-height)] ml-[var(--sidebar-width)] px-8;
+}
+
+.header_inner {
+  @apply w-full h-full border-b-[1px] border-solid border-border py-8 
+  flex justify-between items-center;
 }
