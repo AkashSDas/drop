@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { saveUserToLocalStorage } from "lib/local-storage";
 import login, { ILoginData } from "lib/service/login";
 import toast from "react-hot-toast";
-import { AppDispatch } from "store";
+import { setUser, UserState } from "store/user/slice";
 
 interface LoginState {
   loading: boolean;
@@ -38,8 +39,22 @@ export const loginUser = createAsyncThunk(
       if (response.result.isError) {
         toast.error(response.result.data.msg);
       } else {
-        // Login user in the app & save info in local storage
         toast.success(response.result.data.msg);
+        const data = response.result.data.data.user;
+        const user: UserState = {
+          token: data.token,
+          info: {
+            id: data.user.id,
+            email: data.user.email,
+            username: data.user.username,
+            profilePic: data.user.profilePic,
+            role: data.user.role,
+            updatedAt: data.user.updatedAt,
+            createdAt: data.user.createdAt,
+          },
+        };
+        saveUserToLocalStorage(user);
+        dispatch(setUser(user));
       }
     }
   }
