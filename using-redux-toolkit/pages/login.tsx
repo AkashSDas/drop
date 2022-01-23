@@ -11,8 +11,8 @@ const LoginPage = () => {
   const loading = useAppSelector((state) => state.login.loading);
 
   const handleSubmit = async (value) => {
-    const isLoggedIn = await dispatch(loginUser(value));
-    if (isLoggedIn) router.push("/");
+    const user = await dispatch(loginUser(value));
+    if (user) router.push("/");
   };
 
   return (
