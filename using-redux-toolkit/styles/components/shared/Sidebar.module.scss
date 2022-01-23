@@ -1,5 +1,5 @@
 .sidebar {
-  @apply absolute top-0 left-0 w-[240px] h-screen flex flex-col 
-  space-y-6 items-center border-r-[1px] border-solid border-[#32333B] 
+  @apply absolute top-0 left-0 w-[var(--sidebar-width)] h-screen flex flex-col 
+  space-y-6 items-center border-r-[1px] border-solid border-border
   p-[24px];
 }
