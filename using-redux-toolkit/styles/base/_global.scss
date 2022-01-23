@@ -19,6 +19,7 @@ body {
 main {
   margin-left: var(--sidebar-width);
   padding: 32px;
+  width: 820px;
   @apply space-y-8;
 }
 
