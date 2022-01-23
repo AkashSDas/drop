@@ -20,7 +20,8 @@
       "@context/*": ["lib/context/*"],
       "@api/*": ["lib/api/*"],
       "@style/*": ["styles/components/*"]
-    }
+    },
+    "types": ["node"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
