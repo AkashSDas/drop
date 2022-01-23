@@ -19,7 +19,7 @@ body {
 main {
   margin-left: var(--sidebar-width);
   padding: 32px;
-  @apply space-x-8;
+  @apply space-y-8;
 }
 
 :root {
