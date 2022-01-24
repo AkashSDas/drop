@@ -26,7 +26,7 @@ const fetchFromAPI = async (
       msg: data.msg ?? "🐦 Something went wrong",
     };
   }
-  const data = response.result.response.data;
+  const data = response.result.data;
   return {
     isError: data.isError ?? true,
     msg: data.msg ?? "🐦 Something went wrong",
