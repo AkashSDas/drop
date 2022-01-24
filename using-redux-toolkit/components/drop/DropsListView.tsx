@@ -20,7 +20,7 @@ const DropsListView = () => {
       ) : (
         <>
           {drops.map((d, key) => (
-            <div key={key}>
+            <div key={key} className="space-y-8">
               <div className="border-b-[1px] border-solid border-[#32333B]"></div>
 
               <DropCard
