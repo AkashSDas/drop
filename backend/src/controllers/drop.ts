@@ -4,6 +4,8 @@ import { BaseApiError } from "../utils/error";
 import { addIdField } from "../utils/mongo_cursor_pagination";
 import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
+import { Reaction } from "../models/reaction";
+import { reactionsData } from "../utils/reactions";
 
 export const createDrop: AsyncMiddleware = async (req, res, next) => {
   if (!req.body.content) {
@@ -74,6 +76,7 @@ export const deleteDrop: AsyncMiddleware = async (req, res, next) => {
 export const getDrops: AsyncMiddleware = async (req, res, next) => {
   const nextId = req.query.next;
   const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+  const user = req.query.user;
 
   const data = await (Drop as any).paginateDrop({
     limit,
@@ -82,13 +85,37 @@ export const getDrops: AsyncMiddleware = async (req, res, next) => {
   });
 
   const drops = addIdField(data.results);
+  let dropsWithReactions = [];
+  for (let i = 0; i < drops.length; i++) {
+    const drop = drops[i];
+
+    // Get reactions on this drop
+    let reactionsOnDrop = {};
+    for (let i = 0; i < reactionsData.length; i++) {
+      const r = reactionsData[i];
+      const count = await Reaction.count({ drop: drop._id, reaction: r.name });
+      reactionsOnDrop[r.name] = { name: r.name, emoji: r.emoji, count };
+    }
+
+    // Check if user has reacted on this drop or not
+    let reacted = false;
+    if (user) {
+      reacted = await Reaction.exists({ drop: drop._id, user: user });
+    }
+
+    dropsWithReactions.push({
+      drop: drop,
+      reactionsOnDrop,
+      reacted,
+    });
+  }
 
   return responseMsg(res, {
     statusCode: 200,
     isError: false,
     msg: `${data.results.length} drops retrieved`,
     data: {
-      drops,
+      drop: dropsWithReactions,
       previous: data.previous,
       hasPrevious: data.hasPrevious,
       next: data.next,
