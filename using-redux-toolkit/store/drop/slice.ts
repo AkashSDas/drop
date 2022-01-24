@@ -47,7 +47,6 @@ export const dropsSlice = createSlice({
       state.next = action.payload.next;
     },
     addDrops: (state, action: PayloadAction<IDrop[]>) => {
-      console.log(action.payload);
       state.drops = [...state.drops, ...action.payload];
     },
   },
