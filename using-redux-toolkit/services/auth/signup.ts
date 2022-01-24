@@ -1,4 +1,4 @@
-import fetchFromAPI from "../";
+import fetchFromAPI from "lib/services";
 
 export interface ISignupData {
   username: string;

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import runAsync from "lib/run-async";
+import runAsync from "lib/base/run-async";
 
 const axiosBaseInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,

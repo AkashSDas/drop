@@ -1,4 +1,4 @@
-import fetchFromAPI from "../";
+import fetchFromAPI from "lib/services";
 
 const logoutService = async () => {
   return await fetchFromAPI("/user/logout", { method: "get" });

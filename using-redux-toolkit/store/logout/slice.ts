@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { removeUserFromLocalStorage } from "lib/local-storage";
+import { removeUserFromLocalStorage } from "lib/base/local-storage";
 import logout from "lib/service/logout";
 import toast from "react-hot-toast";
 import { initialState as userInitialState, setUser } from "../user/slice";

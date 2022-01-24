@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { saveUserToLocalStorage } from "lib/local-storage";
+import { saveUserToLocalStorage } from "lib/base/local-storage";
 import login, { ILoginData } from "lib/service/login";
 import toast from "react-hot-toast";
 import { setUser, UserState } from "store/user/slice";
