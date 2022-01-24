@@ -10,7 +10,7 @@ const SearchInput = () => {
         type="text"
         name="search"
         placeholder="Search Everything"
-        className={styles.input}
+        className={`${styles.input} cursor-pointer`}
       />
     </div>
   );
