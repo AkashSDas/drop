@@ -6,6 +6,7 @@ import loginReducer from "store/login/slice";
 import logoutReducer from "store/logout/slice";
 import forgotPasswordReducer from "store/forgot-password/slice";
 import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
+import dropsReducer from "store/drop/slice";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     logout: logoutReducer,
     forgotPassword: forgotPasswordReducer,
     confirmPasswordReset: confirmPasswordResetReducer,
+    drops: dropsReducer,
   },
 });
 
