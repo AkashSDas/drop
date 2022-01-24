@@ -9,8 +9,6 @@ const runAsync = async (promise: Promise<any>): Promise<IAsyncResult> => {
     return { result: result, error: null };
   } catch (err) {
     return { result: null, error: err };
-  } finally {
-    return { result: null, error: "🐦 Something went wrong" };
   }
 };
 
