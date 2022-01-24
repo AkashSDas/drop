@@ -5,16 +5,19 @@ import { IconlyProvider } from "react-iconly";
 import { Provider } from "react-redux";
 import "../styles/main.scss";
 import store from "../store";
+import AuthWrapper from "@components/shared/AuthWrapper";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
     <Provider store={store}>
-      <IconlyProvider set="light" primaryColor="#686875" size="medium">
-        <Header />
-        <Sidebar />
-        <Component {...pageProps} />
-        <Toaster />
-      </IconlyProvider>
+      <AuthWrapper>
+        <IconlyProvider set="light" primaryColor="#686875" size="medium">
+          <Header />
+          <Sidebar />
+          <Component {...pageProps} />
+          <Toaster />
+        </IconlyProvider>
+      </AuthWrapper>
     </Provider>
   );
 };
