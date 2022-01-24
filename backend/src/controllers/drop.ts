@@ -117,7 +117,7 @@ export const getDrops: AsyncMiddleware = async (req, res, next) => {
     isError: false,
     msg: `${data.results.length} drops retrieved`,
     data: {
-      drop: dropsWithReactions,
+      drops: dropsWithReactions,
       previous: data.previous,
       hasPrevious: data.hasPrevious,
       next: data.next,
@@ -175,7 +175,7 @@ export const getUserDrops: AsyncMiddleware = async (req, res, next) => {
     isError: false,
     msg: `${data.results.length} drops retrieved`,
     data: {
-      drop: dropsWithReactions,
+      drops: dropsWithReactions,
       previous: data.previous,
       hasPrevious: data.hasPrevious,
       next: data.next,
