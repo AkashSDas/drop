@@ -1,22 +1,5 @@
+import { IDrop } from "store/drop/slice";
 import ReactionButton from "./ReactionButton";
-
-interface Props {
-  id: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    id: string;
-    email: string;
-    username: string;
-    profilePic: { id: string; URL: string };
-    role: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  reactionsOnDrop: [{ name: string; emoji: string; count: number }];
-  reacted: null | { reaction: string; id: string };
-}
 
 const DropCard = ({
   content,
@@ -24,7 +7,7 @@ const DropCard = ({
   updatedAt,
   reacted,
   reactionsOnDrop,
-}: Props) => {
+}: IDrop) => {
   const profilePic = () => (
     <img
       className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
