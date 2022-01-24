@@ -1,7 +1,21 @@
 import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
+import userReducer from "store/user/slice";
+import signupReducer from "store/signup/slice";
+import loginReducer from "store/login/slice";
+import logoutReducer from "store/logout/slice";
+import forgotPasswordReducer from "store/forgot-password/slice";
+import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
+
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    user: userReducer,
+    signup: signupReducer,
+    login: loginReducer,
+    logout: logoutReducer,
+    forgotPassword: forgotPasswordReducer,
+    confirmPasswordReset: confirmPasswordResetReducer,
+  },
 });
 
 // Types
