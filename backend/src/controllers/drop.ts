@@ -87,7 +87,7 @@ export const getDrops: AsyncMiddleware = async (req, res, next) => {
   const drops = addIdField(data.results);
   let dropsWithReactions = [];
   for (let i = 0; i < drops.length; i++) {
-    const drop = drops[i];
+    const drop = await Drop.populate(drops[i], "user");
 
     // Get reactions on this drop
     let reactionsOnDrop = {};
@@ -143,7 +143,7 @@ export const getUserDrops: AsyncMiddleware = async (req, res, next) => {
   const drops = addIdField(data.results);
   let dropsWithReactions = [];
   for (let i = 0; i < drops.length; i++) {
-    const drop = drops[i];
+    const drop = await Drop.populate(drops[i], "user");
 
     // Get reactions on this drop
     let reactionsOnDrop = {};
