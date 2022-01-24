@@ -1,9 +1,9 @@
 import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
-import { useAppDispatch, useAppSelector } from "hooks/store";
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { Message } from "react-iconly";
-import { resetForgotPasswordThunk } from "store/forgot-password/slice";
+import { forgotPasswordThunk } from "store/forgot-password/thunk";
 
 const ForgotPasswordPage = () => {
   const router = useRouter();
@@ -11,7 +11,7 @@ const ForgotPasswordPage = () => {
   const loading = useAppSelector((state) => state.forgotPassword.loading);
 
   const handleSubmit = async (value) => {
-    const redirect = (await dispatch(resetForgotPasswordThunk(value))).payload;
+    const redirect = (await dispatch(forgotPasswordThunk(value))).payload;
     if (redirect) router.push("/confirm-password-reset");
   };
 

@@ -1,10 +1,10 @@
 import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
-import { useAppDispatch, useAppSelector } from "hooks/store";
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Lock, Message } from "react-iconly";
-import { loginUser } from "store/login/slice";
+import { loginThunk } from "store/login/thunk";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const LoginPage = () => {
   const loading = useAppSelector((state) => state.login.loading);
 
   const handleSubmit = async (value) => {
-    const isLoggedIn = (await dispatch(loginUser(value))).payload;
+    const isLoggedIn = (await dispatch(loginThunk(value))).payload;
     if (isLoggedIn) router.push("/");
   };
 

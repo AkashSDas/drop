@@ -1,10 +1,10 @@
 import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
-import { useAppDispatch, useAppSelector } from "hooks/store";
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Lock, Message, User } from "react-iconly";
-import { signupUser } from "store/signup/slice";
+import { signupThunk } from "store/signup/thunk";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -12,8 +12,8 @@ const SignupPage = () => {
   const loading = useAppSelector((state) => state.signup.loading);
 
   const handleSubmit = async (value) => {
-    const isSignedIn = (await dispatch(signupUser(value))).payload;
-    if (isSignedIn) router.push("/login");
+    const isSignedIn = (await dispatch(signupThunk(value))).payload;
+    if (isSignedIn) router.push("/");
   };
 
   return (
