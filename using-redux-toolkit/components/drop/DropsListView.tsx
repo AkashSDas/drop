@@ -20,11 +20,10 @@ const DropsListView = () => {
       ) : (
         <>
           {drops.map((d, key) => (
-            <>
+            <div key={key}>
               <div className="border-b-[1px] border-solid border-[#32333B]"></div>
 
               <DropCard
-                key={key}
                 content={d.content}
                 createdAt={d.createdAt}
                 id={d.id}
@@ -33,8 +32,7 @@ const DropsListView = () => {
                 updatedAt={d.updatedAt}
                 user={d.user}
               />
-              <div>{JSON.stringify(d.reacted)}</div>
-            </>
+            </div>
           ))}
         </>
       )}
