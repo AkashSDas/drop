@@ -98,9 +98,11 @@ export const getDrops: AsyncMiddleware = async (req, res, next) => {
     }
 
     // Check if user has reacted on this drop or not
-    let reacted = false;
+    let reacted = null;
     if (user) {
-      reacted = await Reaction.exists({ drop: drop._id, user: user });
+      reacted = await Reaction.findOne({ drop: drop._id, user: user }).select(
+        "reaction id"
+      );
     }
 
     dropsWithReactions.push({
@@ -154,9 +156,11 @@ export const getUserDrops: AsyncMiddleware = async (req, res, next) => {
     }
 
     // Check if user has reacted on this drop or not
-    let reacted = false;
+    let reacted = null;
     if (user) {
-      reacted = await Reaction.exists({ drop: drop._id, user: user });
+      reacted = await Reaction.findOne({ drop: drop._id, user: user }).select(
+        "reaction id"
+      );
     }
 
     dropsWithReactions.push({
