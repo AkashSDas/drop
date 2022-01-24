@@ -16,7 +16,15 @@ export const signupThunk = createAsyncThunk(
       toast.success(response.msg);
       const user: IUserState = {
         token: response.data.token,
-        info: response.data.user,
+        info: {
+          createdAt: response.data.user.createdAt,
+          email: response.data.user.email,
+          id: response.data.user.id,
+          profilePic: response.data.user.profilePic,
+          role: response.data.user.role,
+          updatedAt: response.data.user.updatedAt,
+          username: response.data.user.username,
+        },
       };
       saveUserToLocalStorage(user);
       dispatch(updateUser(user));
