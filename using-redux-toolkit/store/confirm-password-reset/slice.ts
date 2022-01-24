@@ -1,48 +1,22 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import confirmPasswordReset, {
-  IConfirmPasswordReset,
-} from "lib/service/confirm-password-reset";
-import toast from "react-hot-toast";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface ConfirmPasswordResetState {
+interface IConfirmPasswordResetState {
   loading: boolean;
 }
 
-const initialState: ConfirmPasswordResetState = {
+const initialState: IConfirmPasswordResetState = {
   loading: false,
 };
 
 export const confirmPasswordResetSlice = createSlice({
-  name: "confirmPasswordReset",
+  name: "confirmPasswordResetSlice",
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
+    updateLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
   },
 });
 
-export const { setLoading } = confirmPasswordResetSlice.actions;
+export const { updateLoading } = confirmPasswordResetSlice.actions;
 export default confirmPasswordResetSlice.reducer;
-
-// Thunks
-
-export const confirmPasswordResetThunk = createAsyncThunk(
-  "confirmPasswordReset/user",
-  async (data: IConfirmPasswordReset, { dispatch }) => {
-    dispatch(setLoading(true));
-    const response = await confirmPasswordReset(data);
-    dispatch(setLoading(false));
-    if (response.error) {
-      toast.error(response.error.response.data.msg);
-    } else {
-      if (response.result.isError) {
-        toast.error(response.result.data.msg);
-      } else {
-        toast.success(response.result.data.msg);
-        return true;
-      }
-    }
-    return false;
-  }
-);
