@@ -18,7 +18,6 @@ export const fetchDropsThunk = createAsyncThunk(
       limit,
     });
 
-    console.log(response);
     dispatch(updateLoading(false));
 
     if (response.isError) toast.error(response.msg);
