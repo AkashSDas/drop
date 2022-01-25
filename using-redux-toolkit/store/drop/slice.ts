@@ -205,6 +205,9 @@ export const dropsSlice = createSlice({
     addDrop: (state, action: PayloadAction<IDrop>) => {
       state.drops = [action.payload, ...state.drops];
     },
+    pushDrops: (state, action: PayloadAction<IDrop[]>) => {
+      state.drops = [...state.drops, ...action.payload];
+    },
   },
 });
 
@@ -217,5 +220,6 @@ export const {
   addDropReaction,
   unReactDropReaction,
   addDrop,
+  pushDrops,
 } = dropsSlice.actions;
 export default dropsSlice.reducer;
