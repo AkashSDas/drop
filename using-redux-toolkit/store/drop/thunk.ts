@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
 import reactOnDropService from "services/reaction/react-on-drop";
 import toggleReactionOnDropService from "services/reaction/toggle-reaction";
+import unReactDropService from "services/reaction/unreact-drop";
 import {
   initAdd,
   IDrop,
@@ -11,6 +12,7 @@ import {
   updateReactionLoading,
   toggleDropReacted,
   addDropReaction,
+  unReactDropReaction,
 } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
@@ -161,6 +163,38 @@ export const reactOnDropThunk = createAsyncThunk(
           id: newReaction.id,
           countUpdated: true,
         },
+      })
+    );
+  }
+);
+
+export const unReactDropReactionThunk = createAsyncThunk(
+  "drops/unreact",
+  async (
+    { dropId, reaction }: { dropId: string; reaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      unReactDropReaction({
+        dropId,
+        reaction: { reaction, countUpdated: false },
+      })
+    );
+
+    dispatch(updateReactionLoading(true));
+    await unReactDropService(token, dropId);
+    dispatch(updateReactionLoading(false));
+
+    dispatch(
+      unReactDropReaction({
+        dropId,
+        reaction: { reaction, countUpdated: true },
       })
     );
   }
