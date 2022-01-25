@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
-import { toggleReactionOnDropThunk } from "store/drop/thunk";
+import { reactOnDropThunk, toggleReactionOnDropThunk } from "store/drop/thunk";
 
 interface Props {
   emoji: string;
@@ -38,6 +38,7 @@ const ReactionButton = ({ emoji, reacted, dropId, reaction, count }: Props) => {
           );
         } else {
           // create new reaction and update state
+          dispatch(reactOnDropThunk({ dropId, reaction }));
         }
       }}
     >
