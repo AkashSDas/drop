@@ -22,7 +22,7 @@ export const fetchDropsThunk = createAsyncThunk(
 
     const userId = (getState() as any).user.info.id;
     const next = (getState() as any).drops.next;
-    const limit = 10;
+    const limit = 4;
 
     const response = await fetchDropsPaginatedService(
       init ? { userId, limit } : { userId, next, limit }
