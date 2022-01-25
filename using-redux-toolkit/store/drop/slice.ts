@@ -156,6 +156,52 @@ export const dropsSlice = createSlice({
 
       state.drops = drops;
     },
+    unReactDropReaction: (
+      state,
+      action: PayloadAction<{
+        reaction: {
+          reaction: string;
+          countUpdated: boolean;
+        };
+        dropId: string;
+      }>
+    ) => {
+      const { reaction, dropId } = action.payload;
+
+      let drops = [];
+      for (let i = 0; i < state.drops.length; i++) {
+        const drop = state.drops[i];
+        if (drop.id === dropId) {
+          // decrement count of old reaction & increment count of new reaction
+
+          let reactionsOnDrop = [];
+          if (!reaction.countUpdated) {
+            for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
+              const reactionInfo = drop.reactionsOnDrop[j];
+              if (reactionInfo.name === reaction.reaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count - 1,
+                });
+              } else {
+                reactionsOnDrop.push(reactionInfo);
+              }
+            }
+          }
+          drops.push({
+            ...drop,
+            reacted: null,
+            reactionsOnDrop: !reaction.countUpdated
+              ? reactionsOnDrop
+              : drop.reactionsOnDrop,
+          });
+        } else {
+          drops.push(drop);
+        }
+      }
+
+      state.drops = drops;
+    },
   },
 });
 
@@ -166,5 +212,6 @@ export const {
   updateReactionLoading,
   toggleDropReacted,
   addDropReaction,
+  unReactDropReaction,
 } = dropsSlice.actions;
 export default dropsSlice.reducer;
