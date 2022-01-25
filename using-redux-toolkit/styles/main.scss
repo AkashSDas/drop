@@ -6,3 +6,17 @@
 @import "./base/global";
 @import "./base/form";
 @import "./base/logo";
+
+body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: #252733;
+  border-radius: 20px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #3a8cff;
+  border-radius: 20px;
+}
