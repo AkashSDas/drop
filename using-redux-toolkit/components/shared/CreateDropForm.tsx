@@ -23,6 +23,7 @@ const CreateDropForm = () => {
                 name="search"
                 value={values.search}
                 onChange={handleChange}
+                autoFocus
               />
               <button
                 type="button"
