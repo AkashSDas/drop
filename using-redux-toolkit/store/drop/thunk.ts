@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
-import { addDrops, IDrop, updateLoading, updateMoreDropsInfo } from "./slice";
+import { initAdd, IDrop, updateLoading, updateMoreDropsInfo } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
   "drops/dropsAdded",
@@ -72,7 +72,7 @@ export const fetchDropsThunk = createAsyncThunk(
           hasNext: response.data.hasNext,
         })
       );
-      dispatch(addDrops(drops));
+      dispatch(initAdd(drops));
     }
   }
 );

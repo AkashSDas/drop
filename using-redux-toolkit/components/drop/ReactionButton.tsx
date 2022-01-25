@@ -13,7 +13,7 @@ const ReactionButton = ({ emoji, name, reacted, count }: Props) => {
       type="button"
       className={`${bg} ${text} text-[13px] px-2 pt-[6px] pb-2 rounded-md`}
     >
-      {emoji} {name} {count}
+      {emoji} {count}
     </button>
   );
 };

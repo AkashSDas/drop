@@ -46,12 +46,12 @@ export const dropsSlice = createSlice({
       state.hasNext = action.payload.hasNext;
       state.next = action.payload.next;
     },
-    addDrops: (state, action: PayloadAction<IDrop[]>) => {
-      state.drops = [...state.drops, ...action.payload];
+    initAdd: (state, action: PayloadAction<IDrop[]>) => {
+      state.drops = action.payload;
     },
   },
 });
 
-export const { updateLoading, addDrops, updateMoreDropsInfo } =
+export const { updateLoading, initAdd, updateMoreDropsInfo } =
   dropsSlice.actions;
 export default dropsSlice.reducer;
