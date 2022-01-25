@@ -16,12 +16,11 @@ const DropsListViewLoading = () => {
   );
 
   return (
-    <>
+    <div className="space-y-8">
       {dropLoading()}
       {dropLoading()}
       {dropLoading()}
-      {dropLoading()}
-    </>
+    </div>
   );
 };
 
