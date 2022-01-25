@@ -12,16 +12,25 @@ export const createDrop: AsyncMiddleware = async (req, res, next) => {
     return next(new BaseApiError(400, "Content is required"));
   }
 
-  const drop = await Drop.create({
+  let drop = await Drop.create({
     user: req.user._id,
     content: req.body.content,
   });
+  drop = await drop.populate("user");
+
+  // Get reactions on this drop
+  let reactionsOnDrop = {};
+  for (let i = 0; i < reactionsData.length; i++) {
+    const r = reactionsData[i];
+    const count = await Reaction.count({ drop: drop._id, reaction: r.name });
+    reactionsOnDrop[r.name] = { name: r.name, emoji: r.emoji, count };
+  }
 
   return responseMsg(res, {
     statusCode: 200,
     isError: false,
     msg: "Drop created",
-    data: { drop },
+    data: { drop, reactionsOnDrop, reacted: null },
   });
 };
 
