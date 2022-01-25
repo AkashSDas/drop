@@ -8,7 +8,7 @@ import {
   updateLoading,
   updateMoreDropsInfo,
   updateReactionLoading,
-  updateDropReacted,
+  toggleDropReacted,
 } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
@@ -100,7 +100,7 @@ export const toggleReactionOnDropThunk = createAsyncThunk(
     }
 
     dispatch(
-      updateDropReacted({
+      toggleDropReacted({
         dropId,
         reaction: { reaction, id: "", oldReaction, countUpdated: false },
       })
@@ -113,7 +113,7 @@ export const toggleReactionOnDropThunk = createAsyncThunk(
     // toggle drop of dropId reacted state to update
     const newReaction = response.data.reaction;
     dispatch(
-      updateDropReacted({
+      toggleDropReacted({
         dropId,
         reaction: {
           reaction: newReaction.reaction,
