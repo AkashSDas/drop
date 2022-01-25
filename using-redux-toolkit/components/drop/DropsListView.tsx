@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import { fetchDropsThunk } from "store/drop/thunk";
 import DropCard from "./DropCard";
+import DropsListViewLoading from "./DropsListViewLoading";
 
 const DropsListView = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const DropsListView = () => {
   return (
     <div className="space-y-8">
       {loading ? (
-        <div>Loading...</div>
+        <DropsListViewLoading />
       ) : (
         <>
           {drops.map((d, key) => (
