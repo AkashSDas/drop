@@ -54,7 +54,7 @@ export const dropsSlice = createSlice({
     updateReactionLoading: (state, action: PayloadAction<boolean>) => {
       state.togglingReaction = action.payload;
     },
-    updateDropReacted: (
+    toggleDropReacted: (
       state,
       action: PayloadAction<{
         reaction: {
@@ -116,6 +116,6 @@ export const {
   initAdd,
   updateMoreDropsInfo,
   updateReactionLoading,
-  updateDropReacted,
+  toggleDropReacted,
 } = dropsSlice.actions;
 export default dropsSlice.reducer;
