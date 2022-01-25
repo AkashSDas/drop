@@ -29,7 +29,7 @@ const DropCard = ({
     <div className="flex space-x-8">
       {profilePic()}
 
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-4 w-full">
         {metadata()}
         <p>{content}</p>
 
