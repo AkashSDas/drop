@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
+import reactOnDropService from "services/reaction/react-on-drop";
 import toggleReactionOnDropService from "services/reaction/toggle-reaction";
 import {
   initAdd,
@@ -9,6 +10,7 @@ import {
   updateMoreDropsInfo,
   updateReactionLoading,
   toggleDropReacted,
+  addDropReaction,
 } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
@@ -119,6 +121,44 @@ export const toggleReactionOnDropThunk = createAsyncThunk(
           reaction: newReaction.reaction,
           id: newReaction.id,
           oldReaction,
+          countUpdated: true,
+        },
+      })
+    );
+  }
+);
+
+export const reactOnDropThunk = createAsyncThunk(
+  "drops/react",
+  async (
+    { dropId, reaction }: { dropId: string; reaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      addDropReaction({
+        dropId,
+        reaction: { reaction, id: "", countUpdated: false },
+      })
+    );
+
+    dispatch(updateReactionLoading(true));
+    const response = await reactOnDropService(token, dropId, reaction);
+    dispatch(updateReactionLoading(false));
+
+    // toggle drop of dropId reacted state to update
+    const newReaction = response.data.reaction;
+    dispatch(
+      addDropReaction({
+        dropId,
+        reaction: {
+          reaction: newReaction.reaction,
+          id: newReaction.id,
           countUpdated: true,
         },
       })
