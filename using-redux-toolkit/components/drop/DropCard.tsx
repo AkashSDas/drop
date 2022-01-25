@@ -1,3 +1,4 @@
+import { useAppSelector } from "lib/hooks/store";
 import { IDrop } from "store/drop/slice";
 import ReactionButton from "./ReactionButton";
 
@@ -8,6 +9,18 @@ const DropCard = ({
   reacted,
   reactionsOnDrop,
 }: IDrop) => {
+  const token = useAppSelector((state) => state.user.token);
+
+  const isReacted = (
+    reaction: { name: string; emoji: string; count: number },
+    reacted: { reaction: string; id: string }
+  ) => {
+    if (token) {
+      return reacted && reacted?.reaction == reaction.name ? true : false;
+    }
+    return false;
+  };
+
   const profilePic = () => (
     <img
       className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
@@ -46,7 +59,7 @@ const DropCard = ({
                 key={id}
                 emoji={reaction.emoji}
                 name={reaction.name}
-                reacted={reacted ? true : false}
+                reacted={isReacted(reaction, reacted)}
                 count={reaction.count}
               />
             ))}

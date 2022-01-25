@@ -5,14 +5,13 @@ import DropCard from "./DropCard";
 
 const DropsListView = () => {
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.user);
   const { drops, loading, hasNext, next } = useAppSelector(
     (state) => state.drops
   );
 
   useEffect(() => {
     dispatch(fetchDropsThunk());
-  }, [token]);
+  }, []);
 
   return (
     <div className="space-y-8">
