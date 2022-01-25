@@ -5,18 +5,16 @@ import { initAdd, IDrop, updateLoading, updateMoreDropsInfo } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
   "drops/dropsAdded",
-  async (_, { dispatch, getState }) => {
+  async (init: boolean, { dispatch, getState }) => {
     dispatch(updateLoading(true));
 
     const userId = (getState() as any).user.info.id;
     const next = (getState() as any).drops.next;
     const limit = 10;
 
-    const response = await fetchDropsPaginatedService({
-      userId,
-      next,
-      limit,
-    });
+    const response = await fetchDropsPaginatedService(
+      init ? { userId, limit } : { userId, next, limit }
+    );
 
     dispatch(updateLoading(false));
 

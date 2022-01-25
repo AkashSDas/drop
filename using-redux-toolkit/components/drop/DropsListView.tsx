@@ -10,7 +10,7 @@ const DropsListView = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchDropsThunk());
+    dispatch(fetchDropsThunk(true));
   }, []);
 
   return (
