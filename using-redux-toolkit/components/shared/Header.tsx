@@ -1,6 +1,7 @@
 import styles from "@style/shared/Header.module.scss";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
+import { updateIsOpen } from "store/create-drop-form/slice";
 import { logoutThunk } from "store/logout/thunk";
 import PrimaryButton from "./PrimaryButton";
 import SearchInput from "./SearchInput";
@@ -22,6 +23,10 @@ const Header = () => {
         <SearchInput />
         {user.token ? (
           <div className="space-x-8 flex items-center">
+            <TextButton
+              text="💧 Drop it"
+              onClick={() => dispatch(updateIsOpen(true))}
+            />
             <TextButton text="Logout" onClick={logout} />
             <img
               className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
