@@ -23,6 +23,7 @@ interface IDropsState {
   next: string | null;
   hasNext: boolean;
   drops: IDrop[];
+  togglingReaction: boolean;
 }
 
 const initialState: IDropsState = {
@@ -30,6 +31,7 @@ const initialState: IDropsState = {
   next: null,
   hasNext: false,
   drops: [],
+  togglingReaction: false,
 };
 
 export const dropsSlice = createSlice({
@@ -49,9 +51,71 @@ export const dropsSlice = createSlice({
     initAdd: (state, action: PayloadAction<IDrop[]>) => {
       state.drops = action.payload;
     },
+    updateReactionLoading: (state, action: PayloadAction<boolean>) => {
+      state.togglingReaction = action.payload;
+    },
+    updateDropReacted: (
+      state,
+      action: PayloadAction<{
+        reaction: {
+          reaction: string;
+          id: string;
+          oldReaction: string;
+          countUpdated: boolean;
+        };
+        dropId: string;
+      }>
+    ) => {
+      const { reaction, dropId } = action.payload;
+
+      let drops = [];
+      for (let i = 0; i < state.drops.length; i++) {
+        const drop = state.drops[i];
+        if (drop.id === dropId) {
+          // decrement count of old reaction & increment count of new reaction
+
+          let reactionsOnDrop = [];
+          if (!reaction.countUpdated) {
+            for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
+              const reactionInfo = drop.reactionsOnDrop[j];
+              if (reactionInfo.name === reaction.oldReaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count - 1,
+                });
+              } else if (reactionInfo.name === reaction.reaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count + 1,
+                });
+              } else {
+                reactionsOnDrop.push(reactionInfo);
+              }
+            }
+          }
+
+          drops.push({
+            ...drop,
+            reacted: { id: reaction.id, reaction: reaction.reaction },
+            reactionsOnDrop: !reaction.countUpdated
+              ? reactionsOnDrop
+              : drop.reactionsOnDrop,
+          });
+        } else {
+          drops.push(drop);
+        }
+      }
+
+      state.drops = drops;
+    },
   },
 });
 
-export const { updateLoading, initAdd, updateMoreDropsInfo } =
-  dropsSlice.actions;
+export const {
+  updateLoading,
+  initAdd,
+  updateMoreDropsInfo,
+  updateReactionLoading,
+  updateDropReacted,
+} = dropsSlice.actions;
 export default dropsSlice.reducer;
