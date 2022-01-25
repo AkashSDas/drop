@@ -1,4 +1,3 @@
-import { useAppSelector } from "lib/hooks/store";
 import { IDrop } from "store/drop/slice";
 import ReactionButton from "./ReactionButton";
 
@@ -8,9 +7,8 @@ const DropCard = ({
   updatedAt,
   reacted,
   reactionsOnDrop,
+  id,
 }: IDrop) => {
-  const token = useAppSelector((state) => state.user.token);
-
   const profilePic = () => (
     <img
       className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
@@ -40,21 +38,18 @@ const DropCard = ({
             type="button"
             className={`bg-card text-[13px] px-2 pt-[6px] pb-2 rounded-md`}
           >
-            💧 Drop
+            💧 Redrop
           </button>
 
           <>
-            {reactionsOnDrop.map((reaction, id) => (
+            {reactionsOnDrop.map((reaction, key) => (
               <ReactionButton
-                key={id}
+                key={key}
+                dropId={id}
+                reaction={reaction.name}
                 emoji={reaction.emoji}
-                name={reaction.name}
                 reacted={
-                  token
-                    ? reacted && reacted?.reaction == reaction.name
-                      ? true
-                      : false
-                    : false
+                  reacted && reacted?.reaction == reaction.name ? true : false
                 }
                 count={reaction.count}
               />
