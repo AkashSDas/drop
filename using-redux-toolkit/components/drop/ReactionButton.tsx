@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
-import { reactOnDropThunk, toggleReactionOnDropThunk } from "store/drop/thunk";
+import {
+  reactOnDropThunk,
+  toggleReactionOnDropThunk,
+  unReactDropReactionThunk,
+} from "store/drop/thunk";
 
 interface Props {
   emoji: string;
@@ -29,13 +33,22 @@ const ReactionButton = ({ emoji, reacted, dropId, reaction, count }: Props) => {
       onClick={() => {
         // Check if drop is reacted by this user
         if (drop.reacted) {
-          dispatch(
-            toggleReactionOnDropThunk({
-              dropId,
-              reaction,
-              oldReaction: drop.reacted.reaction,
-            })
-          );
+          if (drop.reacted.reaction === reaction) {
+            dispatch(
+              unReactDropReactionThunk({
+                dropId,
+                reaction,
+              })
+            );
+          } else {
+            dispatch(
+              toggleReactionOnDropThunk({
+                dropId,
+                reaction,
+                oldReaction: drop.reacted.reaction,
+              })
+            );
+          }
         } else {
           // create new reaction and update state
           dispatch(reactOnDropThunk({ dropId, reaction }));
