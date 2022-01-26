@@ -10,6 +10,7 @@ import dropsReducer from "store/drops/slice";
 import createDropFormReducer from "store/create-drop-form/slice";
 import dropReducer from "store/drop/slice";
 import dropCommentsReducer from "store/drop-comments/slice";
+import commentReducer from "store/comment/slice";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     createDropForm: createDropFormReducer,
     drop: dropReducer,
     dropComments: dropCommentsReducer,
+    comment: commentReducer,
   },
 });
 
