@@ -1,6 +1,5 @@
-import DropCard from "@components/drop/DropCard";
 import DropCardLoadng from "@components/drop/DropCardLoading";
-import DropsListViewLoading from "@components/drop/DropsListViewLoading";
+import IndependentDropCard from "@components/drop/IndependentDropCard";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -30,7 +29,7 @@ const DropPage = () => {
 
   return (
     <main>
-      <DropCard
+      <IndependentDropCard
         content={drop.content}
         createdAt={drop.createdAt}
         id={drop.id}
