@@ -1,6 +1,11 @@
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { IComment } from "store/drop-comments/slice";
+import { deleteCommentThunk } from "store/drop-comments/thunk";
 
 const DropComment = ({ comment: c }: { comment: IComment }) => {
+  const userId = useAppSelector((state) => state.user?.info?.id);
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex space-x-4">
       <img
@@ -17,10 +22,21 @@ const DropComment = ({ comment: c }: { comment: IComment }) => {
             <span>{c.updatedAt}</span>
           </div>
 
-          <div className="space-x-4 flex items-center text-[13px]">
-            <button className="px-2 py-[6px] bg-card rounded-lg">Update</button>
-            <button className="px-2 py-[6px] bg-card rounded-lg">Delete</button>
-          </div>
+          {userId && userId === c.user.id ? (
+            <div className="space-x-4 flex items-center text-[13px]">
+              <button className="px-2 py-[6px] bg-card rounded-lg">
+                Update
+              </button>
+              <button
+                className="px-2 py-[6px] bg-card rounded-lg"
+                onClick={async () => {
+                  await dispatch(deleteCommentThunk(c.id));
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ) : null}
         </div>
         <div>{c.content}</div>
       </div>
