@@ -5,9 +5,12 @@ const DropComments = () => {
   const comments = useAppSelector((state) => state.dropComments);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       {comments.comments.map((c, key) => (
-        <DropComment key={key} comment={c} />
+        <>
+          <div className="border-b-[1px] border-solid border-[#32333B]"></div>
+          <DropComment key={key} comment={c} />
+        </>
       ))}
     </div>
   );
