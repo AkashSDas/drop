@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createComment,
   deleteComment,
+  getDropComment,
   getDropComments,
   updateCommentContent,
 } from "../controllers/comment";
@@ -32,6 +33,7 @@ router
 
 router
   .route("/:commentId")
+  .get(runAsync(getDropComment), errorHandler)
   .delete(
     runAsync(isLoggedIn),
     errorHandler,
