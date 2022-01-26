@@ -9,6 +9,8 @@ import { updateLoading as updateDropLoading } from "store/drop/slice";
 import { updateLoading as updateCommentsLoading } from "store/drop-comments/slice";
 import { fetchDropThunk } from "store/drop/thunk";
 import DropCommentsLoading from "@components/drop/DropCommentsLoading";
+import { Form, Formik } from "formik";
+import { Send } from "react-iconly";
 
 const DropPage = () => {
   const router = useRouter();
@@ -47,9 +49,27 @@ const DropPage = () => {
         />
       )}
 
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h4>Comments</h4>
         <div className="border-b-[1px] border-solid border-[#32333B]"></div>
+
+        <Formik initialValues={{ content: "" }} onSubmit={() => {}}>
+          {({ values, handleChange, isSubmitting }) => (
+            <Form className="w-full flex space-x-4 mb-3">
+              <input
+                type="text"
+                className="outline-none bg-card rounded-lg w-full px-6 py-[14px] placeholder:text-text2 text-text1 placeholder:opacity-60"
+                onChange={handleChange}
+                name="content"
+                placeholder="Comment"
+                value={values.content}
+              />
+              <button disabled={isSubmitting}>
+                <Send primaryColor="#3A8CFF" />
+              </button>
+            </Form>
+          )}
+        </Formik>
 
         {commentsLoading || !comments ? (
           <DropCommentsLoading />
