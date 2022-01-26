@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createDrop,
   deleteDrop,
+  getDrop,
   getDrops,
   getUserDrops,
   updateDropContent,
@@ -19,6 +20,7 @@ router
 
 router
   .route("/:dropId")
+  .get(runAsync(getDrop), errorHandler)
   .put(
     runAsync(isLoggedIn),
     errorHandler,
