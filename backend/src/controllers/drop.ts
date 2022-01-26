@@ -192,3 +192,32 @@ export const getUserDrops: AsyncMiddleware = async (req, res, next) => {
     },
   });
 };
+
+export const getDrop: AsyncMiddleware = async (req, res, next) => {
+  const user = req.query.user;
+  const { dropId } = req.params;
+  const drop = await Drop.findById(dropId).populate("user");
+
+  // Get reactions on this drop
+  let reactionsOnDrop = {};
+  for (let i = 0; i < reactionsData.length; i++) {
+    const r = reactionsData[i];
+    const count = await Reaction.count({ drop: drop._id, reaction: r.name });
+    reactionsOnDrop[r.name] = { name: r.name, emoji: r.emoji, count };
+  }
+
+  // Check if user has reacted on this drop or not
+  let reacted = null;
+  if (user) {
+    reacted = await Reaction.findOne({ drop: drop._id, user: user }).select(
+      "reaction id"
+    );
+  }
+
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: `Drop retrieved`,
+    data: { drop, reacted, reactionsOnDrop },
+  });
+};
