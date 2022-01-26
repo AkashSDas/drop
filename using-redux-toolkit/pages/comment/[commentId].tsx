@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Send } from "react-iconly";
 import { updateLoading } from "store/comment/slice";
-import { fetchCommentThunk } from "store/comment/thunk";
+import { fetchCommentThunk, updateCommentThunk } from "store/comment/thunk";
 
 const UpdateDropCommentPage = () => {
   const router = useRouter();
@@ -28,19 +28,14 @@ const UpdateDropCommentPage = () => {
 
       <Formik
         initialValues={{ content: comment.content }}
-        onSubmit={async (value, { resetForm }) => {
-          // if (token) {
-          //   await dispatch(
-          //     createCommentThunk({
-          //       token,
-          //       dropId: drop.id,
-          //       content: value.content,
-          //     })
-          //   );
-          //   resetForm();
-          // } else {
-          //   toast.error("You are not logged in");
-          // }
+        onSubmit={async (values, { resetForm }) => {
+          await dispatch(
+            updateCommentThunk({
+              commentId: comment.id,
+              dropId: comment.dropId,
+              content: values.content,
+            })
+          );
         }}
       >
         {({ values, handleChange, isSubmitting }) => (
