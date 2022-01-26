@@ -6,6 +6,8 @@ import { responseMsg } from "../utils/response";
 import { AsyncMiddleware } from "../utils/types";
 
 export const createComment: AsyncMiddleware = async (req, res, next) => {
+  const user = req.query.user;
+
   if (!req.body.content) {
     return next(new BaseApiError(400, "Comment is required"));
   }
@@ -21,16 +23,23 @@ export const createComment: AsyncMiddleware = async (req, res, next) => {
     );
   }
 
-  const comment = await Comment.create({
+  const data = await Comment.create({
     user: req.user._id,
     drop: drop._id,
     content: req.body.content,
   });
+
+  const comment = await Comment.populate(data, "user");
+  let commented = false; // is user the author of this comment or not
+  if (user && (user as string) === comment.user.id.toString()) {
+    commented = true;
+  }
+
   return responseMsg(res, {
     statusCode: 200,
     isError: false,
     msg: "Comment created",
-    data: { comment },
+    data: { comment, commented },
   });
 };
 
