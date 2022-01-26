@@ -9,6 +9,7 @@ import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
 import dropsReducer from "store/drops/slice";
 import createDropFormReducer from "store/create-drop-form/slice";
 import dropReducer from "store/drop/slice";
+import dropCommentsReducer from "store/drop-comments/slice";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     drops: dropsReducer,
     createDropForm: createDropFormReducer,
     drop: dropReducer,
+    dropComments: dropCommentsReducer,
   },
 });
 
