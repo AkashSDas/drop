@@ -1,5 +1,11 @@
+import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { IDrop } from "store/drops/slice";
+import {
+  reactOnDropThunk,
+  toggleReactionOnDropThunk,
+  unReactDropReactionThunk,
+} from "store/drops/thunk";
 import ReactionButton from "./ReactionButton";
 
 const DropCard = ({
@@ -11,6 +17,7 @@ const DropCard = ({
   id,
 }: IDrop) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const profilePic = () => (
     <img
@@ -58,6 +65,38 @@ const DropCard = ({
                   reacted && reacted?.reaction == reaction.name ? true : false
                 }
                 count={reaction.count}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const isReacted =
+                    reacted && reacted?.reaction == reaction.name
+                      ? true
+                      : false;
+
+                  // Check if drop is reacted by this user
+                  if (isReacted) {
+                    if (reacted.reaction === reaction.name) {
+                      dispatch(
+                        unReactDropReactionThunk({
+                          dropId: id,
+                          reaction: reaction.name,
+                        })
+                      );
+                    } else {
+                      dispatch(
+                        toggleReactionOnDropThunk({
+                          dropId: id,
+                          reaction: reaction.name,
+                          oldReaction: reacted.reaction,
+                        })
+                      );
+                    }
+                  } else {
+                    // create new reaction and update state
+                    dispatch(
+                      reactOnDropThunk({ dropId: id, reaction: reaction.name })
+                    );
+                  }
+                }}
               />
             ))}
           </>
