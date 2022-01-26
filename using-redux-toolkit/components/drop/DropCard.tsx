@@ -67,13 +67,9 @@ const DropCard = ({
                 count={reaction.count}
                 onClick={(e) => {
                   e.stopPropagation();
-                  const isReacted =
-                    reacted && reacted?.reaction == reaction.name
-                      ? true
-                      : false;
 
                   // Check if drop is reacted by this user
-                  if (isReacted) {
+                  if (reacted) {
                     if (reacted.reaction === reaction.name) {
                       dispatch(
                         unReactDropReactionThunk({
