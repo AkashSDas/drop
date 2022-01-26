@@ -1,0 +1,44 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IComment } from "store/drop-comments/slice";
+
+interface ICommentState {
+  loading: boolean;
+  comment: IComment;
+}
+
+const initialState: ICommentState = {
+  loading: false,
+  comment: {
+    id: null,
+    dropId: null,
+    content: null,
+    createdAt: null,
+    updatedAt: null,
+    user: {
+      id: null,
+      email: null,
+      username: null,
+      profilePic: { id: null, URL: null },
+      role: null,
+      createdAt: null,
+      updatedAt: null,
+    },
+    commented: false,
+  },
+};
+
+export const commentSlice = createSlice({
+  name: "comment",
+  initialState,
+  reducers: {
+    updateLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    updateComment: (state, action: PayloadAction<IComment>) => {
+      state.comment = action.payload;
+    },
+  },
+});
+
+export const { updateLoading, updateComment } = commentSlice.actions;
+export default commentSlice.reducer;
