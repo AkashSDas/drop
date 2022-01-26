@@ -11,6 +11,8 @@ import { fetchDropThunk } from "store/drop/thunk";
 import DropCommentsLoading from "@components/drop/DropCommentsLoading";
 import { Form, Formik } from "formik";
 import { Send } from "react-iconly";
+import { createCommentThunk } from "store/create-comment-form/thunk";
+import toast from "react-hot-toast";
 
 const DropPage = () => {
   const router = useRouter();
@@ -18,6 +20,7 @@ const DropPage = () => {
   const { loading: commentsLoading, comments } = useAppSelector(
     (state) => state.dropComments
   );
+  const token = useAppSelector((state) => state.user.token);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -53,7 +56,23 @@ const DropPage = () => {
         <h4>Comments</h4>
         <div className="border-b-[1px] border-solid border-[#32333B]"></div>
 
-        <Formik initialValues={{ content: "" }} onSubmit={() => {}}>
+        <Formik
+          initialValues={{ content: "" }}
+          onSubmit={async (value, { resetForm }) => {
+            if (token) {
+              await dispatch(
+                createCommentThunk({
+                  token,
+                  dropId: drop.id,
+                  content: value.content,
+                })
+              );
+              resetForm();
+            } else {
+              toast.error("You are not logged in");
+            }
+          }}
+        >
           {({ values, handleChange, isSubmitting }) => (
             <Form className="w-full flex space-x-4 mb-3">
               <input
@@ -64,7 +83,10 @@ const DropPage = () => {
                 placeholder="Comment"
                 value={values.content}
               />
-              <button disabled={isSubmitting}>
+              <button
+                className={isSubmitting ? `animate-spin` : ""}
+                disabled={isSubmitting}
+              >
                 <Send primaryColor="#3A8CFF" />
               </button>
             </Form>
