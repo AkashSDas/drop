@@ -44,10 +44,15 @@ export const fetchDropCommentsThunk = createAsyncThunk(
             id: comment.user.id,
             email: comment.user.email,
             username: comment.user.username,
-            profilePic: {
-              id: comment.user.profilePic.id,
-              URL: comment.user.profilePic.URL,
-            },
+            profilePic: comment.user.profilePic
+              ? {
+                  id: comment.user.profilePic.id,
+                  URL: comment.user.profilePic.URL,
+                }
+              : {
+                  id: "",
+                  URL: "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80",
+                },
             role: comment.user.role,
             createdAt: comment.user.createdAt,
             updatedAt: comment.user.updatedAt,
