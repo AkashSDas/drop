@@ -30,7 +30,9 @@ const ReactionButton = ({ emoji, reacted, dropId, reaction, count }: Props) => {
       type="button"
       className={`${bg} ${text} text-[13px] px-2 pt-[6px] pb-2 rounded-md`}
       disabled={togglingReaction}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
+
         // Check if drop is reacted by this user
         if (drop.reacted) {
           if (drop.reacted.reaction === reaction) {
