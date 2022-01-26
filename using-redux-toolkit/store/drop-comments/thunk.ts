@@ -1,9 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import deleteCommentService from "services/comment/delete-comment";
 import fetchDropCommentsPaginatedService from "services/comment/fetch-drop-comments";
 import {
   IComment,
   initAdd,
+  removeComment,
+  updateActionLoading,
   updateLoading,
   updateMoreCommentsInfo,
 } from "./slice";
@@ -68,6 +71,27 @@ export const fetchDropCommentsThunk = createAsyncThunk(
         })
       );
       dispatch(initAdd(comments));
+    }
+  }
+);
+
+export const deleteCommentThunk = createAsyncThunk(
+  "dropComments/deleteComment",
+  async (commentId: string, { dispatch, getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(updateActionLoading(true));
+    const response = await deleteCommentService({ commentId, token });
+    dispatch(updateActionLoading(false));
+
+    if (response.isError) toast.error(response.msg);
+    else {
+      toast.success(response.msg);
+      dispatch(removeComment({ commentId }));
     }
   }
 );
