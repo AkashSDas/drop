@@ -78,6 +78,7 @@ export const deleteComment: AsyncMiddleware = async (req, res, next) => {
 export const getDropComments: AsyncMiddleware = async (req, res, next) => {
   const nextId = req.query.next;
   const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+  const user = req.query.user;
 
   const drop = await Drop.findById(req.params.dropId).select("+_id");
   if (!drop) return next(new BaseApiError(400, "Drop doesn't exists"));
@@ -89,7 +90,16 @@ export const getDropComments: AsyncMiddleware = async (req, res, next) => {
     next: nextId,
   });
 
-  const comments = addIdField(data.results);
+  const commentsWithIds = addIdField(data.results);
+  let comments = [];
+  for (let i = 0; i < commentsWithIds.length; i++) {
+    const comment = await Comment.populate(commentsWithIds[i], "user");
+    let commented = false; // is user the author of this comment or not
+    if (user && (user as string) === comment.user.id.toString()) {
+      commented = true;
+    }
+    comments.push({ comment, commented });
+  }
 
   return responseMsg(res, {
     statusCode: 200,
