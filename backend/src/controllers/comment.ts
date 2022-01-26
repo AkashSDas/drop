@@ -123,3 +123,14 @@ export const getDropComments: AsyncMiddleware = async (req, res, next) => {
     },
   });
 };
+
+export const getDropComment: AsyncMiddleware = async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId).populate("user");
+  if (!comment) return next(new BaseApiError(400, "Comment does not exists"));
+  return responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "Comment retrieved",
+    data: { comment },
+  });
+};
