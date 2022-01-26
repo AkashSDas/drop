@@ -20,6 +20,9 @@ export const dropSlice = createSlice({
     updateLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    updateReactionLoading: (state, action: PayloadAction<boolean>) => {
+      state.togglingReaction = action.payload;
+    },
     updateDrop: (state, action: PayloadAction<IDrop>) => {
       state.drop = action.payload;
     },
@@ -33,13 +36,12 @@ export const dropSlice = createSlice({
       }>
     ) => {
       const { reaction, id, oldReaction, countUpdated } = action.payload;
-      const drop = state.drop;
 
       // decrement count of old reaction & increment count of new reaction
       let reactionsOnDrop = [];
       if (!countUpdated) {
-        for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
-          const reactionInfo = drop.reactionsOnDrop[j];
+        for (let j = 0; j < state.drop.reactionsOnDrop.length; j++) {
+          const reactionInfo = state.drop.reactionsOnDrop[j];
           if (reactionInfo.name === oldReaction) {
             reactionsOnDrop.push({
               ...reactionInfo,
@@ -56,11 +58,14 @@ export const dropSlice = createSlice({
         }
       }
 
-      state.drop = {
-        ...drop,
+      const newDrop: IDrop = {
+        ...state.drop,
         reacted: { id, reaction },
-        reactionsOnDrop: !countUpdated ? reactionsOnDrop : drop.reactionsOnDrop,
+        reactionsOnDrop: !countUpdated
+          ? reactionsOnDrop
+          : state.drop.reactionsOnDrop,
       };
+      state.drop = newDrop;
     },
     addDropReaction: (
       state,
@@ -137,5 +142,6 @@ export const {
   unReactDropReaction,
   toggleDropReacted,
   addDropReaction,
+  updateReactionLoading,
 } = dropSlice.actions;
 export default dropSlice.reducer;
