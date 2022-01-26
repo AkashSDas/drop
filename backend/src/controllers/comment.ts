@@ -54,7 +54,7 @@ export const updateCommentContent: AsyncMiddleware = async (req, res, next) => {
   // Check if comment (for this drop and req.user) exists or not
   const comment = await Comment.findById(req.params.commentId);
   if (!comment) return next(new BaseApiError(400, "Comment does not exists"));
-  if (req.user._id.toString() === comment.user.toString()) {
+  if (req.user._id.toString() !== comment.user.toString()) {
     return next(new BaseApiError(401, "You are not authorized to do that"));
   }
 
