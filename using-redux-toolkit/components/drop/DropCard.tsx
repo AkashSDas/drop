@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { IDrop } from "store/drop/slice";
+import { IDrop } from "store/drops/slice";
 import ReactionButton from "./ReactionButton";
 
 const DropCard = ({

@@ -3,7 +3,7 @@ import {
   reactOnDropThunk,
   toggleReactionOnDropThunk,
   unReactDropReactionThunk,
-} from "store/drop/thunk";
+} from "store/drops/thunk";
 
 interface Props {
   emoji: string;

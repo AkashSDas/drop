@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import createDropService, { ICreateDropData } from "services/drop/create-drop";
-import { addDrop } from "store/drop/slice";
+import { addDrop } from "store/drops/slice";
 import { updateLoading } from "./slice";
 
 export const createDropThunk = createAsyncThunk(

@@ -6,7 +6,7 @@ import loginReducer from "store/login/slice";
 import logoutReducer from "store/logout/slice";
 import forgotPasswordReducer from "store/forgot-password/slice";
 import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
-import dropsReducer from "store/drop/slice";
+import dropsReducer from "store/drops/slice";
 import createDropFormReducer from "store/create-drop-form/slice";
 
 const store = configureStore({
