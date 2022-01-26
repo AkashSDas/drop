@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import getCommentService from "services/comment/get-comment";
-import { IComment } from "store/drop-comments/slice";
+import updateCommentService from "services/comment/update-comment";
+import { IComment, updateActionLoading } from "store/drop-comments/slice";
 import { updateComment, updateLoading } from "./slice";
 
 export const fetchCommentThunk = createAsyncThunk(
@@ -42,5 +43,35 @@ export const fetchCommentThunk = createAsyncThunk(
       };
       dispatch(updateComment(data));
     }
+  }
+);
+
+export const updateCommentThunk = createAsyncThunk(
+  "dropComment/updateComment",
+  async (
+    {
+      content,
+      dropId,
+      commentId,
+    }: { content: string; dropId: string; commentId: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(updateActionLoading(true));
+    const response = await updateCommentService({
+      content,
+      dropId,
+      token,
+      commentId,
+    });
+    dispatch(updateActionLoading(false));
+
+    if (response.isError) toast.error(response.msg);
+    else toast.success(response.msg);
   }
 );
