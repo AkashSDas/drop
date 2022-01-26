@@ -60,7 +60,7 @@ export const dropCommentsSlice = createSlice({
       );
     },
     pushComments: (state, action: PayloadAction<IComment[]>) => {
-      state.comments = [...state.comments, ...action.payload];
+      state.comments = [...action.payload, ...state.comments];
     },
   },
 });
