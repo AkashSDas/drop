@@ -4,10 +4,12 @@ import { IComment } from "store/drop-comments/slice";
 interface ICommentState {
   loading: boolean;
   comment: IComment;
+  actionLoading: boolean;
 }
 
 const initialState: ICommentState = {
   loading: false,
+  actionLoading: false,
   comment: {
     id: null,
     dropId: null,
@@ -33,6 +35,9 @@ export const commentSlice = createSlice({
   reducers: {
     updateLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
+    },
+    updateActionLoading: (state, action: PayloadAction<boolean>) => {
+      state.actionLoading = action.payload;
     },
     updateComment: (state, action: PayloadAction<IComment>) => {
       state.comment = action.payload;
