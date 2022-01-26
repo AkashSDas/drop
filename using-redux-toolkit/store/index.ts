@@ -8,6 +8,7 @@ import forgotPasswordReducer from "store/forgot-password/slice";
 import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
 import dropsReducer from "store/drops/slice";
 import createDropFormReducer from "store/create-drop-form/slice";
+import dropReducer from "store/drop/slice";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     confirmPasswordReset: confirmPasswordResetReducer,
     drops: dropsReducer,
     createDropForm: createDropFormReducer,
+    drop: dropReducer,
   },
 });
 
