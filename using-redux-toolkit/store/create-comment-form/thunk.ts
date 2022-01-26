@@ -25,9 +25,9 @@ export const createCommentThunk = createAsyncThunk(
       const commented = response.data.commented;
       const newComment: IComment = {
         user: {
-          id: comment.id,
-          createdAt: comment.createdAt,
-          email: comment.email,
+          id: comment.user.id,
+          createdAt: comment.user.createdAt,
+          email: comment.user.email,
           profilePic: comment.user.profilePic
             ? {
                 id: comment.user.profilePic.id,
