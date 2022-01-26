@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { IDrop } from "store/drop/slice";
 import ReactionButton from "./ReactionButton";
 
@@ -9,6 +10,8 @@ const DropCard = ({
   reactionsOnDrop,
   id,
 }: IDrop) => {
+  const router = useRouter();
+
   const profilePic = () => (
     <img
       className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
@@ -26,7 +29,10 @@ const DropCard = ({
   );
 
   return (
-    <div className="flex space-x-8">
+    <div
+      className="flex space-x-8 cursor-pointer"
+      onClick={() => router.push(`/drops/${id}`)}
+    >
       {profilePic()}
 
       <div className="flex flex-col space-y-4 w-full">
