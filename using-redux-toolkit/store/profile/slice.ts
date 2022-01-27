@@ -11,6 +11,16 @@ export interface IUser {
   updatedAt: string;
 }
 
+export interface IFollower {
+  id: string;
+  follower: IUser;
+  followed: IUser;
+  createdAt: string;
+  updatedAt: string;
+  isFollowing: boolean;
+  relationshipId: string | null;
+}
+
 export type ProfileTab = "drop" | "redrop" | "following" | "follower";
 
 interface IProfileState {
@@ -23,8 +33,8 @@ interface IProfileState {
   user: IUser;
   drops: IDrop[];
   redrops: any[];
-  followers: IUser[];
-  followings: IUser[];
+  followers: IFollower[];
+  followings: IFollower[];
   self: boolean;
   following: boolean;
   relationshipId: string;
@@ -32,6 +42,9 @@ interface IProfileState {
   dropsTogglingReaction: boolean;
   dropsHasNext: boolean;
   dropsNext: string | null;
+  togglingFollowStatus: boolean;
+  followersHasNext: boolean;
+  followersNext: string | null;
 }
 
 const initialState: IProfileState = {
@@ -61,6 +74,9 @@ const initialState: IProfileState = {
   dropsHasNext: false,
   dropsNext: null,
   dropsTogglingReaction: false,
+  followersHasNext: false,
+  followersNext: null,
+  togglingFollowStatus: false,
 };
 
 export const profileSlice = createSlice({
@@ -72,6 +88,16 @@ export const profileSlice = createSlice({
     },
     updateLoadingUserFollow: (state, action: PayloadAction<boolean>) => {
       state.loadingUserFollow = action.payload;
+    },
+    updateTogglingFollowStatus: (state, action: PayloadAction<boolean>) => {
+      state.togglingFollowStatus = action.payload;
+    },
+    updateMoreFollowersInfo: (
+      state,
+      action: PayloadAction<{ next: string | null; hasNext: boolean }>
+    ) => {
+      state.followersHasNext = action.payload.hasNext;
+      state.followersNext = action.payload.next;
     },
     updateFollowingStatus: (
       state,
@@ -119,6 +145,9 @@ export const profileSlice = createSlice({
     },
     initDropsAdd: (state, action: PayloadAction<IDrop[]>) => {
       state.drops = action.payload;
+    },
+    initFollowersAdd: (state, action: PayloadAction<IFollower[]>) => {
+      state.followers = action.payload;
     },
     updateReactionLoading: (state, action: PayloadAction<boolean>) => {
       state.dropsTogglingReaction = action.payload;
@@ -299,5 +328,8 @@ export const {
   addDropReaction,
   toggleDropReacted,
   unReactDropReaction,
+  updateMoreFollowersInfo,
+  updateTogglingFollowStatus,
+  initFollowersAdd,
 } = profileSlice.actions;
 export default profileSlice.reducer;
