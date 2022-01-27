@@ -8,6 +8,7 @@ import crypto from "crypto";
 import { NextFunction, Request, Response } from "express";
 import cloudinary from "cloudinary";
 import fileUpload from "express-fileupload";
+import { Relationship } from "../models/relationship";
 
 export const signup: AsyncMiddleware = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -367,10 +368,21 @@ export const getUserWithoutAuth: AsyncMiddleware = async (req, res, next) => {
     return next(new BaseApiError(400, "User does not exists"));
   }
 
+  // userId is the one who has sent req
+  const { user: userId } = req.query;
+  const self = user._id.toString() === (userId as string);
+  let following = false;
+  if (!self) {
+    following = await Relationship.exists({
+      follower: userId as any,
+      followed: user._id,
+    });
+  }
+
   responseMsg(res, {
     statusCode: 200,
     isError: false,
     msg: "User info",
-    data: { user },
+    data: { user, self, following },
   });
 };
