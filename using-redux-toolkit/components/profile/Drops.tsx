@@ -1,9 +1,9 @@
-import DropCard from "@components/drop/DropCard";
 import DropsListViewLoading from "@components/drop/DropsListViewLoading";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchUserDropsThunk } from "store/profile/thunk";
+import ProfileDropCard from "./ProfileDropCard";
 
 const Drops = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ const Drops = () => {
             <div key={key} className="space-y-8">
               <div className="border-b-[1px] border-solid border-[#32333B]"></div>
 
-              <DropCard
+              <ProfileDropCard
                 content={d.content}
                 createdAt={d.createdAt}
                 id={d.id}
