@@ -372,17 +372,23 @@ export const getUserWithoutAuth: AsyncMiddleware = async (req, res, next) => {
   const { user: userId } = req.query;
   const self = user._id.toString() === (userId as string);
   let following = false;
+  let relationshipId = null;
   if (!self) {
-    following = await Relationship.exists({
+    const relationship = await Relationship.findOne({
       follower: userId as any,
       followed: user._id,
-    });
+    }).select("+_id");
+
+    if (relationship) {
+      relationshipId = relationship._id;
+      following = true;
+    }
   }
 
   responseMsg(res, {
     statusCode: 200,
     isError: false,
     msg: "User info",
-    data: { user, self, following },
+    data: { user, self, following, relationshipId },
   });
 };
