@@ -99,7 +99,10 @@ export const getUserAllFollowed: AsyncMiddleware = async (req, res, next) => {
   const { user: selfUser } = req.query; // user who has sent request
   let followed = [];
   for (let i = 0; i < followedWithIds.length; i++) {
-    const relationship = followedWithIds[i];
+    const relationship = await Relationship.populate(
+      followedWithIds[i],
+      "follower followed"
+    );
     let isFollowing = null;
 
     if (selfUser) {
