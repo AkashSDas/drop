@@ -4,13 +4,12 @@ import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { updateLoadingProfile } from "store/profile/slice";
-import { fetchProfileUserThunk } from "store/profile/thunk";
+import { fetchProfileUserThunk, followUserThunk } from "store/profile/thunk";
 
 const UserInfo = () => {
   const router = useRouter();
-  const { loadingProfile, user, self, following } = useAppSelector(
-    (state) => state.profile
-  );
+  const { loadingProfile, loadingUserFollow, user, self, following } =
+    useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -24,8 +23,24 @@ const UserInfo = () => {
 
   const displayFollowBtn = () => {
     if (self) return null;
-    if (following) return <TextButton onClick={() => {}} text="Following" />;
-    else return <PrimaryButton text="Follow" onClick={() => {}} />;
+    if (following)
+      return (
+        <button
+          className="text-text2 text-[17px] font-semibold pt-2 pb-[13px] px-[22px] rounded-lg hover:brightness-90 bg-card"
+          onClick={() => {}}
+        >
+          Following
+        </button>
+      );
+    else
+      return (
+        <PrimaryButton
+          text={loadingUserFollow ? "Following..." : "Follow"}
+          onClick={async () => {
+            await dispatch(followUserThunk(user.id));
+          }}
+        />
+      );
   };
 
   if (loadingProfile || !user) return <UserInfoLoading />;
