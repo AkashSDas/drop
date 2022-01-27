@@ -1,9 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchProfileService from "services/profile/fetch-profile";
+import followUserService from "services/profile/follow-user";
 import {
   IUser,
+  updateFollowingStatus,
   updateLoadingProfile,
+  updateLoadingUserFollow,
   updateProfileAndSelfRelation,
   updateUser,
 } from "./slice";
@@ -35,6 +38,8 @@ export const fetchProfileUserThunk = createAsyncThunk(
         updatedAt: data.updatedAt,
         username: data.username,
       };
+      console.log(userId);
+      console.log(selfUserId);
       dispatch(
         updateProfileAndSelfRelation({
           following: response.data.following,
@@ -42,6 +47,26 @@ export const fetchProfileUserThunk = createAsyncThunk(
         })
       );
       dispatch(updateUser(user));
+    }
+  }
+);
+
+export const followUserThunk = createAsyncThunk(
+  "profile/followUser",
+  async (followedId: string, { dispatch, getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(updateLoadingUserFollow(true));
+    const response = await followUserService({ followedId, token });
+    dispatch(updateLoadingUserFollow(false));
+    if (response.isError) toast.error(response.msg);
+    else {
+      toast.success(response.msg);
+      dispatch(updateFollowingStatus(true));
     }
   }
 );
