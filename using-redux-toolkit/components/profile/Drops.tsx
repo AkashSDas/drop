@@ -2,7 +2,10 @@ import DropsListViewLoading from "@components/drop/DropsListViewLoading";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchUserDropsThunk } from "store/profile/thunk";
+import {
+  fetchUserDropsThunk,
+  fetchUserMoreDropsThunk,
+} from "store/profile/thunk";
 import ProfileDropCard from "./ProfileDropCard";
 
 const Drops = () => {
@@ -13,8 +16,10 @@ const Drops = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchUserDropsThunk({ init: true, userId: user.id }));
-  }, [token]);
+    if (user) {
+      dispatch(fetchUserDropsThunk({ init: true, userId: user.id }));
+    }
+  }, [token, user.id]);
 
   return (
     <div className="space-y-8">
@@ -23,7 +28,7 @@ const Drops = () => {
       ) : (
         <InfiniteScroll
           dataLength={drops.length}
-          next={() => {}}
+          next={() => dispatch(fetchUserMoreDropsThunk(user.id))}
           hasMore={dropsHasNext}
           loader={<DropsListViewLoading />}
           endMessage={<div className="font-semibold text-[23px]">The End</div>}
