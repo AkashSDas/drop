@@ -24,6 +24,10 @@ const DropCard = ({
       className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
       src={user.profilePic.URL}
       alt={user.username}
+      onClick={(e) => {
+        e.stopPropagation();
+        router.push(`/profile/${user.id}/drops`);
+      }}
     />
   );
 
