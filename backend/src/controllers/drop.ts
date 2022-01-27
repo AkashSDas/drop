@@ -165,11 +165,13 @@ export const getUserDrops: AsyncMiddleware = async (req, res, next) => {
     }
 
     // Check if user has reacted on this drop or not
+    const { user: selfUser } = req.query; // user who has sent request
     let reacted = null;
-    if (user) {
-      reacted = await Reaction.findOne({ drop: drop._id, user: user }).select(
-        "reaction id"
-      );
+    if (selfUser) {
+      reacted = await Reaction.findOne({
+        drop: drop._id,
+        user: selfUser as any,
+      }).select("reaction id");
     }
 
     dropsWithReactions.push({
