@@ -360,3 +360,17 @@ export const deleteUser: AsyncMiddleware = async (req, res, next) => {
     msg: "Deleted user",
   });
 };
+
+export const getUserWithoutAuth: AsyncMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+  if (!user) {
+    return next(new BaseApiError(400, "User does not exists"));
+  }
+
+  responseMsg(res, {
+    statusCode: 200,
+    isError: false,
+    msg: "User info",
+    data: { user },
+  });
+};

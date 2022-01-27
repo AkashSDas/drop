@@ -9,6 +9,7 @@ import {
   getAllUsers,
   getUser,
   getUserInfo,
+  getUserWithoutAuth,
   leaderChangeUserInfo,
   login,
   logout,
@@ -103,3 +104,4 @@ router.delete(
   runAsync(deleteUser),
   errorHandler
 );
+router.get("/:userId", runAsync(getUserWithoutAuth), errorHandler);
