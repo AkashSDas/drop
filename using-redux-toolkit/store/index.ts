@@ -11,6 +11,7 @@ import createDropFormReducer from "store/create-drop-form/slice";
 import dropReducer from "store/drop/slice";
 import dropCommentsReducer from "store/drop-comments/slice";
 import commentReducer from "store/comment/slice";
+import profileReducer from "store/profile/slice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     drop: dropReducer,
     dropComments: dropCommentsReducer,
     comment: commentReducer,
+    profile: profileReducer,
   },
 });
 
