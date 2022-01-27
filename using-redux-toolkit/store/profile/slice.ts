@@ -60,8 +60,12 @@ export const profileSlice = createSlice({
     updateLoadingUserFollow: (state, action: PayloadAction<boolean>) => {
       state.loadingUserFollow = action.payload;
     },
-    updateFollowingStatus: (state, action: PayloadAction<boolean>) => {
-      state.following = action.payload;
+    updateFollowingStatus: (
+      state,
+      action: PayloadAction<{ following: boolean; relationshipId: string }>
+    ) => {
+      state.following = action.payload.following;
+      state.relationshipId = action.payload.relationshipId;
     },
     updateLoadingProfile: (state, action: PayloadAction<boolean>) => {
       state.loadingProfile = action.payload;

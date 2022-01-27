@@ -65,7 +65,12 @@ export const followUserThunk = createAsyncThunk(
     if (response.isError) toast.error(response.msg);
     else {
       toast.success(response.msg);
-      dispatch(updateFollowingStatus(true));
+      dispatch(
+        updateFollowingStatus({
+          relationshipId: response.data.relationship.id,
+          following: true,
+        })
+      );
     }
   }
 );
