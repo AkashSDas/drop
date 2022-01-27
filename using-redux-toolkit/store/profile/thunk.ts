@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchProfileService from "services/profile/fetch-profile";
 import followUserService from "services/profile/follow-user";
+import unFollowUserService from "services/profile/unfollow-user";
 import {
   IUser,
   updateFollowingStatus,
@@ -70,6 +71,30 @@ export const followUserThunk = createAsyncThunk(
           relationshipId: response.data.relationship.id,
           following: true,
         })
+      );
+    }
+  }
+);
+
+export const unFollowUserThunk = createAsyncThunk(
+  "profile/unFollowUser",
+  async (_, { dispatch, getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    const relationshipId = (getState() as any).profile.relationshipId;
+
+    dispatch(updateLoadingUserFollow(true));
+    const response = await unFollowUserService({ relationshipId, token });
+    dispatch(updateLoadingUserFollow(false));
+    if (response.isError) toast.error(response.msg);
+    else {
+      toast.success(response.msg);
+      dispatch(
+        updateFollowingStatus({ relationshipId: null, following: false })
       );
     }
   }
