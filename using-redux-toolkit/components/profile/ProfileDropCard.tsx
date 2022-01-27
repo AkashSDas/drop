@@ -2,6 +2,11 @@ import ReactionButton from "@components/drop/ReactionButton";
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { IDrop } from "store/drops/slice";
+import {
+  reactOnDropThunk,
+  toggleReactionOnDropThunk,
+  unReactDropReactionThunk,
+} from "store/profile/thunk";
 
 const ProfileDropCard = ({
   content,
@@ -67,30 +72,30 @@ const ProfileDropCard = ({
                 onClick={(e) => {
                   e.stopPropagation();
 
-                  // // Check if drop is reacted by this user
-                  // if (reacted) {
-                  //   if (reacted.reaction === reaction.name) {
-                  //     dispatch(
-                  //       unReactDropReactionThunk({
-                  //         dropId: id,
-                  //         reaction: reaction.name,
-                  //       })
-                  //     );
-                  //   } else {
-                  //     dispatch(
-                  //       toggleReactionOnDropThunk({
-                  //         dropId: id,
-                  //         reaction: reaction.name,
-                  //         oldReaction: reacted.reaction,
-                  //       })
-                  //     );
-                  //   }
-                  // } else {
-                  //   // create new reaction and update state
-                  //   dispatch(
-                  //     reactOnDropThunk({ dropId: id, reaction: reaction.name })
-                  //   );
-                  // }
+                  // Check if drop is reacted by this user
+                  if (reacted) {
+                    if (reacted.reaction === reaction.name) {
+                      dispatch(
+                        unReactDropReactionThunk({
+                          dropId: id,
+                          reaction: reaction.name,
+                        })
+                      );
+                    } else {
+                      dispatch(
+                        toggleReactionOnDropThunk({
+                          dropId: id,
+                          reaction: reaction.name,
+                          oldReaction: reacted.reaction,
+                        })
+                      );
+                    }
+                  } else {
+                    // create new reaction and update state
+                    dispatch(
+                      reactOnDropThunk({ dropId: id, reaction: reaction.name })
+                    );
+                  }
                 }}
               />
             ))}
