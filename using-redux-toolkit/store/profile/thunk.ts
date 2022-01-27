@@ -4,17 +4,24 @@ import fetchProfileService from "services/profile/fetch-profile";
 import fetchUserDropsPaginatedService from "services/profile/fetch-user-drops-paginated";
 import followUserService from "services/profile/follow-user";
 import unFollowUserService from "services/profile/unfollow-user";
+import reactOnDropService from "services/reaction/react-on-drop";
+import toggleReactionOnDropService from "services/reaction/toggle-reaction";
+import unReactDropService from "services/reaction/unreact-drop";
 import { IDrop } from "store/drops/slice";
 import {
+  addDropReaction,
   initDropsAdd,
   IUser,
   pushDrops,
+  toggleDropReacted,
+  unReactDropReaction,
   updateFollowingStatus,
   updateLoadingDrops,
   updateLoadingProfile,
   updateLoadingUserFollow,
   updateMoreDropsInfo,
   updateProfileAndSelfRelation,
+  updateReactionLoading,
   updateUser,
 } from "./slice";
 
@@ -248,5 +255,119 @@ export const fetchUserMoreDropsThunk = createAsyncThunk(
       );
       dispatch(pushDrops(drops));
     }
+  }
+);
+
+export const toggleReactionOnDropThunk = createAsyncThunk(
+  "profile/toggleDropReaction",
+  async (
+    {
+      dropId,
+      reaction,
+      oldReaction,
+    }: { dropId: string; reaction: string; oldReaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      toggleDropReacted({
+        dropId,
+        reaction: { reaction, id: "", oldReaction, countUpdated: false },
+      })
+    );
+
+    dispatch(updateReactionLoading(true));
+    const response = await toggleReactionOnDropService(token, dropId, reaction);
+    console.log(response);
+    dispatch(updateReactionLoading(false));
+
+    // toggle drop of dropId reacted state to update
+    const newReaction = response.data.reaction;
+    dispatch(
+      toggleDropReacted({
+        dropId,
+        reaction: {
+          reaction: newReaction.reaction,
+          id: newReaction.id,
+          oldReaction,
+          countUpdated: true,
+        },
+      })
+    );
+  }
+);
+
+export const reactOnDropThunk = createAsyncThunk(
+  "profile/react",
+  async (
+    { dropId, reaction }: { dropId: string; reaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      addDropReaction({
+        dropId,
+        reaction: { reaction, id: "", countUpdated: false },
+      })
+    );
+
+    dispatch(updateReactionLoading(true));
+    const response = await reactOnDropService(token, dropId, reaction);
+    dispatch(updateReactionLoading(false));
+
+    // toggle drop of dropId reacted state to update
+    const newReaction = response.data.reaction;
+    dispatch(
+      addDropReaction({
+        dropId,
+        reaction: {
+          reaction: newReaction.reaction,
+          id: newReaction.id,
+          countUpdated: true,
+        },
+      })
+    );
+  }
+);
+
+export const unReactDropReactionThunk = createAsyncThunk(
+  "profile/unreact",
+  async (
+    { dropId, reaction }: { dropId: string; reaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      unReactDropReaction({
+        dropId,
+        reaction: { reaction, countUpdated: false },
+      })
+    );
+
+    dispatch(updateReactionLoading(true));
+    await unReactDropService(token, dropId);
+    dispatch(updateReactionLoading(false));
+
+    dispatch(
+      unReactDropReaction({
+        dropId,
+        reaction: { reaction, countUpdated: true },
+      })
+    );
   }
 );
