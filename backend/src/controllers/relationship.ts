@@ -66,7 +66,30 @@ export const getUserAllFollowers: AsyncMiddleware = async (req, res, next) => {
     next: nextId,
   });
 
-  const followers = addIdField(data.results);
+  const followersWithIds = addIdField(data.results);
+  const { user: selfUser } = req.query; // user who has sent request
+  let followers = [];
+  for (let i = 0; i < followersWithIds.length; i++) {
+    const relationship = await Relationship.populate(
+      followersWithIds[i],
+      "follower followed"
+    );
+    let isFollowing = null;
+
+    if (selfUser) {
+      isFollowing = await Relationship.findOne({
+        followed: relationship._id,
+        follower: selfUser as any,
+      }).select("+_id");
+    }
+
+    followers.push({
+      ...relationship,
+      isFollowing: isFollowing ? true : false,
+      relationshipId: isFollowing ? isFollowing._id : null,
+    });
+  }
+
   return responseMsg(res, {
     statusCode: 200,
     isError: false,
