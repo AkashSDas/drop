@@ -16,7 +16,7 @@ const Drops = () => {
   );
 
   useEffect(() => {
-    if (user) {
+    if (user.id) {
       dispatch(fetchUserDropsThunk({ init: true, userId: user.id }));
     }
   }, [token, user.id]);
