@@ -17,6 +17,7 @@ interface IProfileState {
   loadingReDrops: boolean;
   loadingFollowers: boolean;
   loadingFollowings: boolean;
+  loadingUserFollow: boolean;
   user: IUser;
   drops: IDrop[];
   redrops: any[];
@@ -32,6 +33,7 @@ const initialState: IProfileState = {
   loadingReDrops: false,
   loadingFollowers: false,
   loadingFollowings: false,
+  loadingUserFollow: false,
   user: {
     id: null,
     email: null,
@@ -53,6 +55,12 @@ export const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
+    updateLoadingUserFollow: (state, action: PayloadAction<boolean>) => {
+      state.loadingUserFollow = action.payload;
+    },
+    updateFollowingStatus: (state, action: PayloadAction<boolean>) => {
+      state.following = action.payload;
+    },
     updateLoadingProfile: (state, action: PayloadAction<boolean>) => {
       state.loadingProfile = action.payload;
     },
@@ -89,5 +97,7 @@ export const {
   updateLoadingReDrops,
   updateUser,
   updateProfileAndSelfRelation,
+  updateLoadingUserFollow,
+  updateFollowingStatus,
 } = profileSlice.actions;
 export default profileSlice.reducer;
