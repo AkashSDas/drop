@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"James Bond\",\r\n    \"email\": \"tom@gmail.com\",\r\n    \"password\": \"testing\"\r\n}"
+							"raw": "{\r\n    \"username\": \"James Bond\",\r\n    \"email\": \"lane@gmail.com\",\r\n    \"password\": \"testing\"\r\n}"
 						},
 						"url": {
 							"raw": "{{user_domain}}/signup",
@@ -48,7 +48,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"kane@gmail.com\",\r\n    \"password\": \"testing\"\r\n}"
+							"raw": "{\r\n    \"email\": \"kane@gmail.com\",\r\n    \"password\": \"testingon\"\r\n}"
 						},
 						"url": {
 							"raw": "{{user_domain}}/login",
@@ -430,6 +430,29 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_domain}}/61decee33efbc12e5dec84da?user=61f15391380204073b228b0f",
+							"host": [
+								"{{user_domain}}"
+							],
+							"path": [
+								"61decee33efbc12e5dec84da"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -443,7 +466,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MzExMTQ4NywiZXhwIjoxNjQzMzcwNjg3fQ.3Y1sJ9OYXcfWLh7Wo1w0XPeOByGSkLHCOzzYkGMyg_A",
 								"type": "text"
 							},
 							{
@@ -526,18 +549,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{drop_domain}}?limit=1&next=W3siJGRhdGUiOiIyMDIyLTAxLTE0VDA3OjM4OjUzLjAxNloifSx7IiRvaWQiOiI2MWUxMjg2NmRhY2ZmYWZjYWIzOTc2YTYifV0",
+							"raw": "{{drop_domain}}?limit=10&user=61f15391380204073b228b0f",
 							"host": [
 								"{{drop_domain}}"
 							],
 							"query": [
 								{
 									"key": "limit",
-									"value": "1"
+									"value": "10"
 								},
 								{
-									"key": "next",
-									"value": "W3siJGRhdGUiOiIyMDIyLTAxLTE0VDA3OjM4OjUzLjAxNloifSx7IiRvaWQiOiI2MWUxMjg2NmRhY2ZmYWZjYWIzOTc2YTYifV0"
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
 								}
 							]
 						}
@@ -550,13 +573,40 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{drop_domain}}/user/61decee33efbc12e5dec84da",
+							"raw": "{{drop_domain}}/user/61decee33efbc12e5dec84da?limit=4&user=61f15391380204073b228b0f",
 							"host": [
 								"{{drop_domain}}"
 							],
 							"path": [
 								"user",
 								"61decee33efbc12e5dec84da"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "4"
+								},
+								{
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get drop",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{drop_domain}}/61e12866dacffafcab3976a6",
+							"host": [
+								"{{drop_domain}}"
+							],
+							"path": [
+								"61e12866dacffafcab3976a6"
 							]
 						}
 					},
@@ -644,7 +694,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjYjRhMGFmYjhmZmZjMjJmNmFhMyIsImlhdCI6MTY0MjE2NjY0NiwiZXhwIjoxNjQyNDI1ODQ2fQ.bwyRlx-zvVkCWZnNxhKSAiGBldoHmto6q0T3o319aAs",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjE1MDkwMzgwMjA0MDczYjIyOGEwZCIsImlhdCI6MTY0MzIwNDc1MiwiZXhwIjoxNjQzNDYzOTUyfQ.M8PTVQXOfEgLQA0Zuw_cpGH-6ReMfDONvPGcLbn4uW0",
 								"type": "text"
 							},
 							{
@@ -658,13 +708,19 @@
 							"raw": "{\r\n    \"content\": \"This is an amazing drop 🚀\"\r\n}"
 						},
 						"url": {
-							"raw": "{{comment_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"raw": "{{comment_domain}}/drop/61f0e4f511ca49eba47ce5ed?user=61f15090380204073b228a0d",
 							"host": [
 								"{{comment_domain}}"
 							],
 							"path": [
 								"drop",
-								"61e12479b2fe18b1f78e77c6"
+								"61f0e4f511ca49eba47ce5ed"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "61f15090380204073b228a0d"
+								}
 							]
 						}
 					},
@@ -711,17 +767,17 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE2NjU5NiwiZXhwIjoxNjQyNDI1Nzk2fQ.K7_Y6SarSyKDU1xSjTb7UrLhSMySu2RAOaiydAKF7PE",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjE1MzkxMzgwMjA0MDczYjIyOGIwZiIsImlhdCI6MTY0MzIxMjQ2MCwiZXhwIjoxNjQzNDcxNjYwfQ.Mrwoop36QvYZmrGdSH9z1jRARd43bPBpI1XreWXBY3Q",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{comment_domain}}/61e1797fe802234452088495",
+							"raw": "{{comment_domain}}/61f1539e380204073b228b49",
 							"host": [
 								"{{comment_domain}}"
 							],
 							"path": [
-								"61e1797fe802234452088495"
+								"61f1539e380204073b228b49"
 							]
 						}
 					},
@@ -733,13 +789,36 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{comment_domain}}/drop/61e12479b2fe18b1f78e77c6",
+							"raw": "{{comment_domain}}/drop/61f0e4f511ca49eba47ce5ed?user=61f15391380204073b228b0f",
 							"host": [
 								"{{comment_domain}}"
 							],
 							"path": [
 								"drop",
-								"61e12479b2fe18b1f78e77c6"
+								"61f0e4f511ca49eba47ce5ed"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{comment_domain}}/61f1520a380204073b228ac1",
+							"host": [
+								"{{comment_domain}}"
+							],
+							"path": [
+								"61f1520a380204073b228ac1"
 							]
 						}
 					},
@@ -803,14 +882,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{relationship_domain}}/user/61decb4a0afb8fffc22f6aa3/followers",
+							"raw": "{{relationship_domain}}/user/61decee33efbc12e5dec84da/followers?limit=10&user=61f15391380204073b228b0f",
 							"host": [
 								"{{relationship_domain}}"
 							],
 							"path": [
 								"user",
-								"61decb4a0afb8fffc22f6aa3",
+								"61decee33efbc12e5dec84da",
 								"followers"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
+								}
 							]
 						}
 					},
@@ -822,14 +911,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{relationship_domain}}/user/61decb4a0afb8fffc22f6aa3/followed",
+							"raw": "{{relationship_domain}}/user/61decee33efbc12e5dec84da/followed?limit=10&user=61f15391380204073b228b0f",
 							"host": [
 								"{{relationship_domain}}"
 							],
 							"path": [
 								"user",
-								"61decb4a0afb8fffc22f6aa3",
+								"61decee33efbc12e5dec84da",
 								"followed"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "user",
+									"value": "61f15391380204073b228b0f"
+								}
 							]
 						}
 					},
@@ -847,7 +946,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MzAxNjYwMywiZXhwIjoxNjQzMjc1ODAzfQ.EnjUcNtU-Xo6CQw5n8NYpMclgxuUCBFlAj0yxIoGusk",
 								"type": "text"
 							},
 							{
@@ -874,7 +973,7 @@
 					"response": []
 				},
 				{
-					"name": "create reaction Copy",
+					"name": "delete reaction",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -922,7 +1021,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MjE0NDcxMywiZXhwIjoxNjQyNDAzOTEzfQ.hSardzKwHoM8cjDYijYHFpMMzZM1cVxqUxc-Va9Hlx0",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZGVjZWUzM2VmYmMxMmU1ZGVjODRkYSIsImlhdCI6MTY0MzAxNDEwOSwiZXhwIjoxNjQzMjczMzA5fQ.cwffyDNz2j9SAFeMkvJAUa26Glk54EScCYIhxwyzREw",
 								"type": "text"
 							}
 						],
