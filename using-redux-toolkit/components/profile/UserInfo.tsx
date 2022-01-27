@@ -1,5 +1,4 @@
 import PrimaryButton from "@components/shared/PrimaryButton";
-import TextButton from "@components/shared/TextButton";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -63,7 +62,7 @@ const UserInfo = () => {
   );
 };
 
-const UserInfoLoading = () => (
+export const UserInfoLoading = () => (
   <div className="flex justify-between items-center animate-pulse">
     <div className="space-x-8 flex items-center">
       <div className="h-[60px] w-[60px] rounded-full bg-card"></div>
