@@ -11,7 +11,7 @@ export interface IUser {
   updatedAt: string;
 }
 
-type ProfileTab = "drop" | "redrop" | "following" | "follower";
+export type ProfileTab = "drop" | "redrop" | "following" | "follower";
 
 interface IProfileState {
   loadingProfile: boolean;
