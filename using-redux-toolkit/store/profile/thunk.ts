@@ -38,12 +38,11 @@ export const fetchProfileUserThunk = createAsyncThunk(
         updatedAt: data.updatedAt,
         username: data.username,
       };
-      console.log(userId);
-      console.log(selfUserId);
       dispatch(
         updateProfileAndSelfRelation({
           following: response.data.following,
           self: response.data.self,
+          relationshipId: response.data.relationshipId,
         })
       );
       dispatch(updateUser(user));

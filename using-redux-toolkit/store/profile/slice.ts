@@ -25,6 +25,7 @@ interface IProfileState {
   followings: IUser[];
   self: boolean;
   following: boolean;
+  relationshipId: string;
 }
 
 const initialState: IProfileState = {
@@ -49,6 +50,7 @@ const initialState: IProfileState = {
   followings: null,
   following: false,
   self: false,
+  relationshipId: null,
 };
 
 export const profileSlice = createSlice({
@@ -81,10 +83,15 @@ export const profileSlice = createSlice({
     },
     updateProfileAndSelfRelation: (
       state,
-      action: PayloadAction<{ following: boolean; self: boolean }>
+      action: PayloadAction<{
+        following: boolean;
+        self: boolean;
+        relationshipId: string;
+      }>
     ) => {
       state.following = action.payload.following;
       state.self = action.payload.self;
+      state.relationshipId = action.payload.relationshipId;
     },
   },
 });
