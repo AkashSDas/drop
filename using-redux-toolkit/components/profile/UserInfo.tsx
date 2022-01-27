@@ -4,7 +4,11 @@ import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { updateLoadingProfile } from "store/profile/slice";
-import { fetchProfileUserThunk, followUserThunk } from "store/profile/thunk";
+import {
+  fetchProfileUserThunk,
+  followUserThunk,
+  unFollowUserThunk,
+} from "store/profile/thunk";
 
 const UserInfo = () => {
   const router = useRouter();
@@ -27,9 +31,9 @@ const UserInfo = () => {
       return (
         <button
           className="text-text2 text-[17px] font-semibold pt-2 pb-[13px] px-[22px] rounded-lg hover:brightness-90 bg-card"
-          onClick={() => {}}
+          onClick={async () => await dispatch(unFollowUserThunk())}
         >
-          Following
+          {loadingUserFollow ? "Unfollowing..." : "Following"}
         </button>
       );
     else
