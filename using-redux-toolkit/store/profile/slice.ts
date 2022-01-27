@@ -129,6 +129,154 @@ export const profileSlice = createSlice({
     pushDrops: (state, action: PayloadAction<IDrop[]>) => {
       state.drops = [...state.drops, ...action.payload];
     },
+    toggleDropReacted: (
+      state,
+      action: PayloadAction<{
+        reaction: {
+          reaction: string;
+          id: string;
+          oldReaction: string;
+          countUpdated: boolean;
+        };
+        dropId: string;
+      }>
+    ) => {
+      const { reaction, dropId } = action.payload;
+
+      let drops = [];
+      for (let i = 0; i < state.drops.length; i++) {
+        const drop = state.drops[i];
+        if (drop.id === dropId) {
+          // decrement count of old reaction & increment count of new reaction
+
+          let reactionsOnDrop = [];
+          if (!reaction.countUpdated) {
+            for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
+              const reactionInfo = drop.reactionsOnDrop[j];
+              if (reactionInfo.name === reaction.oldReaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count - 1,
+                });
+              } else if (reactionInfo.name === reaction.reaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count + 1,
+                });
+              } else {
+                reactionsOnDrop.push(reactionInfo);
+              }
+            }
+          }
+
+          drops.push({
+            ...drop,
+            reacted: { id: reaction.id, reaction: reaction.reaction },
+            reactionsOnDrop: !reaction.countUpdated
+              ? reactionsOnDrop
+              : drop.reactionsOnDrop,
+          });
+        } else {
+          drops.push(drop);
+        }
+      }
+
+      state.drops = drops;
+    },
+    addDropReaction: (
+      state,
+      action: PayloadAction<{
+        reaction: {
+          reaction: string;
+          id: string;
+          countUpdated: boolean;
+        };
+        dropId: string;
+      }>
+    ) => {
+      const { reaction, dropId } = action.payload;
+
+      let drops = [];
+      for (let i = 0; i < state.drops.length; i++) {
+        const drop = state.drops[i];
+        if (drop.id === dropId) {
+          // decrement count of old reaction & increment count of new reaction
+
+          let reactionsOnDrop = [];
+          if (!reaction.countUpdated) {
+            for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
+              const reactionInfo = drop.reactionsOnDrop[j];
+              if (reactionInfo.name === reaction.reaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count + 1,
+                });
+              } else {
+                reactionsOnDrop.push(reactionInfo);
+              }
+            }
+          }
+
+          drops.push({
+            ...drop,
+            reacted: { id: reaction.id, reaction: reaction.reaction },
+            reactionsOnDrop: !reaction.countUpdated
+              ? reactionsOnDrop
+              : drop.reactionsOnDrop,
+          });
+        } else {
+          drops.push(drop);
+        }
+      }
+
+      state.drops = drops;
+    },
+    unReactDropReaction: (
+      state,
+      action: PayloadAction<{
+        reaction: {
+          reaction: string;
+          countUpdated: boolean;
+        };
+        dropId: string;
+      }>
+    ) => {
+      const { reaction, dropId } = action.payload;
+
+      let drops = [];
+      for (let i = 0; i < state.drops.length; i++) {
+        const drop = state.drops[i];
+        if (drop.id === dropId) {
+          // decrement count of old reaction & increment count of new reaction
+
+          let reactionsOnDrop = [];
+          if (!reaction.countUpdated) {
+            for (let j = 0; j < drop.reactionsOnDrop.length; j++) {
+              const reactionInfo = drop.reactionsOnDrop[j];
+              if (reactionInfo.name === reaction.reaction) {
+                reactionsOnDrop.push({
+                  ...reactionInfo,
+                  count: reactionInfo.count - 1,
+                });
+              } else {
+                reactionsOnDrop.push(reactionInfo);
+              }
+            }
+          }
+          drops.push({
+            ...drop,
+            reacted: null,
+            reactionsOnDrop: !reaction.countUpdated
+              ? reactionsOnDrop
+              : drop.reactionsOnDrop,
+          });
+        } else {
+          drops.push(drop);
+        }
+      }
+
+      state.drops = drops;
+    },
   },
 });
 
@@ -148,5 +296,8 @@ export const {
   pushDrops,
   updateMoreDropsInfo,
   updateReactionLoading,
+  addDropReaction,
+  toggleDropReacted,
+  unReactDropReaction,
 } = profileSlice.actions;
 export default profileSlice.reducer;
