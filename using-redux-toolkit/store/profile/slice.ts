@@ -29,6 +29,9 @@ interface IProfileState {
   following: boolean;
   relationshipId: string;
   currentTab: ProfileTab;
+  dropsTogglingReaction: boolean;
+  dropsHasNext: boolean;
+  dropsNext: string | null;
 }
 
 const initialState: IProfileState = {
@@ -47,14 +50,17 @@ const initialState: IProfileState = {
     createdAt: null,
     updatedAt: null,
   },
-  drops: null,
-  redrops: null,
-  followers: null,
-  followings: null,
+  drops: [],
+  redrops: [],
+  followers: [],
+  followings: [],
   following: false,
   self: false,
   relationshipId: null,
   currentTab: "drop",
+  dropsHasNext: false,
+  dropsNext: null,
+  dropsTogglingReaction: false,
 };
 
 export const profileSlice = createSlice({
@@ -104,6 +110,25 @@ export const profileSlice = createSlice({
       state.self = action.payload.self;
       state.relationshipId = action.payload.relationshipId;
     },
+    updateMoreDropsInfo: (
+      state,
+      action: PayloadAction<{ next: string | null; hasNext: boolean }>
+    ) => {
+      state.dropsHasNext = action.payload.hasNext;
+      state.dropsNext = action.payload.next;
+    },
+    initDropsAdd: (state, action: PayloadAction<IDrop[]>) => {
+      state.drops = action.payload;
+    },
+    updateReactionLoading: (state, action: PayloadAction<boolean>) => {
+      state.dropsTogglingReaction = action.payload;
+    },
+    addDrop: (state, action: PayloadAction<IDrop>) => {
+      state.drops = [action.payload, ...state.drops];
+    },
+    pushDrops: (state, action: PayloadAction<IDrop[]>) => {
+      state.drops = [...state.drops, ...action.payload];
+    },
   },
 });
 
@@ -118,5 +143,10 @@ export const {
   updateLoadingUserFollow,
   updateFollowingStatus,
   updateTab,
+  addDrop,
+  initDropsAdd,
+  pushDrops,
+  updateMoreDropsInfo,
+  updateReactionLoading,
 } = profileSlice.actions;
 export default profileSlice.reducer;
