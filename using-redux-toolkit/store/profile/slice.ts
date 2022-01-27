@@ -11,6 +11,8 @@ export interface IUser {
   updatedAt: string;
 }
 
+type ProfileTab = "drop" | "redrop" | "following" | "follower";
+
 interface IProfileState {
   loadingProfile: boolean;
   loadingDrops: boolean;
@@ -26,6 +28,7 @@ interface IProfileState {
   self: boolean;
   following: boolean;
   relationshipId: string;
+  currentTab: ProfileTab;
 }
 
 const initialState: IProfileState = {
@@ -51,12 +54,16 @@ const initialState: IProfileState = {
   following: false,
   self: false,
   relationshipId: null,
+  currentTab: "drop",
 };
 
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
+    updateTab: (state, action: PayloadAction<ProfileTab>) => {
+      state.currentTab = action.payload;
+    },
     updateLoadingUserFollow: (state, action: PayloadAction<boolean>) => {
       state.loadingUserFollow = action.payload;
     },
@@ -110,5 +117,6 @@ export const {
   updateProfileAndSelfRelation,
   updateLoadingUserFollow,
   updateFollowingStatus,
+  updateTab,
 } = profileSlice.actions;
 export default profileSlice.reducer;
