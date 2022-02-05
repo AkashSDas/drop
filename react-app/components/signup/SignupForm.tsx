@@ -1,3 +1,4 @@
+import RevealAnimation from "@components/animation/RevealAnimation";
 import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch } from "lib/hooks/store";
@@ -15,6 +16,12 @@ const SignupForm = () => {
     const isSignedIn = (await dispatch(signupThunk(value))).payload;
     if (isSignedIn) router.push("/");
   };
+
+  const animationWrapperJsx = (element: JSX.Element) => (
+    <RevealAnimation duration={1} rotate={10} y={30}>
+      {element}
+    </RevealAnimation>
+  );
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -45,10 +52,16 @@ const SignupForm = () => {
 
         return (
           <Form className="space-y-6">
-            <IconInput icon={<User />} inputProps={usernameInputProps} />
-            <IconInput icon={<Message />} inputProps={emailInputProps} />
-            <IconInput icon={<Lock />} inputProps={passwordInputProps} />
-            <SignupButton isSubmitting={isSubmitting} />
+            {animationWrapperJsx(
+              <IconInput icon={<User />} inputProps={usernameInputProps} />
+            )}
+            {animationWrapperJsx(
+              <IconInput icon={<Message />} inputProps={emailInputProps} />
+            )}
+            {animationWrapperJsx(
+              <IconInput icon={<Lock />} inputProps={passwordInputProps} />
+            )}
+            {animationWrapperJsx(<SignupButton isSubmitting={isSubmitting} />)}
           </Form>
         );
       }}
