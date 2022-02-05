@@ -10,7 +10,9 @@ const SignupPage = () => {
         <h3>🤝 Signup</h3>
       </RevealAnimation>
       <SignupForm />
-      <SignupHelpLinks />
+      <RevealAnimation duration={1} rotate={10} y={30}>
+        <SignupHelpLinks />
+      </RevealAnimation>
     </main>
   );
 };
