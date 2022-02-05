@@ -1,7 +1,6 @@
 import RevealAnimation from "@components/animation/RevealAnimation";
 import SignupForm from "@components/signup/SignupForm";
 import SignupHelpLinks from "@components/signup/SignupHelpLinks";
-import { motion } from "framer-motion";
 
 const SignupPage = () => {
   return (
