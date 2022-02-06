@@ -1,22 +1,28 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
+import { signup } from "./thunk";
 
 interface ISignupState {
-  loading: boolean;
+  isLoading: boolean;
 }
 
-const initialState: ISignupState = {
-  loading: false,
-};
+const initialState: ISignupState = { isLoading: false };
 
 export const signupSlice = createSlice({
   name: "signup",
   initialState,
-  reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(signup.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(signup.fulfilled, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(signup.rejected, (state, _) => {
+      state.isLoading = false;
+    });
   },
 });
 
-export const { updateLoading } = signupSlice.actions;
 export default signupSlice.reducer;
