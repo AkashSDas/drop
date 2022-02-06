@@ -1,6 +1,6 @@
-import { UserState } from "store/user/slice";
+import { IUserState } from "store/user/slice";
 
-export const saveUserToLocalStorage = (data: UserState) => {
+export const saveUserToLocalStorage = (data: IUserState) => {
   if (window !== undefined) localStorage.setItem("user", JSON.stringify(data));
 };
 
