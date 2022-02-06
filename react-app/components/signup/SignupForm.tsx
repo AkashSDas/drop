@@ -17,12 +17,6 @@ const SignupForm = () => {
     if (isSignedIn) router.push("/");
   };
 
-  const animationWrapperJsx = (element: JSX.Element) => (
-    <RevealAnimation duration={1} rotate={10} y={30}>
-      {element}
-    </RevealAnimation>
-  );
-
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({ values, handleChange, isSubmitting }) => {
@@ -52,16 +46,9 @@ const SignupForm = () => {
 
         return (
           <Form className="space-y-6">
-            {animationWrapperJsx(
-              <IconInput icon={<User />} inputProps={usernameInputProps} />
-            )}
-            {animationWrapperJsx(
-              <IconInput icon={<Message />} inputProps={emailInputProps} />
-            )}
-            {animationWrapperJsx(
-              <IconInput icon={<Lock />} inputProps={passwordInputProps} />
-            )}
-            {animationWrapperJsx(<SignupButton isSubmitting={isSubmitting} />)}
+            <IconInput icon={<User />} inputProps={usernameInputProps} />
+            <IconInput icon={<Message />} inputProps={emailInputProps} />
+            <IconInput icon={<Lock />} inputProps={passwordInputProps} />
           </Form>
         );
       }}

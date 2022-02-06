@@ -1,3 +1,4 @@
+import LoadAnimation from "@components/animation/LoadAnimation";
 import styles from "@style/shared/Header.module.scss";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
@@ -6,6 +7,10 @@ import { logoutThunk } from "store/logout/thunk";
 import PrimaryButton from "./PrimaryButton";
 import SearchInput from "./SearchInput";
 import TextButton from "./TextButton";
+
+const delay = 0.1;
+const duration = 1;
+const initialY = -60;
 
 const Header = () => {
   const router = useRouter();
@@ -20,7 +25,9 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.header_inner}>
-        <SearchInput />
+        <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
+          <SearchInput />
+        </LoadAnimation>
         {user.token ? (
           <div className="space-x-8 flex items-center">
             <TextButton
@@ -38,16 +45,23 @@ const Header = () => {
             />
           </div>
         ) : (
-          <div className="space-x-8 flex">
-            <TextButton text="Login" onClick={() => router.push("/login")} />
-            <PrimaryButton
-              text="Signup"
-              onClick={() => router.push("/signup")}
-            />
-          </div>
+          <Actions />
         )}
       </div>
     </header>
+  );
+};
+
+const Actions = () => {
+  const router = useRouter();
+
+  return (
+    <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
+      <div className="flex space-x-8">
+        <TextButton text="Login" onClick={() => router.push("/login")} />
+        <PrimaryButton text="Signup" onClick={() => router.push("/signup")} />
+      </div>
+    </LoadAnimation>
   );
 };
 
