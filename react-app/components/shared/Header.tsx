@@ -13,9 +13,30 @@ const duration = 1;
 const initialY = -60;
 
 const Header = () => {
+  return (
+    <header className={styles.header}>
+      <div className={styles.header_inner}>
+        <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
+          <SearchInput />
+        </LoadAnimation>
+        <Actions />
+      </div>
+    </header>
+  );
+};
+
+const Actions = () => {
+  const user = useAppSelector((state) => state.user);
+  if (user.token) return <AuthActions />;
+  return <NoAuthActions />;
+};
+
+/**
+ * Actions for authenticated users
+ */
+const AuthActions = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
 
   const logout = async () => {
     const isLoggedOut = (await dispatch(logoutThunk())).payload;
@@ -23,36 +44,33 @@ const Header = () => {
   };
 
   return (
-    <header className={styles.header}>
-      <div className={styles.header_inner}>
-        <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
-          <SearchInput />
-        </LoadAnimation>
-        {user.token ? (
-          <div className="space-x-8 flex items-center">
-            <TextButton
-              text="💧 Drop it"
-              onClick={() => dispatch(updateIsOpen(true))}
-            />
-            <TextButton text="Logout" onClick={logout} />
-            <img
-              className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
-              src={
-                user?.info?.profilePic?.URL ??
-                "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80"
-              }
-              alt={user?.info?.username ?? "Unknown User"}
-            />
-          </div>
-        ) : (
-          <Actions />
-        )}
-      </div>
-    </header>
+    <div className="space-x-8 flex items-center">
+      <TextButton text="Drop it" onClick={() => dispatch(updateIsOpen(true))} />
+      <TextButton text="Logout" onClick={logout} />
+      <ProfilePic />
+    </div>
   );
 };
 
-const Actions = () => {
+const ProfilePic = () => {
+  const user = useAppSelector((state) => state.user);
+  const style = "h-[50px] w-[50px] rounded-full object-cover cursor-pointer";
+  const defaultPicURL =
+    "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80";
+
+  return (
+    <img
+      className={style}
+      src={user?.info?.profilePic?.URL ?? defaultPicURL}
+      alt={user?.info?.username ?? "Unknown User"}
+    />
+  );
+};
+
+/**
+ * Actions for unauthenticated users
+ */
+const NoAuthActions = () => {
   const router = useRouter();
 
   return (
