@@ -1,17 +1,17 @@
-import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
-
-import userReducer from "store/user/slice";
-import signupReducer from "store/signup/slice";
+import commentReducer from "store/comment/slice";
+import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
+import createDropFormReducer from "store/create-drop-form/slice";
+import dropCommentsReducer from "store/drop-comments/slice";
+import dropReducer from "store/drop/slice";
+import dropsReducer from "store/drops/slice";
+import forgotPasswordReducer from "store/forgot-password/slice";
 import loginReducer from "store/login/slice";
 import logoutReducer from "store/logout/slice";
-import forgotPasswordReducer from "store/forgot-password/slice";
-import confirmPasswordResetReducer from "store/confirm-password-reset/slice";
-import dropsReducer from "store/drops/slice";
-import createDropFormReducer from "store/create-drop-form/slice";
-import dropReducer from "store/drop/slice";
-import dropCommentsReducer from "store/drop-comments/slice";
-import commentReducer from "store/comment/slice";
 import profileReducer from "store/profile/slice";
+import signupReducer from "store/signup/slice";
+import userReducer from "store/user/slice";
+
+import { AnyAction, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
 const store = configureStore({
   reducer: {
