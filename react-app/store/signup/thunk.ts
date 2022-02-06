@@ -2,18 +2,14 @@ import { saveUserToLocalStorage } from "lib/base/local-storage";
 import { normalizeUserForStore } from "lib/normalize/user";
 import toast from "react-hot-toast";
 import signupService, { ISignupData } from "services/auth/signup";
-import { IUserState, updateUser } from "store/user/slice";
+import { updateUser } from "store/user/slice";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { updateLoading } from "./slice";
-
-export const signupThunk = createAsyncThunk(
-  "signup/user",
+export const signup = createAsyncThunk(
+  "signup/createUser",
   async (data: ISignupData, { dispatch }) => {
-    dispatch(updateLoading(true));
     const response = await signupService(data);
-    dispatch(updateLoading(false));
     if (response.isError) toast.error(response.msg);
     else {
       toast.success(response.msg);
