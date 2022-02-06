@@ -49,6 +49,7 @@ const SignupForm = () => {
             <IconInput icon={<User />} inputProps={usernameInputProps} />
             <IconInput icon={<Message />} inputProps={emailInputProps} />
             <IconInput icon={<Lock />} inputProps={passwordInputProps} />
+            <SignupButton isSubmitting={isSubmitting} />
           </Form>
         );
       }}
