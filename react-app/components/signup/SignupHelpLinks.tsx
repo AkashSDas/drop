@@ -1,13 +1,10 @@
-import TextRollAnimation from "@components/animation/TextRollAnimation";
+import RollingAnimation from "@components/animation/RollingAnimation";
 import Link from "next/link";
 
 const SignupHelpLinks = () => (
   <Link href="/login">
-    <div className="cursor-pointer">
-      <TextRollAnimation
-        text="Already have an account"
-        color="rgb(58 140 255)"
-      />
+    <div className="cursor-pointe text-secondary cursor-pointer">
+      <RollingAnimation>Already have an account</RollingAnimation>
     </div>
   </Link>
 );

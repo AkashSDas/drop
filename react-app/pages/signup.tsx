@@ -1,6 +1,5 @@
 import RevealAnimation from "@components/animation/RevealAnimation";
 import RollingAnimation from "@components/animation/RollingAnimation";
-import TextRollAnimation from "@components/animation/TextRollAnimation";
 import SignupForm from "@components/signup/SignupForm";
 import SignupHelpLinks from "@components/signup/SignupHelpLinks";
 
