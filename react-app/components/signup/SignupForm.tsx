@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { Lock, Message, User } from "react-iconly";
-import { signupThunk } from "store/signup/thunk";
+import { signup } from "store/signup/thunk";
 
 import RevealAnimation from "@components/animation/RevealAnimation";
 import IconInput from "@components/shared/IconInput";
@@ -15,7 +15,7 @@ const SignupForm = () => {
   const initialValues = { username: "", email: "", password: "" };
 
   const handleSubmit = async (value: typeof initialValues) => {
-    const isSignedIn = (await dispatch(signupThunk(value))).payload;
+    const isSignedIn = (await dispatch(signup(value))).payload;
     if (isSignedIn) router.push("/");
   };
 

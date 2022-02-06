@@ -4,7 +4,7 @@ import RollingAnimation from "@components/animation/RollingAnimation";
 import styles from "@style/signup/SignupButton.module.scss";
 
 const SignupButton = ({ isSubmitting }: { isSubmitting: boolean }) => {
-  const loading = useAppSelector((state) => state.signup.loading);
+  const loading = useAppSelector((state) => state.signup.isLoading);
 
   return (
     <RollingAnimation>
