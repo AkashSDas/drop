@@ -38,7 +38,7 @@ const Header = () => {
             />
           </div>
         ) : (
-          <div className="space-x-8">
+          <div className="space-x-8 flex">
             <TextButton text="Login" onClick={() => router.push("/login")} />
             <PrimaryButton
               text="Signup"
