@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Lock, Message, User } from "react-iconly";
 import { signupThunk } from "store/signup/thunk";
 
+import RevealAnimation from "@components/animation/RevealAnimation";
 import IconInput from "@components/shared/IconInput";
 
 import SignupButton from "./SignupButton";
@@ -47,15 +48,29 @@ const SignupForm = () => {
 
         return (
           <Form className="space-y-6">
-            <IconInput icon={<User />} inputProps={usernameInputProps} />
-            <IconInput icon={<Message />} inputProps={emailInputProps} />
-            <IconInput icon={<Lock />} inputProps={passwordInputProps} />
-            <SignupButton isSubmitting={isSubmitting} />
+            <RevealWrapper>
+              <IconInput icon={<User />} inputProps={usernameInputProps} />
+            </RevealWrapper>
+            <RevealWrapper>
+              <IconInput icon={<Message />} inputProps={emailInputProps} />
+            </RevealWrapper>
+            <RevealWrapper>
+              <IconInput icon={<Lock />} inputProps={passwordInputProps} />
+            </RevealWrapper>
+            <RevealWrapper>
+              <SignupButton isSubmitting={isSubmitting} />
+            </RevealWrapper>
           </Form>
         );
       }}
     </Formik>
   );
 };
+
+const RevealWrapper = ({ children }: { children: JSX.Element }) => (
+  <RevealAnimation rotate={10} y={60} duration={1}>
+    {children}
+  </RevealAnimation>
+);
 
 export default SignupForm;
