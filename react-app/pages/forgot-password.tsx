@@ -1,9 +1,10 @@
-import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { Message } from "react-iconly";
 import { forgotPasswordThunk } from "store/forgot-password/thunk";
+
+import IconInput from "@components/shared/IconInput";
 
 const ForgotPasswordPage = () => {
   const router = useRouter();

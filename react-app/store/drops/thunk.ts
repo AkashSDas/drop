@@ -1,20 +1,12 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
 import reactOnDropService from "services/reaction/react-on-drop";
 import toggleReactionOnDropService from "services/reaction/toggle-reaction";
 import unReactDropService from "services/reaction/unreact-drop";
-import {
-  initAdd,
-  IDrop,
-  updateLoading,
-  updateMoreDropsInfo,
-  updateReactionLoading,
-  toggleDropReacted,
-  addDropReaction,
-  unReactDropReaction,
-  pushDrops,
-} from "./slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { addDropReaction, IDrop, initAdd, pushDrops, toggleDropReacted, unReactDropReaction, updateLoading, updateMoreDropsInfo, updateReactionLoading } from "./slice";
 
 export const fetchDropsThunk = createAsyncThunk(
   "drops/dropsAdded",

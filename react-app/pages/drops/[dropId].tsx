@@ -1,18 +1,19 @@
-import DropCardLoadng from "@components/drop/DropCardLoading";
-import DropComments from "@components/drop/DropComments";
-import IndependentDropCard from "@components/drop/IndependentDropCard";
+import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { fetchDropCommentsThunk } from "store/drop-comments/thunk";
-import { updateLoading as updateDropLoading } from "store/drop/slice";
-import { updateLoading as updateCommentsLoading } from "store/drop-comments/slice";
-import { fetchDropThunk } from "store/drop/thunk";
-import DropCommentsLoading from "@components/drop/DropCommentsLoading";
-import { Form, Formik } from "formik";
+import toast from "react-hot-toast";
 import { Send } from "react-iconly";
 import { createCommentThunk } from "store/create-comment-form/thunk";
-import toast from "react-hot-toast";
+import { updateLoading as updateCommentsLoading } from "store/drop-comments/slice";
+import { fetchDropCommentsThunk } from "store/drop-comments/thunk";
+import { updateLoading as updateDropLoading } from "store/drop/slice";
+import { fetchDropThunk } from "store/drop/thunk";
+
+import DropCardLoadng from "@components/drop/DropCardLoading";
+import DropComments from "@components/drop/DropComments";
+import DropCommentsLoading from "@components/drop/DropCommentsLoading";
+import IndependentDropCard from "@components/drop/IndependentDropCard";
 
 const DropPage = () => {
   const router = useRouter();

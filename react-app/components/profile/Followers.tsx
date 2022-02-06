@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import { fetchUserFollowersThunk } from "store/profile/thunk";
+
 import FollowerInfo from "./FollowerInfo";
 import { UserInfoLoading } from "./UserInfo";
 

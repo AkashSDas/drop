@@ -1,4 +1,3 @@
-import DropComment from "@components/drop/DropComment";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
@@ -6,6 +5,8 @@ import { useEffect } from "react";
 import { Send } from "react-iconly";
 import { updateLoading } from "store/comment/slice";
 import { fetchCommentThunk, updateCommentThunk } from "store/comment/thunk";
+
+import DropComment from "@components/drop/DropComment";
 
 const UpdateDropCommentPage = () => {
   const router = useRouter();

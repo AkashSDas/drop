@@ -1,10 +1,6 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { MouseEventHandler } from "react";
-import {
-  reactOnDropThunk,
-  toggleReactionOnDropThunk,
-  unReactDropReactionThunk,
-} from "store/drops/thunk";
+import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drops/thunk";
 
 interface Props {
   emoji: string;

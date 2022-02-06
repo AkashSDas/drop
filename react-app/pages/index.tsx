@@ -1,5 +1,6 @@
-import DropsListView from "@components/drop/DropsListView";
 import { useAppSelector } from "lib/hooks/store";
+
+import DropsListView from "@components/drop/DropsListView";
 
 const IndexPage = () => {
   const isOpen = useAppSelector((state) => state.createDropForm.isOpen);

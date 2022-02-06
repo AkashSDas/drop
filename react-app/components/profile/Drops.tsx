@@ -1,11 +1,10 @@
-import DropsListViewLoading from "@components/drop/DropsListViewLoading";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {
-  fetchUserDropsThunk,
-  fetchUserMoreDropsThunk,
-} from "store/profile/thunk";
+import { fetchUserDropsThunk, fetchUserMoreDropsThunk } from "store/profile/thunk";
+
+import DropsListViewLoading from "@components/drop/DropsListViewLoading";
+
 import ProfileDropCard from "./ProfileDropCard";
 
 const Drops = () => {

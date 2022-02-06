@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import fetchProfileService from "services/profile/fetch-profile";
 import fetchUserDropsPaginatedService from "services/profile/fetch-user-drops-paginated";
@@ -9,26 +8,10 @@ import reactOnDropService from "services/reaction/react-on-drop";
 import toggleReactionOnDropService from "services/reaction/toggle-reaction";
 import unReactDropService from "services/reaction/unreact-drop";
 import { IDrop } from "store/drops/slice";
-import {
-  addDropReaction,
-  IFollower,
-  initDropsAdd,
-  initFollowersAdd,
-  IUser,
-  pushDrops,
-  toggleDropReacted,
-  unReactDropReaction,
-  updateFollowingStatus,
-  updateLoadingDrops,
-  updateLoadingFollowers,
-  updateLoadingProfile,
-  updateLoadingUserFollow,
-  updateMoreDropsInfo,
-  updateMoreFollowersInfo,
-  updateProfileAndSelfRelation,
-  updateReactionLoading,
-  updateUser,
-} from "./slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { addDropReaction, IFollower, initDropsAdd, initFollowersAdd, IUser, pushDrops, toggleDropReacted, unReactDropReaction, updateFollowingStatus, updateLoadingDrops, updateLoadingFollowers, updateLoadingProfile, updateLoadingUserFollow, updateMoreDropsInfo, updateMoreFollowersInfo, updateProfileAndSelfRelation, updateReactionLoading, updateUser } from "./slice";
 
 export const fetchProfileUserThunk = createAsyncThunk(
   "profile/fetchUser",

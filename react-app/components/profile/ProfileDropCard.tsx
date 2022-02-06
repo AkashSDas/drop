@@ -1,12 +1,9 @@
-import ReactionButton from "@components/drop/ReactionButton";
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { IDrop } from "store/drops/slice";
-import {
-  reactOnDropThunk,
-  toggleReactionOnDropThunk,
-  unReactDropReactionThunk,
-} from "store/profile/thunk";
+import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/profile/thunk";
+
+import ReactionButton from "@components/drop/ReactionButton";
 
 const ProfileDropCard = ({
   content,

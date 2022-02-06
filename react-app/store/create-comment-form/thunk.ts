@@ -1,7 +1,9 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import createCommentService from "services/comment/create-comment";
 import { IComment, pushComments } from "store/drop-comments/slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const createCommentThunk = createAsyncThunk(

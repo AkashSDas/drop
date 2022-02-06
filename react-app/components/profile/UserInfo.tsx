@@ -1,13 +1,10 @@
-import PrimaryButton from "@components/shared/PrimaryButton";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { updateLoadingProfile } from "store/profile/slice";
-import {
-  fetchProfileUserThunk,
-  followUserThunk,
-  unFollowUserThunk,
-} from "store/profile/thunk";
+import { fetchProfileUserThunk, followUserThunk, unFollowUserThunk } from "store/profile/thunk";
+
+import PrimaryButton from "@components/shared/PrimaryButton";
 
 const UserInfo = () => {
   const router = useRouter();

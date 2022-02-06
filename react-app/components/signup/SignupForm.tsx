@@ -1,10 +1,11 @@
-import RevealAnimation from "@components/animation/RevealAnimation";
-import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { Lock, Message, User } from "react-iconly";
 import { signupThunk } from "store/signup/thunk";
+
+import IconInput from "@components/shared/IconInput";
+
 import SignupButton from "./SignupButton";
 
 const SignupForm = () => {

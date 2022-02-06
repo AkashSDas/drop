@@ -1,6 +1,7 @@
 import { MouseEventHandler } from "react";
-import style from "@style/shared/TextButton.module.scss";
+
 import RollingAnimation from "@components/animation/RollingAnimation";
+import style from "@style/shared/TextButton.module.scss";
 
 interface Props {
   text: string;

@@ -1,5 +1,6 @@
-import RollingAnimation from "@components/animation/RollingAnimation";
 import Link from "next/link";
+
+import RollingAnimation from "@components/animation/RollingAnimation";
 
 const SignupHelpLinks = () => (
   <Link href="/login">

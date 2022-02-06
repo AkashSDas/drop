@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchDropsThunk, fetchMoreDropsThunk } from "store/drops/thunk";
+
 import DropCard from "./DropCard";
 import DropsListViewLoading from "./DropsListViewLoading";
 

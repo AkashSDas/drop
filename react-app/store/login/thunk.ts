@@ -1,8 +1,10 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { saveUserToLocalStorage } from "lib/base/local-storage";
 import toast from "react-hot-toast";
 import loginService, { ILoginData } from "services/auth/login";
 import { IUserState, updateUser } from "store/user/slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const loginThunk = createAsyncThunk(

@@ -1,9 +1,11 @@
-import LoadAnimation from "@components/animation/LoadAnimation";
-import styles from "@style/shared/Header.module.scss";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { updateIsOpen } from "store/create-drop-form/slice";
 import { logoutThunk } from "store/logout/thunk";
+
+import LoadAnimation from "@components/animation/LoadAnimation";
+import styles from "@style/shared/Header.module.scss";
+
 import PrimaryButton from "./PrimaryButton";
 import SearchInput from "./SearchInput";
 import TextButton from "./TextButton";

@@ -1,9 +1,11 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { saveUserToLocalStorage } from "lib/base/local-storage";
 import { normalizeUserForStore } from "lib/normalize/user";
 import toast from "react-hot-toast";
 import signupService, { ISignupData } from "services/auth/signup";
 import { IUserState, updateUser } from "store/user/slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const signupThunk = createAsyncThunk(

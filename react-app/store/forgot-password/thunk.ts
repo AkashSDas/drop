@@ -1,8 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import forgotPasswordService, {
-  IForgotPasswordData,
-} from "services/auth/forgot-password";
+import forgotPasswordService, { IForgotPasswordData } from "services/auth/forgot-password";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const forgotPasswordThunk = createAsyncThunk(

@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IComment } from "store/drop-comments/slice";
+
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ICommentState {
   loading: boolean;

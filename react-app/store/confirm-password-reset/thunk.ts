@@ -1,8 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import confirmPasswordResetService, {
-  IConfirmPasswordResetData,
-} from "services/auth/confirm-password-reset";
+import confirmPasswordResetService, { IConfirmPasswordResetData } from "services/auth/confirm-password-reset";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const confirmPasswordResetThunk = createAsyncThunk(

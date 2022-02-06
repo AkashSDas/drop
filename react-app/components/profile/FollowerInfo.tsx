@@ -1,6 +1,7 @@
-import PrimaryButton from "@components/shared/PrimaryButton";
 import { useAppSelector } from "lib/hooks/store";
 import { IFollower } from "store/profile/slice";
+
+import PrimaryButton from "@components/shared/PrimaryButton";
 
 const FollowerInfo = ({ info }: { info: IFollower }) => {
   const { isFollowing, follower } = info;

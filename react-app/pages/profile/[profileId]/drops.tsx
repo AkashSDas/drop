@@ -1,9 +1,10 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { useAppSelector } from "lib/hooks/store";
+
 import Drops from "@components/profile/Drops";
 import Followers from "@components/profile/Followers";
 import ProfileTabContainer from "@components/profile/ProfileTab";
 import UserInfo from "@components/profile/UserInfo";
-import { AnimatePresence, motion } from "framer-motion";
-import { useAppSelector } from "lib/hooks/store";
 
 const ProfileDropsPage = () => {
   const currentTab = useAppSelector((state) => state.profile.currentTab);

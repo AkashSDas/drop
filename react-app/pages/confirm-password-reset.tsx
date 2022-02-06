@@ -1,10 +1,11 @@
-import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Lock, Password } from "react-iconly";
 import { confirmPasswordResetThunk } from "store/confirm-password-reset/thunk";
+
+import IconInput from "@components/shared/IconInput";
 
 const ConfirmPasswordResetPage = () => {
   const router = useRouter();

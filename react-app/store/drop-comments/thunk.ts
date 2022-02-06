@@ -1,15 +1,10 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import deleteCommentService from "services/comment/delete-comment";
 import fetchDropCommentsPaginatedService from "services/comment/fetch-drop-comments";
-import {
-  IComment,
-  initAdd,
-  removeComment,
-  updateActionLoading,
-  updateLoading,
-  updateMoreCommentsInfo,
-} from "./slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { IComment, initAdd, removeComment, updateActionLoading, updateLoading, updateMoreCommentsInfo } from "./slice";
 
 export const fetchDropCommentsThunk = createAsyncThunk(
   "dropComments/commentsAdded",

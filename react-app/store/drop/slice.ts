@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IDrop } from "store/drops/slice";
+
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IDropState {
   loading: boolean;

@@ -1,9 +1,10 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { removeUserFromLocalStorage } from "lib/base/local-storage";
 import toast from "react-hot-toast";
 import logoutService from "services/auth/logout";
-import { userSlice } from "store/user/slice";
-import { updateUser } from "store/user/slice";
+import { updateUser, userSlice } from "store/user/slice";
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { updateLoading } from "./slice";
 
 export const logoutThunk = createAsyncThunk(

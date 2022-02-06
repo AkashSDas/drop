@@ -1,10 +1,11 @@
-import IconInput from "@components/shared/IconInput";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Lock, Message } from "react-iconly";
 import { loginThunk } from "store/login/thunk";
+
+import IconInput from "@components/shared/IconInput";
 
 const LoginPage = () => {
   const router = useRouter();

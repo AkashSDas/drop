@@ -1,4 +1,5 @@
 import { Search } from "react-iconly";
+
 import styles from "@style/shared/SearchInput.module.scss";
 
 const SearchInput = () => {
