@@ -6,9 +6,11 @@ const SignupButton = ({ isSubmitting }: { isSubmitting: boolean }) => {
   const loading = useAppSelector((state) => state.signup.loading);
 
   return (
-    <button type="submit" disabled={isSubmitting} className={styles.btn}>
-      <RollingAnimation>{loading ? "Loading..." : "Submit"}</RollingAnimation>
-    </button>
+    <RollingAnimation>
+      <button type="submit" disabled={isSubmitting} className={styles.btn}>
+        {loading ? "Loading..." : "Submit"}
+      </button>
+    </RollingAnimation>
   );
 };
 
