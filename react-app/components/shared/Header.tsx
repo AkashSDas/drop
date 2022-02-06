@@ -1,28 +1,45 @@
+import { motion } from "framer-motion";
+import { animationCurve1 } from "lib/base/animation";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { updateIsOpen } from "store/create-drop-form/slice";
 import { logoutThunk } from "store/logout/thunk";
 
-import LoadAnimation from "@components/animation/LoadAnimation";
 import styles from "@style/shared/Header.module.scss";
 
 import PrimaryButton from "./PrimaryButton";
 import SearchInput from "./SearchInput";
 import TextButton from "./TextButton";
 
-const delay = 0.1;
-const duration = 1;
-const initialY = -60;
-
 const Header = () => {
+  const container = {
+    animate: { transition: { delayChildren: 0.4, staggerChildren: 0.1 } },
+  };
+
+  const item = {
+    initial: { y: -80, opacity: 0 },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: { ease: animationCurve1, duration: 1 },
+    },
+  };
+
   return (
     <header className={styles.header}>
-      <div className={styles.header_inner}>
-        <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
+      <motion.div
+        className={styles.header_inner}
+        variants={container}
+        initial="initial"
+        animate="animate"
+      >
+        <motion.div variants={item}>
           <SearchInput />
-        </LoadAnimation>
-        <Actions />
-      </div>
+        </motion.div>
+        <motion.div variants={item}>
+          <Actions />
+        </motion.div>
+      </motion.div>
     </header>
   );
 };
@@ -76,12 +93,10 @@ const NoAuthActions = () => {
   const router = useRouter();
 
   return (
-    <LoadAnimation delay={delay} duration={duration} initialY={initialY}>
-      <div className="flex space-x-8">
-        <TextButton text="Login" onClick={() => router.push("/login")} />
-        <PrimaryButton text="Signup" onClick={() => router.push("/signup")} />
-      </div>
-    </LoadAnimation>
+    <div className="flex space-x-8">
+      <TextButton text="Login" onClick={() => router.push("/login")} />
+      <PrimaryButton text="Signup" onClick={() => router.push("/signup")} />
+    </div>
   );
 };
 
