@@ -43,6 +43,9 @@ module.exports = {
         "Helvetica Neue",
         "sans-serif",
       ],
+      transitionTimingFunction: {
+        "expo-in-ease-out": "cubic-bezier(0.6, 0.01, -0.05, 0.95)",
+      },
     },
   },
   plugins: [],
