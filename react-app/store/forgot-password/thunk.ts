@@ -3,14 +3,10 @@ import forgotPasswordService, { IForgotPasswordData } from "services/auth/forgot
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { updateLoading } from "./slice";
-
-export const forgotPasswordThunk = createAsyncThunk(
-  "forgotPassword/user",
+export const forgotPassword = createAsyncThunk(
+  "forgotPassword/resetForgotPassword",
   async (data: IForgotPasswordData, { dispatch }) => {
-    dispatch(updateLoading(true));
     const response = await forgotPasswordService(data);
-    dispatch(updateLoading(false));
     if (response.isError) toast.error(response.msg);
     else {
       toast.success(response.msg);
