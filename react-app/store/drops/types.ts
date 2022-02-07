@@ -32,3 +32,13 @@ interface IDropsState {
   next: string | null;
   hasNext: boolean;
 }
+
+export interface IChangeReactionToNew {
+  dropId: string;
+  reaction: {
+    newReactionId: string;
+    newReaction: string;
+    oldReaction: string;
+    countUpdated: boolean;
+  };
+}
