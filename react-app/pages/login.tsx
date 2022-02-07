@@ -1,72 +1,22 @@
-import { Form, Formik } from "formik";
-import { useAppDispatch, useAppSelector } from "lib/hooks/store";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Lock, Message } from "react-iconly";
-import { loginThunk } from "store/login/thunk";
-
-import IconInput from "@components/shared/IconInput";
+import LoadAnimation from "@components/animation/LoadAnimation";
+import RevealAnimation from "@components/animation/RevealAnimation";
+import RollingAnimation from "@components/animation/RollingAnimation";
+import LoginForm from "@components/login/LoginForm";
+import LoginHelpLinks from "@components/login/LoginHelpLinks";
 
 const LoginPage = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const loading = useAppSelector((state) => state.login.loading);
-
-  const handleSubmit = async (value) => {
-    const isLoggedIn = (await dispatch(loginThunk(value))).payload;
-    if (isLoggedIn) router.push("/");
-  };
-
   return (
-    <main>
-      <h3>🤝 Login</h3>
-
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, handleChange, isSubmitting }) => (
-          <Form className="space-y-6">
-            <IconInput
-              icon={<Message />}
-              inputProps={{
-                type: "email",
-                placeholder: "john@example.com",
-                name: "email",
-                value: values.email,
-                onChange: handleChange,
-              }}
-            />
-            <IconInput
-              icon={<Lock />}
-              inputProps={{
-                type: "password",
-                placeholder: "💧💧💧💧💧💧💧💧💧💧💧💧",
-                name: "password",
-                value: values.password,
-                onChange: handleChange,
-              }}
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-secondary text-text1 text-[17px] font-semibold pt-2 py-[13px] px-[22px] rounded-lg hover:brightness-75 transition-all"
-            >
-              {loading ? "Loading..." : "Submit"}
-            </button>
-          </Form>
-        )}
-      </Formik>
-
-      <div className="space-x-4 text-secondary">
-        <Link href="/signup">
-          <span className="cursor-pointer">Don't have an account?</span>
-        </Link>
-        <Link href="/forgot-password">
-          <span className="cursor-pointer">Forgot Password?</span>
-        </Link>
-      </div>
-    </main>
+    <LoadAnimation delay={0.2} duration={1} initialY={60}>
+      <main>
+        <RevealAnimation rotate={10} y={60} duration={1}>
+          <RollingAnimation>
+            <h3>🤝 Login</h3>
+          </RollingAnimation>
+        </RevealAnimation>
+        <LoginForm />
+        <LoginHelpLinks />
+      </main>
+    </LoadAnimation>
   );
 };
 
