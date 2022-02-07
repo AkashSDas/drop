@@ -12,14 +12,15 @@ import ForgotPasswordButton from "./ForgotPasswordButton";
 const ForgotPasswordForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const initialValues = { email: "" };
 
-  const handleSubmit = async (value) => {
+  const handleSubmit = async (value: typeof initialValues) => {
     const redirect = (await dispatch(forgotPassword(value))).payload;
     if (redirect) router.push("/confirm-password-reset");
   };
 
   return (
-    <Formik initialValues={{ email: "" }} onSubmit={handleSubmit}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({ values, handleChange, isSubmitting }) => (
         <Form className="space-y-6">
           <RevealWrapper>

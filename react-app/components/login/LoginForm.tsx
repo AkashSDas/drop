@@ -14,7 +14,7 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   const initialValues = { email: "", password: "" };
 
-  const handleSubmit = async (value) => {
+  const handleSubmit = async (value: typeof initialValues) => {
     const isLoggedIn = (await dispatch(login(value))).payload;
     if (isLoggedIn) router.push("/");
   };
