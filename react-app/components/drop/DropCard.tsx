@@ -1,8 +1,9 @@
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
-import { IDrop } from "store/drops/slice";
-import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drops/thunk";
+import { updateDropReaction } from "store/drops/thunk";
 
+// import { IDrop } from "store/drops/slice";
+// import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drops/thunk";
 import ReactionButton from "./ReactionButton";
 
 const DropCard = ({
@@ -12,7 +13,7 @@ const DropCard = ({
   reacted,
   reactionsOnDrop,
   id,
-}: IDrop) => {
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -72,26 +73,26 @@ const DropCard = ({
                   // Check if drop is reacted by this user
                   if (reacted) {
                     if (reacted.reaction === reaction.name) {
-                      dispatch(
-                        unReactDropReactionThunk({
-                          dropId: id,
-                          reaction: reaction.name,
-                        })
-                      );
+                      // dispatch(
+                      //   unReactDropReactionThunk({
+                      //     dropId: id,
+                      //     reaction: reaction.name,
+                      //   })
+                      // );
                     } else {
                       dispatch(
-                        toggleReactionOnDropThunk({
-                          dropId: id,
-                          reaction: reaction.name,
+                        updateDropReaction({
+                          newReaction: reaction.name,
                           oldReaction: reacted.reaction,
+                          dropId: id,
                         })
                       );
                     }
                   } else {
                     // create new reaction and update state
-                    dispatch(
-                      reactOnDropThunk({ dropId: id, reaction: reaction.name })
-                    );
+                    // dispatch(
+                    //   reactOnDropThunk({ dropId: id, reaction: reaction.name })
+                    // );
                   }
                 }}
               />

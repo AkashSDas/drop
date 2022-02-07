@@ -1,8 +1,11 @@
 import { normalizeDrops } from "lib/normalize/drop";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
+import deleteAndCreateReactionService, { IDeleteAndCreateReactionConfig } from "services/reaction/delete-and-create-reaction";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { changeReactionToNew, updateReactionUpdateStatus } from "./slice";
 
 // import { addDropReaction, initAdd, pushDrops, toggleDropReacted, unReactDropReaction, updateLoading, updateMoreDropsInfo, updateReactionLoading } from "./slice";
 
@@ -44,6 +47,64 @@ export const fetchMoreDrops = createAsyncThunk(
       next: response.data.next,
       hasNext: response.data.hasNext,
     };
+  }
+);
+
+export const updateDropReaction = createAsyncThunk(
+  "drops/updateReaction",
+  async (
+    config: { newReaction: string; oldReaction: string; dropId: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
+
+    dispatch(
+      changeReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: false,
+          newReaction: config.newReaction,
+          oldReaction: config.oldReaction,
+          newReactionId: "",
+        },
+      })
+    );
+
+    dispatch(
+      updateReactionUpdateStatus({ dropId: config.dropId, status: true })
+    );
+
+    const response = await deleteAndCreateReactionService({
+      dropId: config.dropId,
+      reaction: config.newReaction,
+      token,
+    });
+
+    dispatch(
+      updateReactionUpdateStatus({ dropId: config.dropId, status: false })
+    );
+
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
+    }
+
+    const newReaction = response.data.reaction;
+    dispatch(
+      changeReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: true,
+          newReaction: newReaction.reaction,
+          oldReaction: config.oldReaction,
+          newReactionId: newReaction.id,
+        },
+      })
+    );
   }
 );
 
