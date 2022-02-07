@@ -5,14 +5,10 @@ import { updateUser, userSlice } from "store/user/slice";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { updateLoading } from "./slice";
-
-export const logoutThunk = createAsyncThunk(
-  "logout/user",
+export const logout = createAsyncThunk(
+  "logout/logoutUser",
   async (_, { dispatch }) => {
-    dispatch(updateLoading(true));
     const response = await logoutService();
-    dispatch(updateLoading(false));
     if (response.isError) toast.error(response.msg);
     else {
       toast.success(response.msg);

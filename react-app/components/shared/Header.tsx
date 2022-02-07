@@ -3,7 +3,7 @@ import { animationCurve1 } from "lib/base/animation";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { updateIsOpen } from "store/create-drop-form/slice";
-import { logoutThunk } from "store/logout/thunk";
+import { logout } from "store/logout/thunk";
 
 import styles from "@style/shared/Header.module.scss";
 
@@ -57,15 +57,15 @@ const AuthActions = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const logout = async () => {
-    const isLoggedOut = (await dispatch(logoutThunk())).payload;
+  const handleLogout = async () => {
+    const isLoggedOut = (await dispatch(logout())).payload;
     if (isLoggedOut) router.push("/");
   };
 
   return (
     <div className="space-x-8 flex items-center">
       <TextButton text="Drop it" onClick={() => dispatch(updateIsOpen(true))} />
-      <TextButton text="Logout" onClick={logout} />
+      <TextButton text="Logout" onClick={handleLogout} />
       <ProfilePic />
     </div>
   );

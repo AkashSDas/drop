@@ -1,22 +1,28 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
+import { logout } from "./thunk";
 
 interface ILogoutState {
-  loading: boolean;
+  isLoading: boolean;
 }
 
-const initialState: ILogoutState = {
-  loading: false,
-};
+const initialState: ILogoutState = { isLoading: false };
 
 export const logoutSlice = createSlice({
   name: "logout",
   initialState,
-  reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(logout.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(logout.fulfilled, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(logout.rejected, (state, _) => {
+      state.isLoading = false;
+    });
   },
 });
 
-export const { updateLoading } = logoutSlice.actions;
 export default logoutSlice.reducer;
