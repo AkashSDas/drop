@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchInitialDrops } from "./thunk";
+import { fetchInitialDrops, fetchMoreDrops } from "./thunk";
 import { IDrop } from "./types";
 
 export const dropsAdapter = createEntityAdapter<IDrop>();
@@ -32,6 +32,15 @@ export const dropsSlice = createSlice({
     });
     builder.addCase(fetchInitialDrops.rejected, (state, _) => {
       state.isLoading = false;
+    });
+    builder.addCase(fetchMoreDrops.fulfilled, (state, action) => {
+      if (action.payload) {
+        const { entities, ids, next, hasNext } = action.payload;
+        state.entities = { ...state.entities, ...entities };
+        state.ids = [...state.ids, ...ids];
+        state.next = next;
+        state.hasNext = hasNext;
+      }
     });
   },
 });

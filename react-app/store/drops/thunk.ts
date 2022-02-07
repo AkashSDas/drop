@@ -1,9 +1,6 @@
 import { normalizeDrops } from "lib/normalize/drop";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
-import reactOnDropService from "services/reaction/react-on-drop";
-import toggleReactionOnDropService from "services/reaction/toggle-reaction";
-import unReactDropService from "services/reaction/unreact-drop";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -11,7 +8,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchInitialDrops = createAsyncThunk(
   "drops/fetchInitialDrops",
-  async (limit: number, { dispatch, getState }) => {
+  async (limit: number, { getState }) => {
     const userId = (getState() as any).user.info.id;
     const response = await fetchDropsPaginatedService({ userId, limit });
     if (response.isError) {
@@ -29,77 +26,26 @@ export const fetchInitialDrops = createAsyncThunk(
   }
 );
 
-// export const fetchDropsThunk = createAsyncThunk(
-//   "drops/dropsAdded",
-//   async (init: boolean, { dispatch, getState }) => {
-//     dispatch(updateLoading(true));
-
-//     const userId = (getState() as any).user.info.id;
-//     const next = (getState() as any).drops.next;
-//     const limit = 4;
-
-//     const response = await fetchDropsPaginatedService(
-//       init ? { userId, limit } : { userId, next, limit }
-//     );
-
-//     dispatch(updateLoading(false));
-
-//     if (response.isError) toast.error(response.msg);
-//     else {
-//       // transform drop
-//       let drops: IDrop[] = [];
-//       for (let i = 0; i < response.data.drops.length; i++) {
-//         const drop = response.data.drops[i].drop;
-//         const reactionsOnDrop = response.data.drops[i].reactionsOnDrop;
-//         const reacted = response.data.drops[i].reacted;
-
-//         let reactionsOnDropArr: {
-//           name: string;
-//           emoji: string;
-//           count: number;
-//         }[] = [];
-//         for (const reaction in reactionsOnDrop) {
-//           reactionsOnDropArr.push({
-//             name: reactionsOnDrop[reaction].name,
-//             emoji: reactionsOnDrop[reaction].emoji,
-//             count: reactionsOnDrop[reaction].count,
-//           });
-//         }
-
-//         drops.push({
-//           id: drop.id,
-//           content: drop.content,
-//           createdAt: drop.createdAt,
-//           updatedAt: drop.updatedAt,
-//           user: {
-//             id: drop.user.id,
-//             email: drop.user.email,
-//             username: drop.user.username,
-//             profilePic: {
-//               id: drop.user.profilePic.id,
-//               URL: drop.user.profilePic.URL,
-//             },
-//             role: drop.user.role,
-//             createdAt: drop.user.createdAt,
-//             updatedAt: drop.user.updatedAt,
-//           },
-//           reactionsOnDrop: reactionsOnDropArr,
-//           reacted: !reacted
-//             ? null
-//             : { reaction: reacted.reaction, id: reacted.id },
-//         });
-//       }
-
-//       dispatch(
-//         updateMoreDropsInfo({
-//           next: response.data.next,
-//           hasNext: response.data.hasNext,
-//         })
-//       );
-//       dispatch(initAdd(drops));
-//     }
-//   }
-// );
+export const fetchMoreDrops = createAsyncThunk(
+  "drops/fetchMoreDrops",
+  async (limit: number, { getState }) => {
+    const next = (getState() as any).drops.next;
+    const userId = (getState() as any).user.info.id;
+    const response = await fetchDropsPaginatedService({ userId, limit, next });
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
+    }
+    const entities = normalizeDrops(response.data.drops);
+    const ids = Object.keys(entities);
+    return {
+      entities,
+      ids,
+      next: response.data.next,
+      hasNext: response.data.hasNext,
+    };
+  }
+);
 
 // export const toggleReactionOnDropThunk = createAsyncThunk(
 //   "drops/toggleReaction",

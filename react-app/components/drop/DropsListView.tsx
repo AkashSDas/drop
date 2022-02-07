@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchInitialDrops } from "store/drops/thunk";
+import { fetchInitialDrops, fetchMoreDrops } from "store/drops/thunk";
 
 import DropCard from "./DropCard";
 import DropsListViewLoading from "./DropsListViewLoading";
@@ -24,7 +24,7 @@ const DropsListView = () => {
       ) : (
         <InfiniteScroll
           dataLength={ids.length}
-          next={() => {}}
+          next={() => dispatch(fetchMoreDrops(10))}
           hasMore={hasNext}
           loader={<DropsListViewLoading />}
           endMessage={<div className="font-semibold text-[23px]">The End</div>}
