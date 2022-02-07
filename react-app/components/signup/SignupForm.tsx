@@ -67,7 +67,7 @@ const SignupForm = () => {
   );
 };
 
-const RevealWrapper = ({ children }: { children: JSX.Element }) => (
+export const RevealWrapper = ({ children }: { children: JSX.Element }) => (
   <RevealAnimation rotate={10} y={60} duration={1}>
     {children}
   </RevealAnimation>
