@@ -1,22 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { forgotPassword } from "./thunk";
+
 interface IForgotPasswordState {
-  loading: boolean;
+  isLoading: boolean;
 }
 
 const initialState: IForgotPasswordState = {
-  loading: false,
+  isLoading: false,
 };
 
 export const forgotPasswordSlice = createSlice({
   name: "forgotPassword",
   initialState,
-  reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(forgotPassword.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(forgotPassword.fulfilled, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(forgotPassword.rejected, (state, _) => {
+      state.isLoading = false;
+    });
   },
 });
 
-export const { updateLoading } = forgotPasswordSlice.actions;
 export default forgotPasswordSlice.reducer;
