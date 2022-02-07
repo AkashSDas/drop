@@ -1,22 +1,30 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
+import { confirmPasswordReset } from "./thunk";
 
 interface IConfirmPasswordResetState {
-  loading: boolean;
+  isLoading: boolean;
 }
 
 const initialState: IConfirmPasswordResetState = {
-  loading: false,
+  isLoading: false,
 };
 
 export const confirmPasswordResetSlice = createSlice({
   name: "confirmPasswordResetSlice",
   initialState,
-  reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(confirmPasswordReset.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(confirmPasswordReset.fulfilled, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(confirmPasswordReset.rejected, (state, _) => {
+      state.isLoading = false;
+    });
   },
 });
 
-export const { updateLoading } = confirmPasswordResetSlice.actions;
 export default confirmPasswordResetSlice.reducer;
