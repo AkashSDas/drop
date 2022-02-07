@@ -1,6 +1,6 @@
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
-import { reactOnDrop, updateDropReaction } from "store/drops/thunk";
+import { reactOnDrop, unReactOnDrop, updateDropReaction } from "store/drops/thunk";
 
 // import { IDrop } from "store/drops/slice";
 // import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drops/thunk";
@@ -13,6 +13,7 @@ const DropCard = ({
   reacted,
   reactionsOnDrop,
   id,
+  createdAt,
 }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -73,12 +74,12 @@ const DropCard = ({
                   // Check if drop is reacted by this user
                   if (reacted) {
                     if (reacted.reaction === reaction.name) {
-                      // dispatch(
-                      //   unReactDropReactionThunk({
-                      //     dropId: id,
-                      //     reaction: reaction.name,
-                      //   })
-                      // );
+                      dispatch(
+                        unReactOnDrop({
+                          dropId: id,
+                          oldReaction: reaction.name,
+                        })
+                      );
                     } else {
                       dispatch(
                         updateDropReaction({

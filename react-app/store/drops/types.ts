@@ -47,3 +47,8 @@ export interface IReactOnDrop {
   dropId: string;
   newReaction: string;
 }
+
+export interface IUnReactOnDrop {
+  dropId: string;
+  oldReaction: string;
+}

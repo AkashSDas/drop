@@ -3,11 +3,12 @@ import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
 import deleteAndCreateReactionService, { IDeleteAndCreateReactionConfig } from "services/reaction/delete-and-create-reaction";
 import reactOnDropService from "services/reaction/react-on-drop";
+import unReactDropService from "services/reaction/unreact-drop";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { changeReactionToNew, updateReactionUpdateStatus } from "./slice";
-import { IReactOnDrop } from "./types";
+import { IReactOnDrop, IUnReactOnDrop } from "./types";
 
 // import { addDropReaction, initAdd, pushDrops, toggleDropReacted, unReactDropReaction, updateLoading, updateMoreDropsInfo, updateReactionLoading } from "./slice";
 
@@ -165,43 +166,50 @@ export const reactOnDrop = createAsyncThunk(
   }
 );
 
-// export const reactOnDropThunk = createAsyncThunk(
-//   "drops/react",
-//   async (
-//     { dropId, reaction }: { dropId: string; reaction: string },
-//     { dispatch, getState }
-//   ) => {
-//     const token = (getState() as any).user.token;
-//     if (!token) {
-//       toast.error("You are not logged in");
-//       return;
-//     }
+export const unReactOnDrop = createAsyncThunk(
+  "drops/unReactOnDrop",
+  async (config: IUnReactOnDrop, { dispatch, getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
 
-//     dispatch(
-//       addDropReaction({
-//         dropId,
-//         reaction: { reaction, id: "", countUpdated: false },
-//       })
-//     );
+    dispatch(
+      changeReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: false,
+          newReaction: "",
+          oldReaction: config.oldReaction,
+          newReactionId: "",
+        },
+      })
+    );
 
-//     dispatch(updateReactionLoading(true));
-//     const response = await reactOnDropService(token, dropId, reaction);
-//     dispatch(updateReactionLoading(false));
+    dispatch(
+      updateReactionUpdateStatus({ dropId: config.dropId, status: true })
+    );
 
-//     // toggle drop of dropId reacted state to update
-//     const newReaction = response.data.reaction;
-//     dispatch(
-//       addDropReaction({
-//         dropId,
-//         reaction: {
-//           reaction: newReaction.reaction,
-//           id: newReaction.id,
-//           countUpdated: true,
-//         },
-//       })
-//     );
-//   }
-// );
+    await unReactDropService(token, config.dropId);
+
+    dispatch(
+      updateReactionUpdateStatus({ dropId: config.dropId, status: false })
+    );
+
+    dispatch(
+      changeReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: true,
+          newReaction: "",
+          oldReaction: config.oldReaction,
+          newReactionId: null,
+        },
+      })
+    );
+  }
+);
 
 // export const unReactDropReactionThunk = createAsyncThunk(
 //   "drops/unreact",

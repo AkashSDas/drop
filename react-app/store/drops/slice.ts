@@ -29,10 +29,13 @@ export const dropsSlice = createSlice({
           payload.reaction.newReaction
         );
       }
-      state.entities[payload.dropId].reacted = {
-        id: payload.reaction.newReactionId,
-        reaction: payload.reaction.newReaction,
-      };
+      state.entities[payload.dropId].reacted =
+        payload.reaction.newReactionId !== null
+          ? {
+              id: payload.reaction.newReactionId,
+              reaction: payload.reaction.newReaction,
+            }
+          : null;
     },
     updateReactionUpdateStatus: (
       state,
