@@ -1,6 +1,6 @@
 import { useAppDispatch } from "lib/hooks/store";
 import { useRouter } from "next/router";
-import { updateDropReaction } from "store/drops/thunk";
+import { reactOnDrop, updateDropReaction } from "store/drops/thunk";
 
 // import { IDrop } from "store/drops/slice";
 // import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drops/thunk";
@@ -90,9 +90,9 @@ const DropCard = ({
                     }
                   } else {
                     // create new reaction and update state
-                    // dispatch(
-                    //   reactOnDropThunk({ dropId: id, reaction: reaction.name })
-                    // );
+                    dispatch(
+                      reactOnDrop({ dropId: id, newReaction: reaction.name })
+                    );
                   }
                 }}
               />

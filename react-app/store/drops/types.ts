@@ -42,3 +42,8 @@ export interface IChangeReactionToNew {
     countUpdated: boolean;
   };
 }
+
+export interface IReactOnDrop {
+  dropId: string;
+  newReaction: string;
+}
