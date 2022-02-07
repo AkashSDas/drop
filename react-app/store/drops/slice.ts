@@ -13,9 +13,7 @@ const initialState = dropsAdapter.getInitialState({
 export const dropsSlice = createSlice({
   name: "drop",
   initialState,
-  reducers: {
-    upsertManyDrops: dropsAdapter.upsertMany,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchInitialDrops.pending, (state, _) => {
       state.isLoading = true;
@@ -45,7 +43,7 @@ export const dropsSlice = createSlice({
   },
 });
 
-export const { upsertManyDrops } = dropsSlice.actions;
+export const {} = dropsSlice.actions;
 
 export default dropsSlice.reducer;
 
