@@ -4,8 +4,8 @@ import fetchUserDropsPaginatedService from "services/profile/fetch-user-drops-pa
 import fetchUserFollowersPaginatedService from "services/profile/fetch-user-followers";
 import followUserService from "services/profile/follow-user";
 import unFollowUserService from "services/profile/unfollow-user";
+import toggleReactionOnDropService from "services/reaction/delete-and-create-reaction";
 import reactOnDropService from "services/reaction/react-on-drop";
-import toggleReactionOnDropService from "services/reaction/toggle-reaction";
 import unReactDropService from "services/reaction/unreact-drop";
 import { IDrop } from "store/drops/slice";
 
