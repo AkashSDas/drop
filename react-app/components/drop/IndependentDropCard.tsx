@@ -1,91 +1,78 @@
-import { useAppDispatch } from "lib/hooks/store";
-import { reactOnDropThunk, toggleReactionOnDropThunk, unReactDropReactionThunk } from "store/drop/thunk";
-import { IDrop } from "store/drops/slice";
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
+import { reactOnDrop, unReactOnDrop, updateDropReaction } from "store/drop/thunk";
+import { IDrop } from "store/drops/types";
 
+import { IDropReactionButtonProps, Metadata, ProfilePic, RedropButton } from "./DropCard";
 import ReactionButton from "./ReactionButton";
 
-const IndependentDropCard = ({
-  content,
-  user,
-  updatedAt,
-  reacted,
-  reactionsOnDrop,
-  id,
-}: IDrop) => {
+const DropReactionButton = (props: IDropReactionButtonProps) => {
+  const { reaction, reacted, dropId } = props;
+  const reactedStatus =
+    reacted && reacted?.reaction == reaction.name ? true : false;
   const dispatch = useAppDispatch();
 
-  const profilePic = () => (
-    <img
-      className="h-[50px] w-[50px] rounded-full object-cover cursor-pointer"
-      src={user.profilePic.URL}
-      alt={user.username}
+  const unReact = () =>
+    dispatch(unReactOnDrop({ dropId, oldReaction: reaction.name }));
+
+  const changeReaction = () =>
+    dispatch(
+      updateDropReaction({
+        newReaction: reaction.name,
+        oldReaction: reacted.reaction,
+      })
+    );
+
+  const react = () =>
+    dispatch(reactOnDrop({ dropId, newReaction: reaction.name }));
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    if (reacted) {
+      if (reacted.reaction === reaction.name) unReact();
+      else changeReaction();
+    } else react();
+  };
+
+  const { updatingReaction } = useAppSelector((state) => state.drop.drop);
+
+  return (
+    <ReactionButton
+      dropId={dropId}
+      reaction={reaction.name}
+      emoji={reaction.emoji}
+      reacted={reactedStatus}
+      count={reaction.count}
+      onClick={handleClick}
+      disabled={updatingReaction}
     />
   );
+};
 
-  const metadata = () => (
-    <div className="space-x-2">
-      <span className="font-bold text-text1">{user.username}</span>
-      <span>-</span>
-      <span className="font-bold">{updatedAt}</span>
-    </div>
-  );
+const Reactions = ({ drop }: { drop: IDrop }) => (
+  <>
+    {drop.reactions.map((reaction, key) => (
+      <DropReactionButton
+        key={key}
+        dropId={drop.id}
+        reacted={drop.reacted}
+        reaction={reaction}
+      />
+    ))}
+  </>
+);
+
+const IndependentDropCard = ({ drop }: { drop: IDrop }) => {
+  const { user, updatedAt, content, id } = drop;
 
   return (
     <div className="flex space-x-8 cursor-pointer">
-      {profilePic()}
-
+      <ProfilePic user={drop.user} />
       <div className="flex flex-col space-y-4 w-full">
-        {metadata()}
+        <Metadata username={user.username} updatedAt={updatedAt} />
         <p>{content}</p>
-
         <div className="space-x-4">
-          <button
-            type="button"
-            className={`bg-card text-[13px] px-2 pt-[6px] pb-2 rounded-md`}
-          >
-            💧 Redrop
-          </button>
-
-          <>
-            {reactionsOnDrop.map((reaction, key) => (
-              <ReactionButton
-                key={key}
-                dropId={id}
-                reaction={reaction.name}
-                emoji={reaction.emoji}
-                reacted={
-                  reacted && reacted?.reaction == reaction.name ? true : false
-                }
-                count={reaction.count}
-                onClick={() => {
-                  // Check if drop is reacted by this user
-                  if (reacted) {
-                    if (reacted.reaction === reaction.name) {
-                      dispatch(
-                        unReactDropReactionThunk({
-                          dropId: id,
-                          reaction: reaction.name,
-                        })
-                      );
-                    } else {
-                      dispatch(
-                        toggleReactionOnDropThunk({
-                          dropId: id,
-                          reaction: reaction.name,
-                          oldReaction: reacted.reaction,
-                        })
-                      );
-                    }
-                  } else {
-                    // create new reaction and update state
-                    dispatch(
-                      reactOnDropThunk({ dropId: id, reaction: reaction.name })
-                    );
-                  }
-                }}
-              />
-            ))}
-          </>
+          <RedropButton />
+          <Reactions drop={drop} />
         </div>
       </div>
     </div>

@@ -1,119 +1,85 @@
+import { normalizeDrop } from "lib/normalize/drop";
 import toast from "react-hot-toast";
 import fetchDropService from "services/drop/fetch-drop";
-import toggleReactionOnDropService from "services/reaction/delete-and-create-reaction";
+import deleteAndCreateReactionService from "services/reaction/delete-and-create-reaction";
 import reactOnDropService from "services/reaction/react-on-drop";
 import unReactDropService from "services/reaction/unreact-drop";
-import { IDrop } from "store/drops/slice";
+import { IReactOnDrop, IUnReactOnDrop } from "store/drops/types";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { addDropReaction, toggleDropReacted, unReactDropReaction, updateDrop, updateLoading, updateReactionLoading } from "./slice";
+import { updateReactionChangeStatus, updateReactionToNew } from "./slice";
 
-export const fetchDropThunk = createAsyncThunk(
-  "drop/updateDrop",
-  async (dropId: string, { dispatch, getState }) => {
-    dispatch(updateLoading(true));
+export const fetchDrop = createAsyncThunk(
+  "drop/fetchDrop",
+  async (dropId: string, { getState }) => {
     const userId = (getState() as any).user.info.id;
     const response = await fetchDropService({ userId, dropId });
-    dispatch(updateLoading(false));
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
+    }
+    const drop = normalizeDrop(response.data);
+    return drop;
+  }
+);
 
-    if (response.isError) toast.error(response.msg);
-    else {
-      // transform drop
+export const updateDropReaction = createAsyncThunk(
+  "drop/updateReaction",
+  async (
+    config: { newReaction: string; oldReaction: string },
+    { dispatch, getState }
+  ) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return;
+    }
 
-      const drop = response.data.drop;
-      const reactionsOnDrop = response.data.reactionsOnDrop;
-      const reacted = response.data.reacted;
-
-      let reactionsOnDropArr: {
-        name: string;
-        emoji: string;
-        count: number;
-      }[] = [];
-      for (const reaction in reactionsOnDrop) {
-        reactionsOnDropArr.push({
-          name: reactionsOnDrop[reaction].name,
-          emoji: reactionsOnDrop[reaction].emoji,
-          count: reactionsOnDrop[reaction].count,
-        });
-      }
-
-      const dropInfo: IDrop = {
-        id: drop.id,
-        content: drop.content,
-        createdAt: drop.createdAt,
-        updatedAt: drop.updatedAt,
-        user: {
-          id: drop.user.id,
-          email: drop.user.email,
-          username: drop.user.username,
-          profilePic: {
-            id: drop.user.profilePic.id,
-            URL: drop.user.profilePic.URL,
-          },
-          role: drop.user.role,
-          createdAt: drop.user.createdAt,
-          updatedAt: drop.user.updatedAt,
+    const dropId = (getState() as any).drop.drop.id;
+    dispatch(
+      updateReactionToNew({
+        dropId,
+        reaction: {
+          countUpdated: false,
+          newReaction: config.newReaction,
+          oldReaction: config.oldReaction,
+          newReactionId: "",
         },
-        reactionsOnDrop: reactionsOnDropArr,
-        reacted: !reacted
-          ? null
-          : { reaction: reacted.reaction, id: reacted.id },
-      };
+      })
+    );
 
-      dispatch(updateDrop(dropInfo));
-    }
-  }
-);
-
-export const toggleReactionOnDropThunk = createAsyncThunk(
-  "drop/toggleReaction",
-  async (
-    {
+    dispatch(updateReactionChangeStatus(true));
+    const response = await deleteAndCreateReactionService({
       dropId,
-      reaction,
-      oldReaction,
-    }: { dropId: string; reaction: string; oldReaction: string },
-    { dispatch, getState }
-  ) => {
-    const token = (getState() as any).user.token;
-    if (!token) {
-      toast.error("You are not logged in");
+      reaction: config.newReaction,
+      token,
+    });
+    dispatch(updateReactionChangeStatus(false));
+
+    if (response.isError) {
+      toast.error(response.msg);
       return;
     }
 
-    dispatch(
-      toggleDropReacted({
-        reaction,
-        id: "",
-        oldReaction,
-        countUpdated: false,
-      })
-    );
-
-    dispatch(updateReactionLoading(true));
-    const response = await toggleReactionOnDropService(token, dropId, reaction);
-    dispatch(updateReactionLoading(false));
-
-    // toggle drop of dropId reacted state to update
     const newReaction = response.data.reaction;
     dispatch(
-      toggleDropReacted({
-        reaction: newReaction.reaction,
-        id: newReaction.id,
-        oldReaction,
-        countUpdated: true,
+      updateReactionToNew({
+        dropId,
+        reaction: {
+          countUpdated: true,
+          newReaction: newReaction.reaction,
+          oldReaction: config.oldReaction,
+          newReactionId: newReaction.id,
+        },
       })
     );
   }
 );
 
-export const reactOnDropThunk = createAsyncThunk(
-  "drop/react",
-  async (
-    { dropId, reaction }: { dropId: string; reaction: string },
-    { dispatch, getState }
-  ) => {
+export const reactOnDrop = createAsyncThunk(
+  "drop/reactOnDrop",
+  async (config: IReactOnDrop, { dispatch, getState }) => {
     const token = (getState() as any).user.token;
     if (!token) {
       toast.error("You are not logged in");
@@ -121,45 +87,80 @@ export const reactOnDropThunk = createAsyncThunk(
     }
 
     dispatch(
-      addDropReaction({
-        reaction,
-        id: "",
-        countUpdated: false,
+      updateReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: false,
+          newReaction: config.newReaction,
+          oldReaction: "",
+          newReactionId: "",
+        },
       })
     );
 
-    dispatch(updateReactionLoading(true));
-    const response = await reactOnDropService(token, dropId, reaction);
-    dispatch(updateReactionLoading(false));
+    dispatch(updateReactionChangeStatus(true));
+    const response = await reactOnDropService(
+      token,
+      config.dropId,
+      config.newReaction
+    );
+    dispatch(updateReactionChangeStatus(false));
 
-    // toggle drop of dropId reacted state to update
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
+    }
+
     const newReaction = response.data.reaction;
     dispatch(
-      addDropReaction({
-        reaction: newReaction.reaction,
-        id: newReaction.id,
-        countUpdated: true,
+      updateReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: true,
+          newReaction: newReaction.reaction,
+          oldReaction: "",
+          newReactionId: newReaction.id,
+        },
       })
     );
   }
 );
 
-export const unReactDropReactionThunk = createAsyncThunk(
-  "drop/unreact",
-  async (
-    { dropId, reaction }: { dropId: string; reaction: string },
-    { dispatch, getState }
-  ) => {
+export const unReactOnDrop = createAsyncThunk(
+  "drop/unReactOnDrop",
+  async (config: IUnReactOnDrop, { dispatch, getState }) => {
     const token = (getState() as any).user.token;
     if (!token) {
       toast.error("You are not logged in");
       return;
     }
 
-    dispatch(unReactDropReaction({ reaction, countUpdated: false }));
-    dispatch(updateReactionLoading(true));
-    await unReactDropService(token, dropId);
-    dispatch(updateReactionLoading(false));
-    dispatch(unReactDropReaction({ reaction, countUpdated: true }));
+    dispatch(
+      updateReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: false,
+          newReaction: "",
+          oldReaction: config.oldReaction,
+          newReactionId: "",
+        },
+      })
+    );
+
+    dispatch(updateReactionChangeStatus(true));
+    await unReactDropService(token, config.dropId);
+    dispatch(updateReactionChangeStatus(false));
+
+    dispatch(
+      updateReactionToNew({
+        dropId: config.dropId,
+        reaction: {
+          countUpdated: true,
+          newReaction: "",
+          oldReaction: config.oldReaction,
+          newReactionId: null,
+        },
+      })
+    );
   }
 );

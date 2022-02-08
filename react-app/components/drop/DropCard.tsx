@@ -6,7 +6,7 @@ import { IAuthor, IDrop, IReaction } from "store/drops/types";
 
 import ReactionButton from "./ReactionButton";
 
-const ProfilePic = ({ user }: { user: IAuthor }) => {
+export const ProfilePic = ({ user }: { user: IAuthor }) => {
   const router = useRouter();
 
   return (
@@ -22,7 +22,7 @@ const ProfilePic = ({ user }: { user: IAuthor }) => {
   );
 };
 
-const Metadata = (metadata: { username: string; updatedAt: string }) => (
+export const Metadata = (metadata: { username: string; updatedAt: string }) => (
   <div className="space-x-2">
     <span className="font-bold text-text1">{metadata.username}</span>
     <span>-</span>
@@ -30,7 +30,7 @@ const Metadata = (metadata: { username: string; updatedAt: string }) => (
   </div>
 );
 
-const RedropButton = () => {
+export const RedropButton = () => {
   const style = `bg-card text-[13px] px-2 pt-[6px] pb-2 rounded-md`;
   return (
     <button type="button" className={style}>
@@ -39,7 +39,7 @@ const RedropButton = () => {
   );
 };
 
-interface IDropReactionButtonProps {
+export interface IDropReactionButtonProps {
   reaction: IReaction;
   dropId: string;
   reacted: { reaction: string; id: string } | null;
