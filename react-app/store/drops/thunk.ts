@@ -10,8 +10,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { changeReactionToNew, updateReactionUpdateStatus } from "./slice";
 import { IReactOnDrop, IUnReactOnDrop } from "./types";
 
-// import { addDropReaction, initAdd, pushDrops, toggleDropReacted, unReactDropReaction, updateLoading, updateMoreDropsInfo, updateReactionLoading } from "./slice";
-
 export const fetchInitialDrops = createAsyncThunk(
   "drops/fetchInitialDrops",
   async (limit: number, { getState }) => {
@@ -210,100 +208,3 @@ export const unReactOnDrop = createAsyncThunk(
     );
   }
 );
-
-// export const unReactDropReactionThunk = createAsyncThunk(
-//   "drops/unreact",
-//   async (
-//     { dropId, reaction }: { dropId: string; reaction: string },
-//     { dispatch, getState }
-//   ) => {
-//     const token = (getState() as any).user.token;
-//     if (!token) {
-//       toast.error("You are not logged in");
-//       return;
-//     }
-
-//     dispatch(
-//       unReactDropReaction({
-//         dropId,
-//         reaction: { reaction, countUpdated: false },
-//       })
-//     );
-
-//     dispatch(updateReactionLoading(true));
-//     await unReactDropService(token, dropId);
-//     dispatch(updateReactionLoading(false));
-
-//     dispatch(
-//       unReactDropReaction({
-//         dropId,
-//         reaction: { reaction, countUpdated: true },
-//       })
-//     );
-//   }
-// );
-
-// export const fetchMoreDropsThunk = createAsyncThunk(
-//   "drops/fetchMoreDrops",
-//   async (_, { dispatch, getState }) => {
-//     const userId = (getState() as any).user.info.id;
-//     const next = (getState() as any).drops.next;
-//     const limit = 4;
-//     const response = await fetchDropsPaginatedService({ userId, next, limit });
-
-//     if (response.isError) toast.error(response.msg);
-//     else {
-//       // transform drop
-//       let drops: IDrop[] = [];
-//       for (let i = 0; i < response.data.drops.length; i++) {
-//         const drop = response.data.drops[i].drop;
-//         const reactionsOnDrop = response.data.drops[i].reactionsOnDrop;
-//         const reacted = response.data.drops[i].reacted;
-
-//         let reactionsOnDropArr: {
-//           name: string;
-//           emoji: string;
-//           count: number;
-//         }[] = [];
-//         for (const reaction in reactionsOnDrop) {
-//           reactionsOnDropArr.push({
-//             name: reactionsOnDrop[reaction].name,
-//             emoji: reactionsOnDrop[reaction].emoji,
-//             count: reactionsOnDrop[reaction].count,
-//           });
-//         }
-
-//         drops.push({
-//           id: drop.id,
-//           content: drop.content,
-//           createdAt: drop.createdAt,
-//           updatedAt: drop.updatedAt,
-//           user: {
-//             id: drop.user.id,
-//             email: drop.user.email,
-//             username: drop.user.username,
-//             profilePic: {
-//               id: drop.user.profilePic.id,
-//               URL: drop.user.profilePic.URL,
-//             },
-//             role: drop.user.role,
-//             createdAt: drop.user.createdAt,
-//             updatedAt: drop.user.updatedAt,
-//           },
-//           reactionsOnDrop: reactionsOnDropArr,
-//           reacted: !reacted
-//             ? null
-//             : { reaction: reacted.reaction, id: reacted.id },
-//         });
-//       }
-
-//       dispatch(
-//         updateMoreDropsInfo({
-//           next: response.data.next,
-//           hasNext: response.data.hasNext,
-//         })
-//       );
-//       dispatch(pushDrops(drops));
-//     }
-//   }
-// );
