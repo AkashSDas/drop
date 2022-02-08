@@ -77,4 +77,6 @@ export const dropsSlice = createSlice({
 export const { changeReactionToNew, updateReactionUpdateStatus } =
   dropsSlice.actions;
 
+export const { selectById: selectDropById } = dropsAdapter.getSelectors();
+
 export default dropsSlice.reducer;
