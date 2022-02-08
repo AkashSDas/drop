@@ -9,47 +9,43 @@ import DropsListViewLoading from "./DropsListViewLoading";
 const DropsListView = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
-  const { entities, isLoading, hasNext, ids } = useAppSelector(
-    (state) => state.drops
-  );
+  const { entities, isLoading, ids } = useAppSelector((state) => state.drops);
 
   useEffect(() => {
     dispatch(fetchInitialDrops(10));
   }, [token]);
 
+  if (isLoading) return <DropsListViewLoading />;
+
   return (
-    <div className="space-y-8">
-      {isLoading ? (
-        <DropsListViewLoading />
-      ) : (
-        <InfiniteScroll
-          dataLength={ids.length}
-          next={() => dispatch(fetchMoreDrops(10))}
-          hasMore={hasNext}
-          loader={<DropsListViewLoading />}
-          endMessage={<div className="font-semibold text-[23px]">The End</div>}
-          className="space-y-8"
-        >
-          {ids.map((id, key) => {
-            const d = entities[id];
-            return (
-              <div key={key} className="space-y-8">
-                <div className="border-b-[1px] border-solid border-[#32333B]"></div>
-                <DropCard
-                  content={d.content}
-                  createdAt={d.createdAt}
-                  id={d.id}
-                  reacted={d.reacted}
-                  reactionsOnDrop={d.reactions}
-                  updatedAt={d.updatedAt}
-                  user={d.user}
-                />
-              </div>
-            );
-          })}
-        </InfiniteScroll>
-      )}
-    </div>
+    <InfiniteScrollWrapper>
+      <>
+        {ids.map((id, key) => (
+          <div key={key} className="space-y-8">
+            <div className="border-b-[1px] border-solid border-[#32333B]"></div>
+            <DropCard drop={entities[id]} />
+          </div>
+        ))}
+      </>
+    </InfiniteScrollWrapper>
+  );
+};
+
+const InfiniteScrollWrapper = ({ children }: { children: JSX.Element }) => {
+  const dispatch = useAppDispatch();
+  const { hasNext, ids } = useAppSelector((state) => state.drops);
+
+  return (
+    <InfiniteScroll
+      dataLength={ids.length}
+      next={() => dispatch(fetchMoreDrops(10))}
+      hasMore={hasNext}
+      loader={<DropsListViewLoading />}
+      endMessage={<div className="font-semibold text-[23px]">The End</div>}
+      className="space-y-8"
+    >
+      {children}
+    </InfiniteScroll>
   );
 };
 
