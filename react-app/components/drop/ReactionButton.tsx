@@ -10,6 +10,7 @@ interface Props {
   dropId: string;
   reaction: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  disabled: boolean;
 }
 
 const ReactionButton = ({
@@ -19,6 +20,7 @@ const ReactionButton = ({
   dropId,
   reaction,
   count,
+  disabled,
 }: Props) => {
   const bg = reacted ? "bg-secondary" : "bg-card";
   const text = reacted ? "text-text1" : "text-text2";
@@ -35,7 +37,7 @@ const ReactionButton = ({
     <button
       type="button"
       className={`${bg} ${text} text-[13px] px-2 pt-[6px] pb-2 rounded-md`}
-      disabled={false}
+      disabled={disabled}
       onClick={onClick}
     >
       {emoji} {count}
