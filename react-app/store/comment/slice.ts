@@ -1,22 +1,26 @@
-import { IComment } from "store/drop-comments/slice";
+import { IComment } from "store/drop-comments/types";
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
+import { fetchComment, updateComment } from "./thunk";
 
 interface ICommentState {
-  loading: boolean;
+  isLoading: boolean;
   comment: IComment;
-  actionLoading: boolean;
+  isUpdating: boolean;
 }
 
 const initialState: ICommentState = {
-  loading: false,
-  actionLoading: false,
+  isLoading: false,
+  isUpdating: false,
   comment: {
     id: null,
     dropId: null,
     content: null,
     createdAt: null,
     updatedAt: null,
+    hasCommented: null,
+    isDeleting: false,
     user: {
       id: null,
       email: null,
@@ -26,25 +30,34 @@ const initialState: ICommentState = {
       createdAt: null,
       updatedAt: null,
     },
-    commented: false,
   },
 };
 
 export const commentSlice = createSlice({
   name: "comment",
   initialState,
-  reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    updateActionLoading: (state, action: PayloadAction<boolean>) => {
-      state.actionLoading = action.payload;
-    },
-    updateComment: (state, action: PayloadAction<IComment>) => {
-      state.comment = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchComment.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchComment.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) state.comment = action.payload;
+    });
+    builder.addCase(fetchComment.rejected, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(updateComment.pending, (state, _) => {
+      state.isUpdating = true;
+    });
+    builder.addCase(updateComment.fulfilled, (state) => {
+      state.isUpdating = false;
+    });
+    builder.addCase(updateComment.rejected, (state, _) => {
+      state.isUpdating = false;
+    });
   },
 });
 
-export const { updateLoading, updateComment } = commentSlice.actions;
 export default commentSlice.reducer;
