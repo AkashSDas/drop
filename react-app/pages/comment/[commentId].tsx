@@ -3,60 +3,60 @@ import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Send } from "react-iconly";
-import { updateLoading } from "store/comment/slice";
-import { fetchCommentThunk, updateCommentThunk } from "store/comment/thunk";
+import { fetchComment, updateComment } from "store/comment/thunk";
 
 import DropComment from "@components/drop/DropComment";
 
 const UpdateDropCommentPage = () => {
   const router = useRouter();
-  const { loading, comment } = useAppSelector((state) => state.comment);
   const dispatch = useAppDispatch();
+  const { isLoading, comment } = useAppSelector((state) => state.comment);
 
   useEffect(() => {
     if (router.isReady) {
-      const { commentId } = router.query;
-      dispatch(fetchCommentThunk(commentId as string));
-    } else {
-      dispatch(updateLoading(true));
+      dispatch(fetchComment(router.query.commentId as string));
     }
   }, [router.isReady]);
 
-  if (loading || !comment) return <main>Loading...</main>;
+  const initialValues = { content: comment.content };
+  const onSubmit = async (values: typeof initialValues) => {
+    await dispatch(
+      updateComment({
+        commentId: comment.id,
+        dropId: comment.dropId,
+        content: values.content,
+      })
+    );
+  };
+
+  if (isLoading || !comment) return <main>Loading...</main>;
+
   return (
     <main>
       <DropComment comment={comment} hideActions />
 
-      <Formik
-        initialValues={{ content: comment.content }}
-        onSubmit={async (values, { resetForm }) => {
-          await dispatch(
-            updateCommentThunk({
-              commentId: comment.id,
-              dropId: comment.dropId,
-              content: values.content,
-            })
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        {({ values, handleChange, isSubmitting }) => {
+          const style =
+            "outline-none bg-card rounded-lg w-full px-6 py-[14px] placeholder:text-text2 text-text1 placeholder:opacity-60";
+          const btnStyle = isSubmitting ? `animate-spin` : "";
+
+          return (
+            <Form className="w-full flex space-x-4 mb-3">
+              <input
+                type="text"
+                className={style}
+                onChange={handleChange}
+                name="content"
+                placeholder="Updated comment"
+                value={values.content}
+              />
+              <button className={btnStyle} disabled={isSubmitting}>
+                <Send primaryColor="#3A8CFF" />
+              </button>
+            </Form>
           );
         }}
-      >
-        {({ values, handleChange, isSubmitting }) => (
-          <Form className="w-full flex space-x-4 mb-3">
-            <input
-              type="text"
-              className="outline-none bg-card rounded-lg w-full px-6 py-[14px] placeholder:text-text2 text-text1 placeholder:opacity-60"
-              onChange={handleChange}
-              name="content"
-              placeholder="Updated comment"
-              value={values.content}
-            />
-            <button
-              className={isSubmitting ? `animate-spin` : ""}
-              disabled={isSubmitting}
-            >
-              <Send primaryColor="#3A8CFF" />
-            </button>
-          </Form>
-        )}
       </Formik>
     </main>
   );
