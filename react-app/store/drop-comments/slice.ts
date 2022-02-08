@@ -1,76 +1,77 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface IComment {
-  id: string;
-  dropId: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    id: string;
-    email: string;
-    username: string;
-    profilePic: { id: string; URL: string };
-    role: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  commented: boolean;
-}
+import { createComment, deleteComment, fetchInitialComments, fetchMoreComments } from "./thunk";
+import { IComment } from "./types";
 
-interface IDropCommentsState {
-  loading: boolean;
-  actionLoading: boolean;
-  comments: IComment[];
-  next: string | null;
-  hasNext: boolean;
-}
-
-const initialState: IDropCommentsState = {
-  loading: false,
-  actionLoading: false,
-  comments: [],
+export const dropCommentsAdapter = createEntityAdapter<IComment>();
+const initialState = dropCommentsAdapter.getInitialState({
+  isLoading: false,
   next: null,
   hasNext: false,
-};
+});
 
 export const dropCommentsSlice = createSlice({
   name: "dropComments",
   initialState,
   reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    updateActionLoading: (state, action: PayloadAction<boolean>) => {
-      state.actionLoading = action.payload;
-    },
-    updateMoreCommentsInfo: (
+    updateIsDeletingStatus: (
       state,
-      action: PayloadAction<{ next: string | null; hasNext: boolean }>
+      action: PayloadAction<{ status: boolean; commentId: string }>
     ) => {
-      state.hasNext = action.payload.hasNext;
-      state.next = action.payload.next;
+      const payload = action.payload;
+      state.entities[payload.commentId].isDeleting = payload.status;
     },
-    initAdd: (state, action: PayloadAction<IComment[]>) => {
-      state.comments = action.payload;
-    },
-    removeComment: (state, action: PayloadAction<{ commentId: string }>) => {
-      state.comments = state.comments.filter(
-        (c) => c.id !== action.payload.commentId
-      );
-    },
-    pushComments: (state, action: PayloadAction<IComment[]>) => {
-      state.comments = [...action.payload, ...state.comments];
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchInitialComments.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchInitialComments.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        const { entities, hasNext, ids, next } = action.payload;
+        state.entities = entities;
+        state.ids = ids;
+        state.next = next;
+        state.hasNext = hasNext;
+      }
+    });
+    builder.addCase(fetchInitialComments.rejected, (state, _) => {
+      state.isLoading = false;
+    });
+    builder.addCase(fetchMoreComments.fulfilled, (state, action) => {
+      if (action.payload) {
+        const { entities, ids, next, hasNext } = action.payload;
+        state.entities = { ...state.entities, ...entities };
+        state.ids = [...state.ids, ...ids];
+        state.next = next;
+        state.hasNext = hasNext;
+      }
+    });
+    builder.addCase(deleteComment.fulfilled, (state, action) => {
+      const payload = action.payload;
+      if (payload.isDeleted) {
+        dropCommentsAdapter.removeOne(state, payload.commentId);
+      }
+    });
+    builder.addCase(createComment.fulfilled, (state, action) => {
+      const payload = action.payload;
+      if (payload.isCreated) {
+        state.entities = {
+          [payload.comment.id]: payload.comment,
+          ...state.entities,
+        };
+        state.ids = [payload.comment.id, ...state.ids];
+      }
+    });
   },
 });
 
+export const { updateIsDeletingStatus } = dropCommentsSlice.actions;
+
 export const {
-  initAdd,
-  pushComments,
-  removeComment,
-  updateActionLoading,
-  updateLoading,
-  updateMoreCommentsInfo,
-} = dropCommentsSlice.actions;
+  selectById: selectCommentById,
+  selectAll: selectAllDropComments,
+} = dropCommentsAdapter.getSelectors();
+
 export default dropCommentsSlice.reducer;

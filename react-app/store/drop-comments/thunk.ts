@@ -1,92 +1,108 @@
+import { normalizeComment, normalizeComments } from "lib/normalize/comments";
 import toast from "react-hot-toast";
+import createCommentService from "services/comment/create-comment";
 import deleteCommentService from "services/comment/delete-comment";
 import fetchDropCommentsPaginatedService from "services/comment/fetch-drop-comments";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { IComment, initAdd, removeComment, updateActionLoading, updateLoading, updateMoreCommentsInfo } from "./slice";
+import { updateIsDeletingStatus } from "./slice";
 
-export const fetchDropCommentsThunk = createAsyncThunk(
-  "dropComments/commentsAdded",
+export const fetchInitialComments = createAsyncThunk(
+  "dropComments/fetchInitialComments",
   async (
-    { dropId, init }: { dropId: string; init: boolean },
-    { dispatch, getState }
+    { limit, dropId }: { limit: number; dropId: string },
+    { getState }
   ) => {
-    dispatch(updateLoading(true));
-
     const userId = (getState() as any).user.info.id;
-    const next = (getState() as any).drops.next;
-    const limit = 4;
-
-    const response = await fetchDropCommentsPaginatedService(
-      init ? { userId, limit, dropId } : { userId, next, limit, dropId }
-    );
-
-    dispatch(updateLoading(false));
-
-    if (response.isError) toast.error(response.msg);
-    else {
-      // transform drop
-      let comments: IComment[] = [];
-      for (let i = 0; i < response.data.comments.length; i++) {
-        const comment = response.data.comments[i].comment;
-        const commented = response.data.comments[i].commented;
-
-        comments.push({
-          id: comment.id,
-          dropId: comment.drop,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-          user: {
-            id: comment.user.id,
-            email: comment.user.email,
-            username: comment.user.username,
-            profilePic: comment.user.profilePic
-              ? {
-                  id: comment.user.profilePic.id,
-                  URL: comment.user.profilePic.URL,
-                }
-              : {
-                  id: "",
-                  URL: "https://images.unsplash.com/photo-1466112928291-0903b80a9466?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=873&q=80",
-                },
-            role: comment.user.role,
-            createdAt: comment.user.createdAt,
-            updatedAt: comment.user.updatedAt,
-          },
-          commented: commented,
-        });
-      }
-
-      dispatch(
-        updateMoreCommentsInfo({
-          next: response.data.next,
-          hasNext: response.data.hasNext,
-        })
-      );
-      dispatch(initAdd(comments));
+    const response = await fetchDropCommentsPaginatedService({
+      dropId,
+      limit,
+      userId,
+    });
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
     }
+    const entities = normalizeComments(response.data.comments);
+    const ids = Object.keys(entities);
+    return {
+      entities,
+      ids,
+      next: response.data.next,
+      hasNext: response.data.hasNext,
+    };
   }
 );
 
-export const deleteCommentThunk = createAsyncThunk(
+export const fetchMoreComments = createAsyncThunk(
+  "dropComments/fetchMoreComments",
+  async (
+    { limit, dropId }: { limit: number; dropId: string },
+    { getState }
+  ) => {
+    const next = (getState() as any).drops.next;
+    const userId = (getState() as any).user.info.id;
+    const response = await fetchDropCommentsPaginatedService({
+      dropId,
+      limit,
+      userId,
+    });
+    if (response.isError) {
+      toast.error(response.msg);
+      return;
+    }
+    const entities = normalizeComments(response.data);
+    const ids = Object.keys(entities);
+    return {
+      entities,
+      ids,
+      next: response.data.next,
+      hasNext: response.data.hasNext,
+    };
+  }
+);
+
+export const deleteComment = createAsyncThunk(
   "dropComments/deleteComment",
-  async (commentId: string, { dispatch, getState }) => {
+  async (commentId: string, { getState }) => {
     const token = (getState() as any).user.token;
     if (!token) {
       toast.error("You are not logged in");
-      return;
+      return { isDeleted: false, commentId };
     }
 
-    dispatch(updateActionLoading(true));
+    updateIsDeletingStatus({ commentId, status: true });
     const response = await deleteCommentService({ commentId, token });
-    dispatch(updateActionLoading(false));
-
-    if (response.isError) toast.error(response.msg);
-    else {
-      toast.success(response.msg);
-      dispatch(removeComment({ commentId }));
+    updateIsDeletingStatus({ commentId, status: false });
+    if (response.isError) {
+      toast.error(response.msg);
+      return { isDeleted: false, commentId };
     }
+
+    toast.success(response.msg);
+    return { isDeleted: true, commentId };
+  }
+);
+
+export const createComment = createAsyncThunk(
+  "dropComments/createComment",
+  async (payload: { content: string; dropId: string }, { getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return { isCreated: false, comment: null };
+    }
+
+    const { content, dropId } = payload;
+    const response = await createCommentService({ content, token, dropId });
+    if (response.isError) {
+      toast.error(response.msg);
+      return { isCreated: false, comment: null };
+    }
+
+    toast.success(response.msg);
+    const comment = normalizeComment(response.data);
+    return { isCreated: true, comment };
   }
 );
