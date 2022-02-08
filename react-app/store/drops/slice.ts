@@ -2,7 +2,7 @@ import { changeDropReactionCount } from "lib/store/drops";
 
 import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchInitialDrops, fetchMoreDrops, updateDropReaction } from "./thunk";
+import { fetchInitialDrops, fetchMoreDrops } from "./thunk";
 import { IChangeReactionToNew, IDrop } from "./types";
 
 export const dropsAdapter = createEntityAdapter<IDrop>();
@@ -44,6 +44,11 @@ export const dropsSlice = createSlice({
       const payload = action.payload;
       state.entities[payload.dropId].updatingReaction = payload.status;
     },
+    addNewDrop: (state, action: PayloadAction<IDrop>) => {
+      const drop = action.payload;
+      state.entities = { [drop.id]: drop, ...state.entities };
+      state.ids = [drop.id, ...state.ids];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialDrops.pending, (state, _) => {
@@ -74,7 +79,7 @@ export const dropsSlice = createSlice({
   },
 });
 
-export const { changeReactionToNew, updateReactionUpdateStatus } =
+export const { changeReactionToNew, updateReactionUpdateStatus, addNewDrop } =
   dropsSlice.actions;
 
 export const { selectById: selectDropById } = dropsAdapter.getSelectors();

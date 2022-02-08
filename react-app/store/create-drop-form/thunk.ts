@@ -1,65 +1,28 @@
+import { normalizeDrop } from "lib/normalize/drop";
 import toast from "react-hot-toast";
 import createDropService, { ICreateDropData } from "services/drop/create-drop";
-import { addDrop } from "store/drops/slice";
+import { addNewDrop } from "store/drops/slice";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { updateLoading } from "./slice";
-
-export const createDropThunk = createAsyncThunk(
-  "createDropForm/create",
-  async (
-    { token, data }: { token: string; data: ICreateDropData },
-    { dispatch }
-  ) => {
-    dispatch(updateLoading(true));
-    const response = await createDropService(token, data);
-    dispatch(updateLoading(false));
-    if (response.isError) toast.error(response.msg);
-    else {
-      toast.success(response.msg);
-      const drop = response.data.drop;
-      const reactionsOnDrop = response.data.reactionsOnDrop;
-      const reacted = response.data.reacted;
-
-      let reactionsOnDropArr: {
-        name: string;
-        emoji: string;
-        count: number;
-      }[] = [];
-      for (const reaction in reactionsOnDrop) {
-        reactionsOnDropArr.push({
-          name: reactionsOnDrop[reaction].name,
-          emoji: reactionsOnDrop[reaction].emoji,
-          count: reactionsOnDrop[reaction].count,
-        });
-      }
-
-      dispatch(
-        addDrop({
-          id: drop.id,
-          content: drop.content,
-          createdAt: drop.createdAt,
-          updatedAt: drop.updatedAt,
-          user: {
-            id: drop.user.id,
-            email: drop.user.email,
-            username: drop.user.username,
-            profilePic: {
-              id: drop.user.profilePic.id,
-              URL: drop.user.profilePic.URL,
-            },
-            role: drop.user.role,
-            createdAt: drop.user.createdAt,
-            updatedAt: drop.user.updatedAt,
-          },
-          reacted,
-          reactionsOnDrop: reactionsOnDropArr,
-        })
-      );
-
-      return true;
+export const createDrop = createAsyncThunk(
+  "createDropForm/createDrop",
+  async (data: ICreateDropData, { dispatch, getState }) => {
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return { isCreated: false, drop: null };
     }
-    return false;
+
+    const response = await createDropService(token, data);
+    if (response.isError) {
+      toast.error(response.msg);
+      return { isCreated: false, drop: null };
+    }
+
+    toast.success(response.msg);
+    const drop = normalizeDrop(response.data);
+    dispatch(addNewDrop(drop));
+    return { isCreated: true, drop };
   }
 );

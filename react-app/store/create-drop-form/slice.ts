@@ -1,12 +1,16 @@
+import { addNewDrop } from "store/drops/slice";
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { createDrop } from "./thunk";
+
 interface ICreateDropForm {
-  loading: boolean;
+  isLoading: boolean;
   isOpen: boolean;
 }
 
 const initialState: ICreateDropForm = {
-  loading: false,
+  isLoading: false,
   isOpen: false,
 };
 
@@ -14,14 +18,23 @@ export const createDropFormSlice = createSlice({
   name: "createDropForm",
   initialState,
   reducers: {
-    updateLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
     updateIsOpen: (state, action: PayloadAction<boolean>) => {
       state.isOpen = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(createDrop.pending, (state, _) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createDrop.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(createDrop.rejected, (state, _) => {
+      state.isLoading = false;
+    });
+  },
 });
 
-export const { updateIsOpen, updateLoading } = createDropFormSlice.actions;
+export const { updateIsOpen } = createDropFormSlice.actions;
+
 export default createDropFormSlice.reducer;
