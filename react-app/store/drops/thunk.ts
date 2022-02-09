@@ -1,7 +1,7 @@
 import { normalizeDrops } from "lib/normalize/drop";
 import toast from "react-hot-toast";
 import fetchDropsPaginatedService from "services/drop/fetch-drops-paginated";
-import deleteAndCreateReactionService, { IDeleteAndCreateReactionConfig } from "services/reaction/delete-and-create-reaction";
+import deleteAndCreateReactionService from "services/reaction/delete-and-create-reaction";
 import reactOnDropService from "services/reaction/react-on-drop";
 import unReactDropService from "services/reaction/unreact-drop";
 
