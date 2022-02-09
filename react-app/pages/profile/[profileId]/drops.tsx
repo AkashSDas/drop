@@ -1,5 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useAppSelector } from "lib/hooks/store";
+import { useAppDispatch, useAppSelector } from "lib/hooks/store";
+import { useEffect } from "react";
+import { changeTab, ProfileTab } from "store/profile/slice";
 
 import Drops from "@components/profile/Drops";
 import Followers from "@components/profile/Followers";
@@ -7,7 +9,12 @@ import ProfileTabContainer from "@components/profile/ProfileTab";
 import UserInfo from "@components/profile/UserInfo";
 
 const ProfileDropsPage = () => {
+  const dispatch = useAppDispatch();
   const currentTab = useAppSelector((state) => state.profile.currentTab);
+
+  useEffect(() => {
+    dispatch(changeTab("drop" as ProfileTab));
+  }, []);
 
   const displayContent = () => {
     if (currentTab === "drop") return <Drops />;
