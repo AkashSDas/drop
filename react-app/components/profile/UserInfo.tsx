@@ -1,61 +1,64 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { updateLoadingProfile } from "store/profile/slice";
-import { fetchProfileUserThunk, followUserThunk, unFollowUserThunk } from "store/profile/thunk";
+import { fetchProfileUser, followProfileUser, unFollowProfileUser } from "store/profile/thunk";
 
+import RollingAnimation from "@components/animation/RollingAnimation";
+import { ProfilePic } from "@components/drop/DropCard";
 import PrimaryButton from "@components/shared/PrimaryButton";
 
 const UserInfo = () => {
   const router = useRouter();
-  const { loadingProfile, loadingUserFollow, user, self, following } =
-    useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
+  const profile = useAppSelector((state) => state.profile);
 
   useEffect(() => {
     if (router.isReady) {
       const { profileId } = router.query;
-      dispatch(fetchProfileUserThunk(profileId as string));
-    } else {
-      dispatch(updateLoadingProfile(true));
+      dispatch(fetchProfileUser(profileId as string));
     }
   }, [router.isReady]);
 
-  const displayFollowBtn = () => {
-    if (self) return null;
-    if (following)
-      return (
-        <button
-          className="text-text2 text-[17px] font-semibold pt-2 pb-[13px] px-[22px] rounded-lg hover:brightness-90 bg-card"
-          onClick={async () => await dispatch(unFollowUserThunk())}
-        >
-          {loadingUserFollow ? "Unfollowing..." : "Following"}
-        </button>
-      );
-    else
-      return (
-        <PrimaryButton
-          text={loadingUserFollow ? "Following..." : "Follow"}
-          onClick={async () => {
-            await dispatch(followUserThunk(user.id));
-          }}
-        />
-      );
-  };
+  if (profile.isLoading || !profile.user) return <UserInfoLoading />;
 
-  if (loadingProfile || !user) return <UserInfoLoading />;
   return (
     <div className="flex justify-between items-center">
       <div className="space-x-8 flex items-center">
-        <img
-          className="h-[60px] w-[60px] rounded-full object-cover"
-          src={user.profilePic.URL}
-          alt={user.username}
-        />
-        <div className="font-bold text-text1">{user.username}</div>
+        <ProfilePic user={profile.user} />
+        <div className="font-bold text-text1">{profile.user.username}</div>
       </div>
-      {displayFollowBtn()}
+      <FollowButton />
     </div>
+  );
+};
+
+const FollowButton = () => {
+  const dispatch = useAppDispatch();
+  const profile = useAppSelector((state) => state.profile);
+
+  const style =
+    "text-text2 text-[17px] font-semibold pt-2 pb-[13px] px-[22px] rounded-lg hover:brightness-90 bg-card";
+
+  const handleUnFollow = async () => await dispatch(unFollowProfileUser());
+  const handleFollow = async () => {
+    await dispatch(followProfileUser(profile.user.id));
+  };
+
+  if (profile.self) return null;
+  if (profile.amIFollowing)
+    return (
+      <RollingAnimation>
+        <button className={style} onClick={handleUnFollow}>
+          {profile.isUpdatingFollowStatus ? "Unfollowing..." : "Following"}
+        </button>
+      </RollingAnimation>
+    );
+
+  return (
+    <PrimaryButton
+      text={profile.isUpdatingFollowStatus ? "Following..." : "Follow"}
+      onClick={handleFollow}
+    />
   );
 };
 
