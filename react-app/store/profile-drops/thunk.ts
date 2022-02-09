@@ -19,7 +19,6 @@ export const fetchInitialProfileDrops = createAsyncThunk(
       limit: payload.limit,
       selfUserId: loggedInUserId,
     });
-    console.log(response);
     if (response.isError) {
       toast.error(response.msg);
       return;
