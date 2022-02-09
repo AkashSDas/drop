@@ -8,6 +8,7 @@ import forgotPasswordReducer from "store/forgot-password/slice";
 import loginReducer from "store/login/slice";
 import logoutReducer from "store/logout/slice";
 import profileDropsReducer from "store/profile-drops/slice";
+import profileFollowersReducer from "store/profile-followers/slice";
 import profileReducer from "store/profile/slice";
 import signupReducer from "store/signup/slice";
 import userReducer from "store/user/slice";
@@ -29,6 +30,7 @@ const store = configureStore({
     comment: commentReducer,
     profile: profileReducer,
     profileDrops: profileDropsReducer,
+    profileFollowers: profileFollowersReducer,
   },
 });
 
