@@ -13,7 +13,7 @@ const initialState = dropsAdapter.getInitialState({
 });
 
 export const dropsSlice = createSlice({
-  name: "drop",
+  name: "drops",
   initialState,
   reducers: {
     changeReactionToNew: (
