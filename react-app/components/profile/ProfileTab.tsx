@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
-import { ProfileTab, updateTab } from "store/profile/slice";
+import { changeTab, ProfileTab } from "store/profile/slice";
 
 const ProfileTabContainer = () => {
-  const currentTab = useAppSelector((state) => state.profile.currentTab);
   const dispatch = useAppDispatch();
+  const currentTab = useAppSelector((state) => state.profile.currentTab);
 
   const tabs = [
     { name: "Drops", id: "drop" },
@@ -18,7 +18,7 @@ const ProfileTabContainer = () => {
       {tabs.map((t) => (
         <li
           key={t.name}
-          onClick={() => dispatch(updateTab(t.id as ProfileTab))}
+          onClick={() => dispatch(changeTab(t.id as ProfileTab))}
           className="w-[200px] bg-card text-center cursor-pointer"
         >
           <div className="py-4">{t.name}</div>
