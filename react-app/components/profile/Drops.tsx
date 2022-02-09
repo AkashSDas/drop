@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "lib/hooks/store";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchInitialProfileDrops, fetchMoreProfileDrops } from "store/profile-drops/thunk";
