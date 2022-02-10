@@ -2,7 +2,7 @@ import { IAuthor } from "store/drops/types";
 
 import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchInitialProfileFollowers, fetchMoreProfileFollowers, followUserInProfileFollowers } from "./thunk";
+import { fetchInitialProfileFollowers, fetchMoreProfileFollowers, followUserInProfileFollowers, unFollowUserInProfileFollowers } from "./thunk";
 
 export interface IFollower {
   id: string;
@@ -72,6 +72,21 @@ export const profileFollowersSlice = createSlice({
           loggedInUserAndFollowerRelationshipId;
       }
     });
+    builder.addCase(
+      unFollowUserInProfileFollowers.fulfilled,
+      (state, action) => {
+        if (action.payload) {
+          const {
+            following,
+            loggedInUserAndFollowerRelationshipId,
+            relationshipId,
+          } = action.payload;
+          state.entities[relationshipId].amIFollowing = following;
+          state.entities[relationshipId].relationshipId =
+            loggedInUserAndFollowerRelationshipId;
+        }
+      }
+    );
   },
 });
 
