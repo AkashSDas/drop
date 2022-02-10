@@ -1,6 +1,6 @@
 import { useAppDispatch } from "lib/hooks/store";
 import { IFollower } from "store/profile-followers/slice";
-import { followUserInProfileFollowers } from "store/profile-followers/thunk";
+import { followUserInProfileFollowers, unFollowUserInProfileFollowers } from "store/profile-followers/thunk";
 
 import RollingAnimation from "@components/animation/RollingAnimation";
 import { ProfilePic } from "@components/drop/DropCard";
@@ -16,7 +16,13 @@ const FollowButton = ({ follower }: Props) => {
   const style =
     "text-text2 text-[17px] font-semibold pt-2 pb-[13px] px-[22px] rounded-lg hover:brightness-90 bg-card";
 
-  const handleUnFollow = () => {};
+  const handleUnFollow = () =>
+    dispatch(
+      unFollowUserInProfileFollowers({
+        entityId: follower.id,
+        relationshipId: follower.relationshipId,
+      })
+    );
   const handleFollow = async () =>
     dispatch(
       followUserInProfileFollowers({
