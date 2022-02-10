@@ -74,11 +74,12 @@ export const getUserAllFollowers: AsyncMiddleware = async (req, res, next) => {
       followersWithIds[i],
       "follower followed"
     );
+    console.log(relationship);
     let isFollowing = null;
 
     if (selfUser) {
       isFollowing = await Relationship.findOne({
-        followed: relationship._id,
+        followed: relationship.follower._id,
         follower: selfUser as any,
       }).select("+_id");
     }
