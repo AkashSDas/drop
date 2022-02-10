@@ -1,8 +1,11 @@
 import { normalizeProfileFollowers } from "lib/normalize/profile";
 import toast from "react-hot-toast";
 import fetchUserFollowersPaginatedService from "services/profile/fetch-user-followers";
+import followUserService from "services/profile/follow-user";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { changeIsUpdatingFollowerStatus } from "./slice";
 
 export const fetchInitialProfileFollowers = createAsyncThunk(
   "profileFollowers/fetchInitialProfileFollowers",
@@ -50,6 +53,36 @@ export const fetchMoreProfileFollowers = createAsyncThunk(
       ids,
       next: response.data.next,
       hasNext: response.data.hasNext,
+    };
+  }
+);
+
+export const followUserInProfileFollowers = createAsyncThunk(
+  "profileFollowers/followUserInProfileFollowers",
+  async (
+    payload: { relationshipId: string; followedId: string },
+    { getState }
+  ) => {
+    const { followedId, relationshipId } = payload;
+    const token = (getState() as any).user.token;
+    if (!token) {
+      toast.error("You are not logged in");
+      return null;
+    }
+
+    changeIsUpdatingFollowerStatus({ relationshipId, status: true });
+    const response = await followUserService({ followedId, token });
+    changeIsUpdatingFollowerStatus({ relationshipId, status: false });
+    if (response.isError) {
+      toast.error(response.msg);
+      return null;
+    }
+
+    toast.success(response.msg);
+    return {
+      relationshipId,
+      loggedInUserAndFollowerRelationshipId: response.data.relationshipId,
+      following: true,
     };
   }
 );

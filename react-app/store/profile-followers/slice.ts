@@ -1,8 +1,8 @@
 import { IAuthor } from "store/drops/types";
 
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchInitialProfileFollowers, fetchMoreProfileFollowers } from "./thunk";
+import { fetchInitialProfileFollowers, fetchMoreProfileFollowers, followUserInProfileFollowers } from "./thunk";
 
 export interface IFollower {
   id: string;
@@ -25,7 +25,15 @@ const initialState = profileFollowersAdapter.getInitialState({
 export const profileFollowersSlice = createSlice({
   name: "profileFollowers",
   initialState,
-  reducers: {},
+  reducers: {
+    changeIsUpdatingFollowerStatus: (
+      state,
+      action: PayloadAction<{ relationshipId: string; status: boolean }>
+    ) => {
+      const { relationshipId, status } = action.payload;
+      state.entities[relationshipId].isUpdatingFollowerStatus = status;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialProfileFollowers.pending, (state, _) => {
       state.isLoading = true;
@@ -52,8 +60,22 @@ export const profileFollowersSlice = createSlice({
         state.hasNext = hasNext;
       }
     });
+    builder.addCase(followUserInProfileFollowers.fulfilled, (state, action) => {
+      if (action.payload) {
+        const {
+          following,
+          loggedInUserAndFollowerRelationshipId,
+          relationshipId,
+        } = action.payload;
+        state.entities[relationshipId].amIFollowing = following;
+        state.entities[relationshipId].relationshipId =
+          loggedInUserAndFollowerRelationshipId;
+      }
+    });
   },
 });
+
+export const { changeIsUpdatingFollowerStatus } = profileFollowersSlice.actions;
 
 export const { selectById: selectProfileFollowerById } =
   profileFollowersAdapter.getSelectors();
