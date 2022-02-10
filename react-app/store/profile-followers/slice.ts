@@ -26,12 +26,13 @@ export const profileFollowersSlice = createSlice({
   name: "profileFollowers",
   initialState,
   reducers: {
-    changeIsUpdatingFollowerStatus: (
+    changeIsUpdatingStatus: (
       state,
-      action: PayloadAction<{ relationshipId: string; status: boolean }>
+      action: PayloadAction<{ id: string; status: boolean }>
     ) => {
-      const { relationshipId, status } = action.payload;
-      state.entities[relationshipId].isUpdatingFollowerStatus = status;
+      // TODO: Not updating the state
+      const { id, status } = action.payload;
+      state.entities[id].isUpdatingFollowerStatus = status;
     },
   },
   extraReducers: (builder) => {
@@ -90,7 +91,7 @@ export const profileFollowersSlice = createSlice({
   },
 });
 
-export const { changeIsUpdatingFollowerStatus } = profileFollowersSlice.actions;
+export const { changeIsUpdatingStatus } = profileFollowersSlice.actions;
 
 export const { selectById: selectProfileFollowerById } =
   profileFollowersAdapter.getSelectors();
