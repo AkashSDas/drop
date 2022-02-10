@@ -6,7 +6,7 @@ import unFollowUserService from "services/profile/unfollow-user";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { changeIsUpdatingFollowerStatus } from "./slice";
+import { changeIsUpdatingStatus } from "./slice";
 
 export const fetchInitialProfileFollowers = createAsyncThunk(
   "profileFollowers/fetchInitialProfileFollowers",
@@ -71,9 +71,9 @@ export const followUserInProfileFollowers = createAsyncThunk(
       return null;
     }
 
-    changeIsUpdatingFollowerStatus({ relationshipId, status: true });
+    changeIsUpdatingStatus({ id: relationshipId, status: true });
     const response = await followUserService({ followedId, token });
-    changeIsUpdatingFollowerStatus({ relationshipId, status: false });
+    changeIsUpdatingStatus({ id: relationshipId, status: false });
     if (response.isError) {
       toast.error(response.msg);
       return null;
@@ -82,7 +82,7 @@ export const followUserInProfileFollowers = createAsyncThunk(
     toast.success(response.msg);
     return {
       relationshipId,
-      loggedInUserAndFollowerRelationshipId: response.data.relationshipId,
+      loggedInUserAndFollowerRelationshipId: response.data.relationship.id,
       following: true,
     };
   }
@@ -101,9 +101,9 @@ export const unFollowUserInProfileFollowers = createAsyncThunk(
       return null;
     }
 
-    changeIsUpdatingFollowerStatus({ relationshipId: entityId, status: true });
+    changeIsUpdatingStatus({ id: entityId, status: true });
     const response = await unFollowUserService({ relationshipId, token });
-    changeIsUpdatingFollowerStatus({ relationshipId: entityId, status: false });
+    changeIsUpdatingStatus({ id: entityId, status: false });
     if (response.isError) {
       toast.error(response.msg);
       return null;
