@@ -74,7 +74,6 @@ export const getUserAllFollowers: AsyncMiddleware = async (req, res, next) => {
       followersWithIds[i],
       "follower followed"
     );
-    console.log(relationship);
     let isFollowing = null;
 
     if (selfUser) {
