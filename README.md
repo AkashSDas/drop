@@ -24,9 +24,3 @@ CLOUDINARY_SECRET_KEY=
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_URL=
 ```
-
-## Todos
-
-- Refactor frontend code and make it more DRY
-- User `createEntityadapter` for list of items
-- Add more animations using `framer-motion`
