@@ -194,7 +194,7 @@ const getPasswordResetToken: GetPasswordResetToken = function (
 
   this.passwordResetExpiry = expiresIn;
 
-  return token;
+  return this.passwordResetToken;
 };
 userSchema.methods.getPasswordResetToken = getPasswordResetToken;
 
@@ -215,7 +215,7 @@ const getEmailVerifyToken: GetEmailVerifyToken = function (
 
   this.emailVerifyExpiry = expiresIn;
 
-  return token;
+  return this.emailVerifyToken;
 };
 userSchema.methods.getEmailVerifyToken = getEmailVerifyToken;
 
